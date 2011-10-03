@@ -239,7 +239,15 @@ Drupal.entity.Datastore.prototype.loadMultiple = function(ids, order) {
  *   empty.
  */
 Drupal.entity.Datastore.prototype.loadByField = function(field, values, order) {
-
+  if (field == "full_name") {
+    if (values.constructor == Array){
+      values = values.replace(/^\s*/, "").replace(/\s*$/, "");
+    }
+    else {
+      values = new Array(values.replace(/^\s*/, "").replace(/\s*$/, ""));
+    }
+  }
+  
   var entities = [];
 
   var placeholders = [];
@@ -252,19 +260,22 @@ Drupal.entity.Datastore.prototype.loadByField = function(field, values, order) {
   if (order !== undefined) {
     query += ' ORDER BY ' + order.join(', ');
   }
-
+  
   var rows = this.connection.query(query, values);
 
   if (rows) {
     while (rows.isValidRow()) {
       var data = rows.fieldByName('data');
       var entity = JSON.parse(data);
+      if (field == "full_name") {
+        //alert(entity);
+      }
       entities.push(entity);
       rows.next();
     }
     rows.close();
   }
-
+  // alert(entities);
   return entities;
 };
 

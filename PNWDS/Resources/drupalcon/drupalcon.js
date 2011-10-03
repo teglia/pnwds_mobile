@@ -31,16 +31,19 @@ var DrupalCon = {
         var rows = Drupal.db.getConnection('main').query('SELECT name, full_name FROM user');
         while (rows.isValidRow()) {
           presenterList[rows.fieldByName('name')] = rows.fieldByName('full_name');
+
           rows.next();
         }
         rows.close();
       }
+
       return presenterList;
   };
 
   DrupalCon.util.getPresenterName = function(name) {
-    var list = DrupalCon.util.getPresenterList();
-    return list[name] || '';
+    //var list = DrupalCon.util.getPresenterList();
+    return name[0];
+    // return list[name] || '';
   };
 
   // Clear the presenter list cache when we update data.
@@ -52,6 +55,7 @@ var DrupalCon = {
   var lastTime = '';
 
   DrupalCon.renderers.session = function(session) {
+
     var sessionTitle = cleanSpecialChars(session.title);
 
     var sessionRow = Ti.UI.createTableViewRow({
@@ -75,33 +79,21 @@ var DrupalCon = {
         leftSpace = 10;
         titleColor = '#d32101';
         break;
-      case "Design and UX":
+      case "Design and Theming":
         sessionRow.leftImage = 'images/uxdesign.png';
         titleColor = '#dd3793';
         break;
-      case "Coder":
+      case "Development and Code":
         sessionRow.leftImage = 'images/coder.png';
         titleColor = '#e76828';
         break;
-      case "Business and Strategy":
+      case "Business and Project Management":
         sessionRow.leftImage = 'images/business.png';
         titleColor = '#85a951';
         break;
-      case "Implementation and Config":
+      case "Information Architecture and Administration":
         sessionRow.leftImage = 'images/config.png';
         titleColor = '#f0b539';
-        break;
-      case "Drupal Community":
-        sessionRow.leftImage = 'images/community.png';
-        titleColor = '#7fbfea';
-        break;
-      case "Core Conversations":
-        sessionRow.leftImage = 'images/coreconv.png';
-        titleColor = '#3176bd';
-        break;
-      case "Theming":
-        sessionRow.leftImage = 'images/theming.png';
-        titleColor = '#e5393e';
         break;
       default:
         leftSpace = 10;
@@ -127,7 +119,7 @@ var DrupalCon = {
 
     // Some sessions have multiple presenters
     var presLabel = Ti.UI.createLabel({
-      text: cleanSpecialChars(session.instructors.map(DrupalCon.util.getPresenterName).join(', ')),
+      text: session.instructors[0],
       font: {fontSize:14, fontWeight:'normal'},
       color: '#000',
       left: leftSpace,
@@ -196,7 +188,7 @@ var DrupalCon = {
 
     // Some sessions have multiple presenters.
     var presLabel = Ti.UI.createLabel({
-      text: session.instructors.map(DrupalCon.util.getPresenterName).join(', '),
+      text: session.instructors[0],
       font: {fontSize:14, fontWeight:'normal'},
       color: '#000',
       left: leftSpace,
@@ -271,7 +263,7 @@ var DrupalCon = {
     // get their information submitted in time. Sigh.
     if (session.instructors) {
       var presLabel = Ti.UI.createLabel({
-        text: session.instructors.map(DrupalCon.util.getPresenterName).join(', '),
+        text: session.instructors[0],
         font: {fontSize:14, fontWeight:'normal'},
         color: '#000',
         left: leftSpace,

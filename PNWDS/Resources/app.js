@@ -40,18 +40,18 @@ Ti.include(
 
 // Define our connection information.  This is very similar to the DB layer's
 // $databases array in settings.php.
-Drupal.services.addConnectionInfo('main', {
-  endpointUrl: 'http://chicago2011.drupal.org/services/mobile',
-  user: '',
-  pass: ''
-});
+// Drupal.services.addConnectionInfo('main', {
+  // endpointUrl: 'http://chicago2011.drupal.org/services/mobile',
+  // user: '',
+  // pass: ''
+// });
 
 // Register our database information.
 Drupal.db.addConnectionInfo('main');
 
 // Pre-create the database.  This is a snapshot of the dataset taken shortly
 // prior to shipping.
-Ti.Database.install('main.sql', 'main');
+//Ti.Database.install('main.sql', 'main');
 
 // If we haven't created the tables yet, make empty ones to ensure that the
 // app doesn't crash.

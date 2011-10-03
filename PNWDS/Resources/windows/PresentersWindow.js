@@ -28,7 +28,7 @@
     });
 
     var nameList = getNameList();
-
+  
     // I want our list of names to have the usernames mixed in, and they usually
     // start with lowercase, so we need to create a custom sortorder that ignores case.
     var sortedNames = nameList.sort(function(a, b) {

@@ -17,15 +17,14 @@
 
 // Declaring variables to prevent implied global error in jslint
 var Ti, Drupal;
-var rootPath = '../../../../../../../../../../';
 
 // Include the main Drupal library.
 if (!Drupal) {
-  Ti.include(rootPath+'drupal/drupal.js');
+  Ti.include('drupal.js');
 }
 
 if (!Drupal.db) {
-  Ti.include(rootPath+'drupal/db.js');
+  Ti.include('db.js');
 }
 
 /**
@@ -204,7 +203,7 @@ Drupal.entity.DefaultSchema.prototype.defaultFetcher = function(bundle, store, f
   }
 };
 
-Ti.include(rootPath+'drupal/entity.datastore.js');
+Ti.include('entity.datastore.js');
 
 
 //These kinda sorta serve as a unit test, ish, maybe, for now.

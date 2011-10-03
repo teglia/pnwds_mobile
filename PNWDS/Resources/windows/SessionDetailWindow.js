@@ -81,9 +81,10 @@
       headerRow.add(titleLabel);
     }
     // Some sessions have multiple presenters
+    
     if (sessionData.instructors) {
       var presenterName = Ti.UI.createLabel({
-        text: cleanSpecialChars(sessionData.instructors.map(DrupalCon.util.getPresenterName).join(', ')),
+        text: sessionData.instructors[0],
         font: {fontSize:18, fontWeight:'normal'},
         color: '#000',
         left: commonPadding,
@@ -210,39 +211,39 @@
 
     tvData.push(headerRow);
 
-    if (sessionData.type === 'session') {
-      var feedbackTitle = Ti.UI.createLabel({
-        text:"Rate this session",
-        backgroundColor:'#3782a8',
-        textAlign:'left',
-        font:{fontSize:18, fontWeight:'bold'},
-        color:'#fff',
-        left: commonPadding,
-        right: commonPadding,
-        height: 50
-      });
-
-      var feedbackRow = Ti.UI.createTableViewRow({
-        hasChild: true,
-        layout:'vertical',
-        height: 50,
-        className: 'feedbackRow',
-        backgroundColor:'#3782A9'
-      });
-      feedbackRow.add(feedbackTitle);
-
-      feedbackRow.addEventListener('click', function(e) {
-        var currentTab = (Ti.Platform.name == 'android') ? currentTab = Titanium.UI.currentTab : sessionDetailWindow.tabGroup.activeTab;
-        currentTab.open(DrupalCon.ui.createFeedbackWindow({
-          title: settings.title,
-          address: 'http://chicago2011.drupal.org/node/add/eval/' + settings.nid,
-          //address: 'http://google.com',
-          tabGroup: currentTab
-        }), {animated:true});
-      });
-
-      tvData.push(feedbackRow);
-    }
+    // if (sessionData.type === 'session') {
+      // var feedbackTitle = Ti.UI.createLabel({
+        // text:"Rate this session",
+        // backgroundColor:'#3782a8',
+        // textAlign:'left',
+        // font:{fontSize:18, fontWeight:'bold'},
+        // color:'#fff',
+        // left: commonPadding,
+        // right: commonPadding,
+        // height: 50
+      // });
+// 
+      // var feedbackRow = Ti.UI.createTableViewRow({
+        // hasChild: true,
+        // layout:'vertical',
+        // height: 50,
+        // className: 'feedbackRow',
+        // backgroundColor:'#3782A9'
+      // });
+      // feedbackRow.add(feedbackTitle);
+// 
+      // feedbackRow.addEventListener('click', function(e) {
+        // var currentTab = (Ti.Platform.name == 'android') ? currentTab = Titanium.UI.currentTab : sessionDetailWindow.tabGroup.activeTab;
+        // currentTab.open(DrupalCon.ui.createFeedbackWindow({
+          // title: settings.title,
+          // address: 'http://chicago2011.drupal.org/node/add/eval/' + settings.nid,
+          // //address: 'http://google.com',
+          // tabGroup: currentTab
+        // }), {animated:true});
+      // });
+// 
+      // tvData.push(feedbackRow);
+    // }
 
     tvData.push(bodyRow);
 
@@ -291,14 +292,28 @@
       tvData.push(audienceRow);
     }
 
-
-    if (sessionData.instructors && sessionData.instructors.length) {
+// alert("Just about there");
+//alert(sessionData.instructors[0].split(','));
+    var instructors = sessionData.instructors[0].split(',');
+    var instructorsLength = instructors.length;
+    var presenterData = new Array();
+    var presenter = '';
+    //var instructors = null;
+    if (instructors && instructorsLength > 0) {
       // Get the presenter information.
-      var presenterData = Drupal.entity.db('main', 'user').loadByField('name', sessionData.instructors);
+      // alert(instructors);
+      for (var i = 0, len = instructors.length; i<len; i++){
+        // alert(instructors[i]);
+        var presenterObject = Drupal.entity.db('main', 'user').loadByField('full_name', instructors[i]);
+        // alert( presenterObject );
+        presenter = presenterObject[0];
+        // alert(presenter);
+        tvData.push(renderPresenter(presenter));
+      };
 
-      for (var j in presenterData) {
-        tvData.push(renderPresenter(presenterData[j]));
-      }
+      // for (var j in presenterData) {
+        // tvData.push(renderPresenter(presenterData[j]));
+      // }
     }
 
     tv.addEventListener('click', function(e) {

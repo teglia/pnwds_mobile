@@ -27,7 +27,7 @@
 
     // var presenterData = settings.data;
     var presenterData = Drupal.entity.db('main', 'user').load(settings.uid);
-
+alert(presenterData);
     var presenterDetailWindow = Titanium.UI.createWindow({
       id: 'presenterDetailWindow',
       title: presenterData.name,
@@ -46,8 +46,7 @@
       layout:'vertical'
     });
 
-    var userPict = avatarPath(presenterData.uid);
-    dpm(userPict);
+    var userPict = avatarPath(presenterData.picture);
     
     var av = Ti.UI.createImageView({
       image:userPict,

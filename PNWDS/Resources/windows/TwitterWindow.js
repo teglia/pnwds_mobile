@@ -49,7 +49,7 @@ var Twitter = {
         baseHTMLEnd = '<script type="text/javascript">' + tweetWebJs + '</script></body></html>';
 
     // set up a twitter screen name.
-    var twitter_name = 'drupalcon';
+    var twitter_name = 'drupalsummit';
     twitterWindow.title = '@' + twitter_name;
     var tweetCount = 50;
 

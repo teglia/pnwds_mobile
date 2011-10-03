@@ -24,11 +24,10 @@
     // Create table view data object.
     var data = [];
     data.push({title:'Registration', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', scheduleListing: false, url: 'pages/registration.html'});
-    data.push({title:'Monday, March 7', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', scheduleListing: false, url: 'pages/2011-03-07.html'});
-    data.push({title:'Tuesday, March 8', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', start_date:'2011-03-08T00:00:00', end_date:'2011-03-09T00:00:00', scheduleListing: true});
-    data.push({title:'Wednesday, March 9', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', start_date:'2011-03-09T00:00:00', end_date:'2011-03-10T00:00:00', scheduleListing: true});
-    data.push({title:'Thursday, March 10', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', start_date:'2011-03-10T00:00:00', end_date:'2011-03-11T00:00:00', scheduleListing: true});
-    data.push({title:'Friday, March 11', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', scheduleListing: false, url: 'pages/2011-03-11.html'});
+    data.push({title:'Friday, October 14', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', scheduleListing: false, url: 'pages/2011-03-07.html'});
+    data.push({title:'Saturday, October 15', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', start_date:'2011-10-15T00:00:00', end_date:'2011-10-16T00:00:00', scheduleListing: true});
+    data.push({title:'Sunday, October 16', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', start_date:'2011-10-16T00:00:00', end_date:'2011-10-17T00:00:00', scheduleListing: true});
+    data.push({title:'Monday, October 17', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', scheduleListing: false, url: 'pages/2011-03-11.html'});
     data.push({title:'Birds of a Feather', hasChild:true, color:'#000', backgroundColor:'#fff', backgroundSelectedColor:'#0779BE', scheduleListing: false, url: 'pages/bofs.html'});
 
     var dayWindow = Titanium.UI.createWindow({

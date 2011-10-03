@@ -14,11 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with DrupalCon Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+if (!Drupal) {
+  Ti.include("../drupal/drupal.js");
+}
 /*
  * Check for avatars and save new ones if they don't exist.
  */
 function getAvatars(picture,uid) {
+  var presenterData = Drupal.entity.db('main', 'user').load(uid);
+  dpm("presenterData");
   var dir = Ti.Filesystem.applicationDataDirectory;
   // Local app data directory
   var f = Ti.Filesystem.getFile(dir,'picture-'+uid+'.jpg');
@@ -26,16 +30,16 @@ function getAvatars(picture,uid) {
   var adir = Ti.Filesystem.resourcesDirectory;
   var af = Ti.Filesystem.getFile(adir,'images/avatars/picture-'+uid+'.jpg');
   // If it exists in either place or if it is the default avatar, don't bother
-  if(f.exists() || af.exists() || picture == 'http://chicago2011.drupal.org/sites/default/files/imagecache/mobile_presenter/sites/all/default-profile-pic.png') {
-  }
-  else {
-    var xhr = Titanium.Network.createHTTPClient();
-    xhr.onload = function() {
-      f.write(this.responseData);
-    };
-    xhr.open('GET', picture);
-    xhr.send();
-  }
+  // if(f.exists() || af.exists() || picture == 'http://chicago2011.drupal.org/sites/default/files/imagecache/mobile_presenter/sites/all/default-profile-pic.png') {
+  // }
+  // else {
+    // var xhr = Titanium.Network.createHTTPClient();
+    // xhr.onload = function() {
+      // f.write(this.responseData);
+    // };
+    // xhr.open('GET', picture);
+    // xhr.send();
+  // }
 }
 
 function avatarPath(uid) {
