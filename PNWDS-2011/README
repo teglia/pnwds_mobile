@@ -1,18 +1,14 @@
-Welcome to your Appcelerator Titanium Mobile Project
+This is the mobile application for the Pacific Northwest Drupal Summit 2011, based on the DrupalCon Chicago mobile app.  It was built using the Appcelerator Titanium mobile framework.
 
-This is a blank project.  Start by editing your application's app.js to 
-make your first mobile project using Titanium.
+The original development team at Palantir.net for the DrupalCon app consisted of:
 
+Larry Garfield (Lead)
+Pat Teglia (Developer)
+Jen Simmons (Designer)
 
+The PNWDS app is being adapted by Pat Teglia.
 
-----------------------------------
-Stuff our legal folk make us say:
+It ships with a default copy of the session schedule for PNWDS, 2011.  In-app updates are possible for as long as the web site remains dynamic.
 
-Appcelerator, Appcelerator Titanium and associated marks and logos are 
-trademarks of Appcelerator, Inc. 
-
-Titanium is Copyright (c) 2009-2010 by Appcelerator, Inc. All Rights Reserved.
-
-Titanium is licensed under the Apache Public License (Version 2). Please
-see the LICENSE file for the full license.
-
+All source code in the application is released under the terms of the GNU General Public License, version 3 or, at your option, any later version.  See the included 
+LICENSE.txt file.
