@@ -1,14 +1,1 @@
-This is the mobile application for the Pacific Northwest Drupal Summit 2011, based on the DrupalCon Chicago mobile app.  It was built using the Appcelerator Titanium mobile framework.
-
-The original development team at Palantir.net for the DrupalCon app consisted of:
-
-Larry Garfield (Lead)
-Pat Teglia (Developer)
-Jen Simmons (Designer)
-
-The PNWDS app is being adapted by Pat Teglia.
-
-It ships with a default copy of the session schedule for PNWDS, 2011.  In-app updates are possible for as long as the web site remains dynamic.
-
-All source code in the application is released under the terms of the GNU General Public License, version 3 or, at your option, any later version.  See the included 
-LICENSE.txt file.
+These are the mobile apps for the Pacific Northwest Drupal Summit.
