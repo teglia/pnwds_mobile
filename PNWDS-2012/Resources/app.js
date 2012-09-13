@@ -1,6 +1,8 @@
+// Include commonJS modules for use in bootstrapping and checking for updates.
 var pnwdsdb = require( '/includes/db' );
 var pnwdsnet = require( '/includes/network' );
 
+// Get the db instantiated if it isn't already.
 pnwdsdb.bootstrap();
 
 // For testing, clear and refill the db. Run one time with these two uncommented,
@@ -14,11 +16,11 @@ pnwdsdb.bootstrap();
  * probably will be there or something called from there.
  */
 var NavigationController = require('NavigationController').NavigationController,
-    TestWindow = require('home').TestWindow;
+    homeWindow = require('home').homeWindow;
 
 var controller = new NavigationController();
+controller.open(new homeWindow(controller));
 
-controller.open(new TestWindow(controller));
-
+// Check for updates.
 var updated = pnwdsnet.lastUpdated(controller);
 

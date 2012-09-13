@@ -2,7 +2,7 @@
  * This is the home window - displays a grid of images and a scrollable view of sessions
  * 
  */
-exports.TestWindow = function(navController) {
+exports.homeWindow = function(navController) {
   var win = Ti.UI.createWindow({
       backgroundColor: '#fff',
       title: '2012 PNWDS Home'
