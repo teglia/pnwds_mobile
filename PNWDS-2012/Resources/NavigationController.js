@@ -41,6 +41,7 @@ exports.NavigationController.prototype.open = function(/*Ti.UI.Window*/windowToO
 
 //go back to the initial window of the NavigationController
 exports.NavigationController.prototype.home = function() {
+  Ti.API.info("Home called");
   //store a copy of all the current windows on the stack
   var windows = this.windowStack.concat([]);
   for(var i = 1, l = windows.length; i < l; i++) {

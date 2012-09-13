@@ -1,21 +1,19 @@
-/**
- * this file is almost the same as the get-node with
- * one big difference, the nid is taken as an argument 
- * and is passed by other files and this file
- * recognize the nid and use it in the url to load the
- * given node nid
- */
 exports.newWin = function(navController, nid) {
-  Ti.API.info(nid);
-  // Include our config file
-  // require('includes/config.js');
   
+  var pnwdsdb = require('/includes/db');
   // Define the variable win to contain the current window
+  
   var win = Ti.UI.createWindow({
     backgroundColor: '#fff'
   });
-  
+  // var seeded = pnwdsnet.seedsessions(navController);
   // Create a user variable to hold some information about the user
+  
+  var data = pnwdsdb.sessionsget(nid);
+  
+  Ti.API.info(data[0]);
+  data = data[0];
+  
   var user = {
   	uid: Titanium.App.Properties.getInt("userUid", 0),
   }
@@ -35,32 +33,7 @@ exports.newWin = function(navController, nid) {
   // Define the url which contains the full url
   // See how we build the url using the win.nid which is 
   // the nid property we pass to this file when we create the window
-  var url = Titanium.App.Properties.getString("restPath") + 'node/' + nid + '.json';
-  Ti.API.info(url);
-  // Create a connection inside the variable xhr
-  var xhr = Titanium.Network.createHTTPClient();
   
-  // Open the xhr
-  xhr.open("GET",url);
-  
-  // Send the xhr
-  xhr.send();
-  
-  // When the xhr loads we do:
-  xhr.onload = function() {
-  	// Save the status of the xhr in a variable
-  	// this will be used to see if we have a xhr (200) or not
-  	var statusCode = xhr.status;
-  	
-  	// Check if we have a xhr
-  	if(statusCode == 200) {
-  		
-  		// Save the responseText from the xhr in the response variable
-  		var response = xhr.responseText;
-  		
-  		// Parse (build data structure) the JSON response into an object (data)
-  		var data = JSON.parse(response);
-  		Ti.API.info(data);
   		// ensure that the window title is set
   		win.title = data.title;
   		
@@ -80,7 +53,7 @@ exports.newWin = function(navController, nid) {
   		// Create a label for the node body
   		var nodeBody = Titanium.UI.createWebView({
   			// Because D7 uses an object for the body itself including the language
-  			html: '<div style="font: normal normal normal 14px/1.25 arial;">' + data.body.und[0].value + '</div>',
+  			html: '<div style="font: normal normal normal 14px/1.25 arial;">' + data.body + '</div>',
   			height: "auto",
   			top: 30,
   			left: 10,
@@ -95,7 +68,7 @@ exports.newWin = function(navController, nid) {
   		var buttonsBar = Titanium.UI.createButtonBar({
   			// data.comment_count has the number of comments the node has
   			backgroundColor:'blue',
-  			labels: ['Comments (' + data.comment_count + ')', "Bookmark"],
+  			labels: ['Comments', "Bookmark"],
   		});
   		
   		var nodeFlagStatus = "";
@@ -240,23 +213,6 @@ exports.newWin = function(navController, nid) {
   				}
   			} // End the flag case
   		}); // End the buttons bar event listener
-  	} // End the statusCode 200 
-  	else {
-  		// Create a label for the node title
-  		var errorMessage = Ti.UI.createLabel({
-  			// The text of the label will be the node title (data.title)
-  			text: "Please check your internet connection.",
-  			color:'#000',
-  			textAlign:'left',
-  			font:{fontSize:24, fontWeight:'bold'},
-  			top:25,
-  			left:15,
-  			height:18
-  		});
-  		
-  		// Add the error message to the window
-  		win.add(errorMessage);
-  	}
-  }
+  	
   return win;
 }

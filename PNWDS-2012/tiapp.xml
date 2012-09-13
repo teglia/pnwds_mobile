@@ -9,7 +9,7 @@
         <target device="blackberry">false</target>
     </deployment-targets>
     <id>com.patrickteglia.pnwds2012</id>
-    <name>Drupanium</name>
+    <name>PNWDS-mobile-2012</name>
     <version>2.0</version>
     <publisher>pteglia</publisher>
     <url>http://patrickteglia.com</url>

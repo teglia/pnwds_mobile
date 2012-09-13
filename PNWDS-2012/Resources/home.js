@@ -7,7 +7,11 @@ exports.TestWindow = function(navController) {
       backgroundColor: '#fff',
       title: '2012 PNWDS Home'
   });
-
+  
+  var pnwdsnet = require( '/includes/network' );
+  var pnwdsdb = require( '/includes/db' );
+  Ti.API.info(pnwdsdb);
+  Ti.API.info(pnwdsnet);
   /**
    * Function to determine the pixel density
    * @param {Object} densityPixels
@@ -75,11 +79,11 @@ exports.TestWindow = function(navController) {
   // Keep the file names the same as the label names so the click event
   // listener below knows the right name to look for!
   var itemData = [
-    { name: 'sessions', badge: 30 },
-    { name: 'presenters' },
+    { name: 'sessions' },
     { name: 'login' },
     { name: 'about' },
-    { name: 'map' },
+    { name: 'update' },
+    { name: 'speakers' },
     { name: 'sponsors' }
   ];
 
@@ -108,27 +112,73 @@ exports.TestWindow = function(navController) {
 
   // Create our scrollable grid view.
   var gridView = createScrollableGridView({
-    height: '50%',
+    height: 'auto',
     data: dashboardData, //An array of views
   });
 
   win.add(gridView);
     
-  var newView = require('includes/getView').newView;
-  scheduleView = new newView(navController, 'schedule', 'My Sessions');
+  var scheduleView = Titanium.UI.createScrollView({
+    contentWidth:'auto',
+    contentHeight:'auto',
+    showVerticalScrollIndicator:true,
+    showHorizontalScrollIndicator:true,
+    top: 0,
+  });
   
-  var newView = require('includes/getView').newView;
-  scheduleViewTwo = new newView(navController, 'schedule', 'Upcoming Sessions');
+  var scheduleData = pnwdsdb.sessionslist();
+  var results = new Array();
+  var timeSlot = '';
+  var oldTimeSlot = '';
+
+  // Start loop
+  for(var loopKey in scheduleData) {
+    var data = scheduleData[loopKey];
+    if (data['timeslot'] != timeSlot) {
+      results.push(Ti.UI.createTableViewRow({title: data['timeslot'], hasChild:false }));
+    }
+    timeSlot = data['timeslot'];
+    results[loopKey] = {title: data['title'], hasChild:true, nid:data["nid"]};
+  }
   
-  Ti.API.info(scheduleView);
+  var bottomTitleLabel = Ti.UI.createLabel({
+    text: 'Full Schedule',
+    color:'#0062A0',
+    textAlign:'left',
+    font:{fontSize:24, fontWeight:'bold'},
+  });
+  var custom_row = Ti.UI.createTableViewRow({
+    hasChild:false,
+    textAlign: 'left'
+  });
+  custom_row.add(bottomTitleLabel);
+  results.unshift(custom_row);
+
+  var table = Titanium.UI.createTableView({
+    data:results,
+    borderWidth:2,
+    borderColor:'#bbb',
+    borderRadius:5,
+    width: '95%'
+  });
+  
+  // add a listener for click to the table
+  // so every row is clickable 
+  table.addEventListener('click',function(e) {
+    newWin = require('/includes/get-node-by-nid').newWin;
+    navController.open(new newWin(navController,e.rowData.nid));
+  });
+  
+  scheduleView.add(table);
   
   var scrollerizer = Ti.UI.createScrollableView({
-    height: '50%',
-    top: '50%',
-    views:[scheduleView,scheduleViewTwo],
+    height: 'auto',
+    top: 180,
+    views:[scheduleView,scheduleView],
     showPagingControl:true
   });
 
   win.add(scrollerizer);
+  win.table = table;
   return win;
 };

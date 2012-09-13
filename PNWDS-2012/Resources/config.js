@@ -5,5 +5,5 @@
  */
 
 // Set this to the base path of your rest server (add trailing slash)
-Titanium.App.Properties.setString("restPath", 'http://pnwds/rest/');
-Titanium.App.Properties.setString("sitePath", 'http://pnwds/');
+Titanium.App.Properties.setString("restPath", 'http://dev.cod7.gotpantheon.com/rest/');
+Titanium.App.Properties.setString("sitePath", 'http://dev.cod7.gotpantheon.com/');
