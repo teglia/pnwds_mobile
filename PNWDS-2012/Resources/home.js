@@ -10,8 +10,8 @@ exports.homeWindow = function(navController) {
   
   var pnwdsnet = require( '/includes/network' );
   var pnwdsdb = require( '/includes/db' );
-  Ti.API.info(pnwdsdb);
-  Ti.API.info(pnwdsnet);
+  var pnwdstables = require( '/includes/tables' );
+  
   /**
    * Function to determine the pixel density
    * @param {Object} densityPixels
@@ -86,7 +86,7 @@ exports.homeWindow = function(navController) {
     { name: 'speakers' },
     { name: 'sponsors' }
   ];
-
+  
   // Creating the array of "buttons". Buttons don't work well here, but views do!
   for (var i=0, ilen=itemData.length; i<ilen; i++){
     var newView = Ti.UI.createView({
@@ -95,13 +95,36 @@ exports.homeWindow = function(navController) {
       backgroundColor: "#0062A0",
       label: itemData[i].name
     });
-    newView.add(Ti.UI.createLabel({
-      text: itemData[i].name,
-      label: itemData[i].name,
-      color: "#fff"
-    }));
+    if (i == 3) {
+      var updateLabel = Ti.UI.createLabel({
+        text: itemData[i].name,
+        label: itemData[i].name,
+        color: "#fff"
+      });
+      // Set this as a variable on the win so we can update it later.
+      win.updateLabel = updateLabel;
+      newView.add(updateLabel);
+    }
+    else {
+      newView.add(Ti.UI.createLabel({
+        text: itemData[i].name,
+        label: itemData[i].name,
+        color: "#fff"
+      }));  
+    }
+    
+
     
     newView.addEventListener('click', function(e) {
+      switch(e.source.label) {
+        case 'update':
+          
+          break;
+        default: 
+        
+          break;
+      }
+      
       Ti.API.info(e.source.label);
       newWin = require('/includes/' + e.source.label).newWin;
       navController.open(new newWin(navController));
@@ -115,10 +138,11 @@ exports.homeWindow = function(navController) {
     height: 'auto',
     data: dashboardData, //An array of views
   });
-
+  
+  win.gridView = gridView;
   win.add(gridView);
     
-  var scheduleView = Titanium.UI.createScrollView({
+  var myScheduleView = Titanium.UI.createScrollView({
     contentWidth:'auto',
     contentHeight:'auto',
     showVerticalScrollIndicator:true,
@@ -126,59 +150,37 @@ exports.homeWindow = function(navController) {
     top: 0,
   });
   
-  var scheduleData = pnwdsdb.sessionslist();
-  var results = new Array();
-  var timeSlot = '';
-  var oldTimeSlot = '';
-
-  // Start loop
-  for(var loopKey in scheduleData) {
-    var data = scheduleData[loopKey];
-    if (data['timeslot'] != timeSlot) {
-      results.push(Ti.UI.createTableViewRow({title: data['timeslot'], hasChild:false }));
-    }
-    timeSlot = data['timeslot'];
-    results[loopKey] = {title: data['title'], hasChild:true, nid:data["nid"]};
-  }
+  var upcomingScheduleView = Titanium.UI.createScrollView({
+    contentWidth:'auto',
+    contentHeight:'auto',
+    showVerticalScrollIndicator:true,
+    showHorizontalScrollIndicator:true,
+    top: 0,
+  });
+    
+  var myScheduleTable = pnwdstables.myScheduleTable(navController);
+  var upcomingScheduleTable = pnwdstables.upcomingScheduleTable(navController);
+  var fullScheduleTable = pnwdstables.fullScheduleTable(navController);
   
-  var bottomTitleLabel = Ti.UI.createLabel({
-    text: 'Full Schedule',
-    color:'#0062A0',
-    textAlign:'left',
-    font:{fontSize:24, fontWeight:'bold'},
-  });
-  var custom_row = Ti.UI.createTableViewRow({
-    hasChild:false,
-    textAlign: 'left'
-  });
-  custom_row.add(bottomTitleLabel);
-  results.unshift(custom_row);
-
-  var table = Titanium.UI.createTableView({
-    data:results,
-    borderWidth:2,
-    borderColor:'#bbb',
-    borderRadius:5,
-    width: '95%'
-  });
+  myScheduleView.add(myScheduleTable);
+  upcomingScheduleView.add(upcomingScheduleTable);
+  Ti.API.info("Got the table");
   
-  // add a listener for click to the table
-  // so every row is clickable 
-  table.addEventListener('click',function(e) {
-    newWin = require('/includes/get-node-by-nid').newWin;
-    navController.open(new newWin(navController,e.rowData.nid));
-  });
-  
-  scheduleView.add(table);
+  // scheduleViewTwo.add(fullScheduleTable);
   
   var scrollerizer = Ti.UI.createScrollableView({
     height: 'auto',
-    top: 180,
-    views:[scheduleView,scheduleView],
+    top: 170,
+    views:[myScheduleView,upcomingScheduleView],
     showPagingControl:true
   });
 
   win.add(scrollerizer);
-  win.table = table;
+  
+  // Adding these tables to win as variables so they can have their data updated later.
+  win.myScheduleTable = myScheduleTable;
+  win.upcomingScheduleTable = upcomingScheduleTable;
+  win.fullScheduleTable = fullScheduleTable;
+  
   return win;
 };
