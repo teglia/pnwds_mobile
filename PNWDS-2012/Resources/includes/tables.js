@@ -2,6 +2,20 @@ var pnwdstables = {};
 var pnwdsdb = require( '/includes/db' );
 
 /**
+ * Set the date variables to be same, the result of having updated the app.
+ * 
+ */
+pnwdstables.updateTables = function(navController) {
+  // Update all the tables
+  navController.windowStack[0].fullScheduleTable.setData(pnwdstables.fullScheduleData());
+  navController.windowStack[0].myScheduleTable.setData(pnwdstables.myScheduleData());
+  navController.windowStack[0].upcomingScheduleTable.setData(pnwdstables.upcomingScheduleData());
+  
+  navController.windowStack[0].updateLabel.text = "updated";
+  navController.windowStack[0].updateLabel.color = "#00ff00";
+}
+
+/**
  * Format the rows, all schedule rows should be similar.
  */
 _formatSessionRows = function(rowData) {
@@ -75,6 +89,55 @@ pnwdstables.fullScheduleData = function(navController) {
 }
 
 /**
+ * Build the personalized schedule data from the db.
+ * TODO: Make this return only personally flagged events.
+ */
+pnwdstables.myScheduleData = function(navController) {
+  // Get the sessions data from the db.
+  var scheduleData = pnwdsdb.sessionslist();
+  var results = new Array();
+  var timeSlot = '';
+  var oldTimeSlot = '';
+
+  // Loop through and create table rows.
+  for(var loopKey in scheduleData) {
+    var data = scheduleData[loopKey];
+    if (data['timeslot'] != timeSlot) {
+      results.push(Ti.UI.createTableViewRow({title: 'Timeslot: ' + data['timeslot'], hasChild:false }));
+    }
+    timeSlot = data['timeslot'];
+    results.push(_formatSessionRows(data));
+  }
+
+  return results;
+}
+
+/**
+ * Build the upcoming schedule data from the db.
+ * TODO: Make this actually return only upcoming events
+ */
+pnwdstables.upcomingScheduleData = function(navController) {
+  // Get the sessions data from the db.
+  var scheduleData = pnwdsdb.sessionslist();
+  var results = new Array();
+  var timeSlot = '';
+  var oldTimeSlot = '';
+
+  // Loop through and create table rows.
+  for(var loopKey in scheduleData) {
+    var data = scheduleData[loopKey];
+    if (data['timeslot'] != timeSlot) {
+      results.push(Ti.UI.createTableViewRow({title: 'Timeslot: ' + data['timeslot'], hasChild:false }));
+    }
+    timeSlot = data['timeslot'];
+    results.push(_formatSessionRows(data));
+  }
+
+  return results;
+}
+
+
+/**
  * Create a table from the fullScheduleData.
  * 
  */
@@ -97,18 +160,16 @@ pnwdstables.fullScheduleTable = function(navController) {
   
   // Create the table with the results from above.
   var table = Titanium.UI.createTableView({
-    data: results,
-    borderWidth:2,
-    borderColor:'#bbb',
-    borderRadius:5,
-    width: '95%'
+    data: results
   });
   
   // add a listener for click to the table
   // so every row is clickable 
   table.addEventListener('click',function(e) {
-    newWin = require('/includes/get-node-by-nid').newWin;
-    navController.open(new newWin(navController,e.rowData.nid));
+    if (e.rowData.nid){ 
+      newWin = require('/includes/get-node-by-nid').newWin;
+      navController.open(new newWin(navController,e.rowData.nid));
+    }
   });
 
   return table;
@@ -120,7 +181,7 @@ pnwdstables.fullScheduleTable = function(navController) {
  */
 pnwdstables.myScheduleTable = function(navController) {
     // Get the full schedule data from above.
-  var results = pnwdstables.fullScheduleData(navController);
+  var results = pnwdstables.myScheduleData(navController);
   
   var bottomTitleLabel = Ti.UI.createLabel({
     text: 'My Schedule',
@@ -137,18 +198,16 @@ pnwdstables.myScheduleTable = function(navController) {
   
   // Create the table with the results from above.
   var table = Titanium.UI.createTableView({
-    data: results,
-    borderWidth:2,
-    borderColor:'#bbb',
-    borderRadius:5,
-    width: '95%'
+    data: results
   });
   
   // add a listener for click to the table
   // so every row is clickable 
   table.addEventListener('click',function(e) {
-    newWin = require('/includes/get-node-by-nid').newWin;
-    navController.open(new newWin(navController,e.rowData.nid));
+    if (e.rowData.nid){ 
+      newWin = require('/includes/get-node-by-nid').newWin;
+      navController.open(new newWin(navController,e.rowData.nid));
+    }
   });
 
   return table;
@@ -160,7 +219,7 @@ pnwdstables.myScheduleTable = function(navController) {
  */
 pnwdstables.upcomingScheduleTable = function(navController) {
     // Get the full schedule data from above.
-  var results = pnwdstables.fullScheduleData(navController);
+  var results = pnwdstables.upcomingScheduleData(navController);
   
   var bottomTitleLabel = Ti.UI.createLabel({
     text: 'Upcoming Sessions',
@@ -170,25 +229,24 @@ pnwdstables.upcomingScheduleTable = function(navController) {
   });
   var custom_row = Ti.UI.createTableViewRow({
     hasChild:false,
-    textAlign: 'left'
+    textAlign: 'left', 
+    touchEnabled: false
   });
   custom_row.add(bottomTitleLabel);
   results.unshift(custom_row);
   
   // Create the table with the results from above.
   var table = Titanium.UI.createTableView({
-    data: results,
-    borderWidth:2,
-    borderColor:'#bbb',
-    borderRadius:5,
-    width: '95%'
+    data: results
   });
   
   // add a listener for click to the table
   // so every row is clickable 
   table.addEventListener('click',function(e) {
-    newWin = require('/includes/get-node-by-nid').newWin;
-    navController.open(new newWin(navController,e.rowData.nid));
+    if (e.rowData.nid){ 
+      newWin = require('/includes/get-node-by-nid').newWin;
+      navController.open(new newWin(navController,e.rowData.nid));
+    }
   });
 
   return table;

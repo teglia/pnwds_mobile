@@ -15,11 +15,37 @@ var alertDialog = Titanium.UI.createAlertDialog({
 }); 
 
 /**
+ * Figure out if the app has been updated yet.
+ * 
+ */
+pnwdsnet.isUpToDate = function(navController) {
+  var siteDate = Ti.App.Properties.getString('pnwdsSiteLastUpdated');  
+  var appDate = Ti.App.Properties.getString('pnwdsAppLastUpdated');
+  Ti.API.info("siteDate: " + siteDate + ". appDate: " + appDate);
+  if (siteDate == appDate) { 
+    // Update the label on the button on the home window to indicate update is needed.
+    Ti.API.info("Up to date.");
+    navController.windowStack[0].updateLabel.text = "up to date";
+    navController.windowStack[0].updateLabel.color = "#ffffff";
+    return true;
+  }
+  else {
+    if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){
+      Ti.API.info("Not up to date. Updating.");
+      navController.windowStack[0].updateLabel.text = "updating ...";
+      navController.windowStack[0].updateLabel.color = "#ff0000";
+      var seeded = pnwdsnet.seedsessions(navController);
+    }
+    return false;
+  } 
+}
+
+/**
  * Check the last updated date via a view on the Drupal site to see if
  * anything is new there. If it's been updated, we need to update our data
  * in the db, and then update all the UI tables.
  */
-pnwdsnet.lastUpdated = function(navController) {  
+pnwdsnet.checkUpdates = function(navController) {  
   // The json returned will be all of the nodes last updated date without the 'limit=1' here.
   var url = pnwdsnet.restPath + 'views/schedule_mobile_last_updated.json?limit=1';
   var xhr = Ti.Network.createHTTPClient();
@@ -30,26 +56,32 @@ pnwdsnet.lastUpdated = function(navController) {
     var statusCode = this.status;
     if(statusCode == 200) {
       var result = JSON.parse(this.responseText);
-      Ti.API.info(result);
-      var siteUpdated = result[0].lastupdated;
-      var lastUpdated = Ti.App.Properties.getString('pnwdsUpdated');
-      if (siteUpdated != lastUpdated) {
-        // Update the label on the button on the home window to indicate update is needed.
-        navController.windowStack[0].updateLabel.text = "update now";
-        navController.windowStack[0].updateLabel.color = "#ff0000"
-        Ti.API.info("Not up to date.");
+      Ti.API.info("Got date from server: " + result[0].lastupdated);
+      
+      // Make sure it's not null before we go doing things. This can happen if connected to a network
+      // but not receiving data.
+      if (result[0].lastupdated.length > 10) {
+        Ti.API.info("Comparing update dates now.");
+        // Set that date from the site as a variable in the app:
+        Ti.App.Properties.setString('pnwdsSiteLastUpdated', result[0].lastupdated);
+        // Compare:
+        var upToDate = pnwdsnet.isUpToDate(navController);
       }
-      // Ti.App.Properties.setString('seeded','yes');         
     } 
     else {
-      alertDialog.show();
+      navController.windowStack[0].updateLabel.text = "no network, not checking";
+      navController.windowStack[0].updateLabel.color = "#ff0000";
     }
   }
 
-  // Open the xhr
-  xhr.open("GET",url);
-  // Send the xhr
-  xhr.send(); 
+
+  if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){
+    // Open the xhr
+    xhr.open("GET",url);   
+
+    // Send the xhr
+    xhr.send();
+  }
 }
 
 
@@ -73,10 +105,14 @@ pnwdsnet.getNodeByNid = function(navController,nid) {
     }
   }
 
-  // Open the xhr
-  xhr.open("GET",url);
-  // Send the xhr
-  xhr.send(); 
+
+  if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){
+    // Open the xhr
+    xhr.open("GET",url);   
+
+    // Send the xhr
+    xhr.send();
+  }
 }
 
 pnwdsnet.seedsessions = function(navController) {
@@ -88,11 +124,14 @@ pnwdsnet.seedsessions = function(navController) {
     var statusCode = xhr.status;
     // Check if we have a xhr
     if(statusCode == 200) {
+      var siteDate = Ti.App.Properties.getString('pnwdsSiteLastUpdated');  
       var response = xhr.responseText;
       var result = JSON.parse(response);
-      Ti.API.info(' \n NEW Item: \n');
-      Ti.API.info(result);
-      Ti.API.info(' \n END Item: \n');
+      Ti.API.info('Recieved a NEW Item!');
+      
+      // Put the clear in here so we don't clear the db unless we have
+      // something to replace it with.
+      pnwdsdb.sessionsclear();
       // Start loop
       for(var loopKey in result) {
         // Create the data variable and hold every result
@@ -107,31 +146,24 @@ pnwdsnet.seedsessions = function(navController) {
           data['uid']
         );
       }
-      
-      var fullScheduleData = pnwdstables.fullScheduleData();
-      var myScheduleData = pnwdstables.myScheduleData();
-      var upcomingScheduleData = pnwdstables.upcomingScheduleData();
 
-      Ti.API.info("Updating finished.");
-      
       // Update the label on the button on the home window to indicate update is needed.
-      navController.windowStack[0].updateLabel.text = "sessions updated!";
-      navController.windowStack[0].updateLabel.color = "#00ff00";
-      navController.windowStack[0].fullScheduleTable.setData(fullScheduleData);
-      navController.windowStack[0].myScheduleTable.setData(myScheduleData);
-      navController.windowStack[0].upcomingScheduleTable.setData(upcomingScheduleData);
-
+      pnwdstables.updateTables(navController);
+      Ti.App.Properties.setString('pnwdsAppLastUpdated', siteDate);
+      Ti.API.info("Updating finished.");
     }
     else {
       alertDialog.show();
     }
   }
 
-  // Open the xhr
-  xhr.open("GET",url);   
+  if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){
+    // Open the xhr
+    xhr.open("GET",url);   
 
-  // Send the xhr
+    // Send the xhr
     xhr.send();
   }
+}
     
 module.exports = pnwdsnet;

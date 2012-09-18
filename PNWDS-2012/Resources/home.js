@@ -7,11 +7,17 @@ exports.homeWindow = function(navController) {
       backgroundColor: '#fff',
       title: '2012 PNWDS Home'
   });
+  Ti.API.info("In home");
   
   var pnwdsnet = require( '/includes/network' );
   var pnwdsdb = require( '/includes/db' );
   var pnwdstables = require( '/includes/tables' );
   
+  Ti.App.addEventListener('databaseUpdated', function(e) {
+    Ti.API.info("databaseUpdated event fired");
+      pnwdstables.updateTables(navController);
+  });
+
   /**
    * Function to determine the pixel density
    * @param {Object} densityPixels
@@ -118,16 +124,18 @@ exports.homeWindow = function(navController) {
     newView.addEventListener('click', function(e) {
       switch(e.source.label) {
         case 'update':
-          
+          if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){ 
+            var updates = require( '/includes/update' );
+            navController.open(updates.updateWin(navController));
+          }          
           break;
         default: 
-        
+          var newWin = require('/includes/' + e.source.label).newWin;
+          navController.open(new newWin(navController));
           break;
       }
       
       Ti.API.info(e.source.label);
-      newWin = require('/includes/' + e.source.label).newWin;
-      navController.open(new newWin(navController));
     });
 
     dashboardData.push(newView);
@@ -136,7 +144,8 @@ exports.homeWindow = function(navController) {
   // Create our scrollable grid view.
   var gridView = createScrollableGridView({
     height: 'auto',
-    data: dashboardData, //An array of views
+    backgroundColor: '#666',
+    data: dashboardData
   });
   
   win.gridView = gridView;
@@ -182,5 +191,18 @@ exports.homeWindow = function(navController) {
   win.upcomingScheduleTable = upcomingScheduleTable;
   win.fullScheduleTable = fullScheduleTable;
   
+  var checkForNet = setInterval(function() {
+    if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){ 
+      if (navController.windowStack[0].updateLabel.text == "no network, can't update") {
+        navController.windowStack[0].updateLabel.text = "update";
+        navController.windowStack[0].updateLabel.color = "#fff";
+      }
+    }
+    else {
+      navController.windowStack[0].updateLabel.text = "no network, can't update";
+      navController.windowStack[0].updateLabel.color = "#666";
+    }
+  }, 500);
+
   return win;
 };

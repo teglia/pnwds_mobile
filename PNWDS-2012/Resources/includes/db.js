@@ -168,15 +168,7 @@ pnwdsdb.sessionsget = function(_nid) {
  */
 pnwdsdb.sessionsadd = function(_title,_body,_nid,_speakers,_timeslot,_room,_uid) {
   var db = Ti.Database.open('pnwds');
-  Ti.API.info("Adding: \n " 
-    + _nid + "\n" 
-    + _speakers + "\n"
-    + _timeslot + "\n"
-    + _room + "\n"
-    + _uid + "\n"
-    + _title + "\n"
-    + _body 
-  );
+  Ti.API.info("Adding: " + _nid + "\n"); 
 
   db.execute("INSERT INTO sessions(title,body,nid,speakers,timeslot,room,uid) VALUES(?,?,?,?,?,?,?)",_title,_body,_nid,_speakers,_timeslot,_room,_uid);
   db.close();
