@@ -26,6 +26,13 @@ if (!Ti.App.Properties.getInt('updateInterval')) {
 }
 
 // Check for updates.
+if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){ 
+  Ti.API.info("Haz netwerkz!");
+  pnwdsnet.checkUpdates(controller); 
+}
+else {
+  Ti.API.info("No net, not checking.");
+}
 var updated = setInterval(function() {
   if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){ 
     Ti.API.info("Haz netwerkz!");

@@ -21,45 +21,61 @@ pnwdstables.updateTables = function(navController) {
 _formatSessionRows = function(rowData) {
   var timeLabel = Ti.UI.createLabel({
     text: rowData['timeslot'],
-    color: '#666',
+    color: '#333',
     font:{fontSize: 9, fontWeight:'bold'},
-    height: 60,
-    width: 50,
+    width: 100,
     top: 0,
-    left: 0
+    left: 10
   });
   
   var titleLabel = Ti.UI.createLabel({
     text: rowData['title'],
     color: '#0062A0',
     font:{fontSize: 18, fontWeight:'bold'},
-    height: 40,
     width: 'auto',
     top: 0,
-    left: 51
+    left: 10,
+    right: 0
   });
   
   var speakersLabel = Ti.UI.createLabel({
     text: rowData['speakers'],
     color: '#999',
     font:{fontSize: 14, fontWeight:'normal'},
-    height: 20,
-    width: 'auto',
-    top: 51,
-    left: 51
+    width: 100,
+    top: 0,
+    left: 10,
+    height: 20
   });
+  
+  var flagSwitch = Ti.UI.createSwitch({
+    value: false,
+    right: 10,
+    top: 5,
+    height: 0,
+    width: 10
+  });
+  
+  if (Ti.Platform.osname == 'android') {
+    flagSwitch.style = Ti.UI.Android.SWITCH_STYLE_CHECKBOX;
+  }
   
   // TODO: Add a flag check or button to this maybe?
   
   var row = Ti.UI.createTableViewRow({
     hasChild:true,
     textAlign: 'left',
-    nid: rowData['nid']
+    layout: 'vertical',
+    height: Ti.UI.SIZE,
+    nid: rowData['nid'], 
+    backgroundColor: '#fff'
   });
-
-  row.add(timeLabel);
+  
   row.add(titleLabel);
+  row.add(flagSwitch);
+  row.add(timeLabel);
   row.add(speakersLabel);
+
   
   return row;
 }
@@ -79,7 +95,13 @@ pnwdstables.fullScheduleData = function(navController) {
   for(var loopKey in scheduleData) {
     var data = scheduleData[loopKey];
     if (data['timeslot'] != timeSlot) {
-      results.push(Ti.UI.createTableViewRow({title: 'Timeslot: ' + data['timeslot'], hasChild:false }));
+      results.push(Ti.UI.createTableViewRow({
+        title: 'Timeslot: ' + data['timeslot'], 
+        hasChild:false,
+        font:{fontSize: 12, fontWeight:'bold'},
+        color: '#fff',
+        backgroundColor: '#0062A0'
+       }));
     }
     timeSlot = data['timeslot'];
     results.push(_formatSessionRows(data));
