@@ -5,10 +5,11 @@ var pnwdsnet = require( '/includes/network' );
 // Get the db instantiated if it isn't already.
 pnwdsdb.bootstrap();
 
-// For testing, clear and refill the db. Run one time with these two uncommented,
-// then comment and run again.
-// var clear = pnwdsdb.sessionsclear();
-// var seeded = pnwdsnet.seedsessions();
+// For testing.
+// pnwdsdb.removedb();
+// pnwdsdb.sessionsclear();
+// pnwdsnet.seedsessions();
+// pnwdsnet.seedspeakers();
 
 /**
  * Below is the navigation controller that actually works with both iOS and Android.

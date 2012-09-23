@@ -19,8 +19,8 @@ pnwdstables.updateTables = function(navController) {
  * Format the rows, all schedule rows should be similar.
  */
 _formatSessionRows = function(rowData) {
-  var timeLabel = Ti.UI.createLabel({
-    text: rowData['timeslot'],
+  var roomLabel = Ti.UI.createLabel({
+    text: rowData['room'],
     color: '#333',
     font:{fontSize: 9, fontWeight:'bold'},
     width: 100,
@@ -72,8 +72,8 @@ _formatSessionRows = function(rowData) {
   });
   
   row.add(titleLabel);
-  row.add(flagSwitch);
-  row.add(timeLabel);
+  // row.add(flagSwitch);
+  row.add(roomLabel);
   row.add(speakersLabel);
 
   
@@ -94,16 +94,26 @@ pnwdstables.fullScheduleData = function(navController) {
   // Loop through and create table rows.
   for(var loopKey in scheduleData) {
     var data = scheduleData[loopKey];
-    if (data['timeslot'] != timeSlot) {
+    if (data['timeslotname'] != timeSlot) {
       results.push(Ti.UI.createTableViewRow({
-        title: 'Timeslot: ' + data['timeslot'], 
+        title: data['timeslotname'], 
         hasChild:false,
         font:{fontSize: 12, fontWeight:'bold'},
         color: '#fff',
-        backgroundColor: '#0062A0'
+        backgroundColor: '#0062A0',
+        backgroundGradient: {
+          type: 'linear',
+          colors: [
+            {color: '#1a8851', position: 0.0},
+            {color: '#053d11', position: 1.0}
+          ],
+          startPoint: {x: 0, y: 0},
+          endPoint: {x: 0, y: 60},
+          backFillStart: false
+        }
        }));
     }
-    timeSlot = data['timeslot'];
+    timeSlot = data['timeslotname'];
     results.push(_formatSessionRows(data));
   }
 
@@ -124,10 +134,27 @@ pnwdstables.myScheduleData = function(navController) {
   // Loop through and create table rows.
   for(var loopKey in scheduleData) {
     var data = scheduleData[loopKey];
-    if (data['timeslot'] != timeSlot) {
-      results.push(Ti.UI.createTableViewRow({title: 'Timeslot: ' + data['timeslot'], hasChild:false }));
+    if (data['timeslotname'] != timeSlot) {
+      results.push(Ti.UI.createTableViewRow({
+        title: data['timeslotname'], 
+        hasChild:false,
+        font:{fontSize: 12, fontWeight:'bold'},
+        color: '#fff',
+        height: 22,
+        backgroundColor: '#0062A0',
+        backgroundGradient: {
+          type: 'linear',
+          colors: [
+            {color: '#1a8851', position: 0.0},
+            {color: '#053d11', position: 1.0}
+          ],
+          startPoint: {x: 0, y: 0},
+          endPoint: {x: 0, y: 60},
+          backFillStart: false
+        }
+       }));
     }
-    timeSlot = data['timeslot'];
+    timeSlot = data['timeslotname'];
     results.push(_formatSessionRows(data));
   }
 
@@ -148,10 +175,27 @@ pnwdstables.upcomingScheduleData = function(navController) {
   // Loop through and create table rows.
   for(var loopKey in scheduleData) {
     var data = scheduleData[loopKey];
-    if (data['timeslot'] != timeSlot) {
-      results.push(Ti.UI.createTableViewRow({title: 'Timeslot: ' + data['timeslot'], hasChild:false }));
+    if (data['timeslotname'] != timeSlot) {
+      results.push(Ti.UI.createTableViewRow({
+        title: data['timeslotname'], 
+        hasChild:false,
+        font:{fontSize: 12, fontWeight:'bold'},
+        color: '#fff',
+        height: 22,
+        backgroundColor: '#0062A0',
+        backgroundGradient: {
+          type: 'linear',
+          colors: [
+            {color: '#1a8851', position: 0.0},
+            {color: '#053d11', position: 1.0}
+          ],
+          startPoint: {x: 0, y: 0},
+          endPoint: {x: 0, y: 60},
+          backFillStart: false
+        }
+       }));
     }
-    timeSlot = data['timeslot'];
+    timeSlot = data['timeslotname'];
     results.push(_formatSessionRows(data));
   }
 

@@ -1,7 +1,7 @@
 var pnwdsnet = {};
 
 // This is the setting that is used for all network access to the Drupal site.    
-pnwdsnet.restPath = 'http://dev.cod7.gotpantheon.com/rest/';
+pnwdsnet.restPath = 'http://2012.pnwdrupalsummit.org/rest/';
 
 // Will require some db work, pull that in here.
 var pnwdsdb = require( '/includes/db' );
@@ -69,7 +69,7 @@ pnwdsnet.checkUpdates = function(navController) {
       }
     } 
     else {
-      navController.windowStack[0].updateLabel.text = "no network, not checking";
+      navController.windowStack[0].updateLabel.text = "no results";
       navController.windowStack[0].updateLabel.color = "#ff0000";
     }
   }
@@ -142,6 +142,7 @@ pnwdsnet.seedsessions = function(navController) {
           data['nid'],
           data['speakers'],
           data['timeslot'],
+          data['timeslotname'],
           data['room'],
           data['uid']
         );
@@ -165,5 +166,59 @@ pnwdsnet.seedsessions = function(navController) {
     xhr.send();
   }
 }
-    
+
+pnwdsnet.seedspeakers = function(navController) {
+  var url = pnwdsnet.restPath + 'views/mobile_speakers_seed.json';
+  var xhr = Titanium.Network.createHTTPClient();
+  pnwdsdb.speakersclear();
+  
+  // When the xhr loads we do:
+  xhr.onload = function() {
+    var statusCode = xhr.status;
+    // Check if we have a xhr
+    if(statusCode == 200) {
+      var response = xhr.responseText;
+      var result = JSON.parse(response);
+      Ti.API.info('Recieved a NEW Speaker Set!');
+      
+      // Put the clear in here so we don't clear the db unless we have
+      // something to replace it with.
+      pnwdsdb.speakersclear();
+      // Start loop
+            Ti.API.info(result.length);
+Ti.API.info(typeof result);
+Ti.API.info(result);
+      for(var loopKey in result) {
+
+        // Create the data variable and hold every result
+        var data = result[loopKey];
+        Ti.API.info(data);
+        pnwdsdb.usersadd(
+          data['uid'],
+          data['username'],
+          data['firstname'],
+          data['lastname'],
+          data['picture'],
+          data['company']
+        );
+      }
+
+      // Update the label on the button on the home window to indicate update is needed.
+      //pnwdstables.updateTables(navController);
+      //Ti.App.Properties.setString('pnwdsAppLastUpdated', siteDate);
+      //Ti.API.info("Updating finished.");
+    }
+    else {
+      alertDialog.show();
+    }
+  }
+
+  if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){
+    // Open the xhr
+    xhr.open("GET",url);   
+
+    // Send the xhr
+    xhr.send();
+  }
+}
 module.exports = pnwdsnet;

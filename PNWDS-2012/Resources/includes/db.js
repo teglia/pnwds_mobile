@@ -6,8 +6,8 @@ var pnwdsdb = {};
  */
 pnwdsdb.bootstrap = function() {
   var db = Ti.Database.open('pnwds');
-  db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, name TEXT, fullname TEXT, photo TEXT, uid INTEGER);');
-  db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, room TEXT, uid TEXT);');
+  db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT);');
+  db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, timeslotname TEXT, room TEXT, uid TEXT);');
   db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
   db.close();
 }
@@ -25,14 +25,16 @@ pnwdsdb.userslist = function() {
   while (result.isValidRow()) {
     userList.push({
       //add these attributes for the benefit of a table view
-      title: result.fieldByName('fullname'),
+      title: result.fieldByName('lastname'),
       uid: result.fieldByName('uid'), //custom data attribute to pass to detail page
       hasChild:true,
       //add actual db fields
-      name: result.fieldByName('name'),
-      fullname: result.fieldByName('fullname'),
+      name: result.fieldByName('username'),
+      firstname: result.fieldByName('firstname'),
+      lastname: result.fieldByName('lastname'),
       uid: result.fieldByName('uid'),
-      photo: result.fieldByName('photo')
+      photo: result.fieldByName('photo'),
+      company: result.fieldByName('company')
     });
     result.next();
   }
@@ -46,21 +48,36 @@ pnwdsdb.userslist = function() {
  * Get individual user record via uid.
  * 
  */
-pnwdsdb.usersget = function(_uid) {
+pnwdsdb.usersget = function(_username) {
   var user = [];
   var db = Ti.Database.open('pnwds');
-  var result = db.execute('SELECT * FROM users WHERE uid = ?;',_uid);
+  var result = db.execute('SELECT * FROM users WHERE username = ?;',_username);
   while (result.isValidRow()) {
+    var photoTag = result.fieldByName('photo');
+    Ti.API.info(photoTag);
+    var photo = '';
+    
+    // Return either the local file for display or the url on the site.
+    if (photoTag.indexOf("file") == 0) {
+      photo = photoTag;
+    }
+    else {
+      photo = photoTag.substr(photoTag.indexOf('src=\"', 0) + 1, photoTag.length);
+      photo = photo.substr(0, photo.length - 10);
+    }
+
     user.push({
       //add these attributes for the benefit of a table view
-      title: result.fieldByName('name'),
+      title: result.fieldByName('firstname') + ' ' + result.fieldByName('lastname'),
       uid: result.fieldByName('uid'), //custom data attribute to pass to detail page
       hasChild:true,
       //add actual db fields
-      name: result.fieldByName('name'),
-      fullname: result.fieldByName('fullname'),
+      username: result.fieldByName('username'),
+      firstname: result.fieldByName('firstname'),
+      lastname: result.fieldByName('lastname'),
       uid: result.fieldByName('uid'),
-      photo: result.fieldByName('photo')
+      company: result.fieldByName('company'),
+      photo: photo
     });
     result.next();
   }
@@ -74,35 +91,14 @@ pnwdsdb.usersget = function(_uid) {
  * Add single user record.
  * 
  */
-pnwdsdb.usersadd = function(_uid,_name,_fullname) {
+pnwdsdb.usersadd = function(_uid,_username,_firstname,_lastname,_photo,_company) {
   var db = Ti.Database.open('pnwds');
-  db.execute("INSERT INTO users(uid,name,fullname) VALUES(?,?)",_uid,_name,_fullname);
+  Ti.API.info("Adding: " + _uid + ", " + _username + ".");
+  db.execute("INSERT INTO users(uid,username,firstname,lastname,photo,company) VALUES(?,?,?,?,?,?)",_uid,_username,_firstname,_lastname,_photo,_company);
   db.close();
 
   //Dispatch a message to let others know the database has been updated
-  Ti.App.fireEvent("databaseUpdated");
-};
-
-/**
- * Delete user record via uid.
- * 
- */
-pnwdsdb.usersdel = function(_uid) {
-  var db = Ti.Database.open('pnwds');
-  db.execute("DELETE FROM users WHERE uid = ?",_uid);
-  db.close();
-  Ti.App.fireEvent("databaseUpdated");
-};
-
-/**
- * Update individual user record.
- * 
- */
-pnwdsdb.usersupdate = function(_uid,_name,_fullname,_photo) {
-  var db = Ti.Database.open('pnwds');
-  db.execute("UPDATE users SET name = ?, fullname = ?, photo = ? WHERE uid = ?",_name,_fullname,_uid,_photo);
-  db.close();
-  Ti.App.fireEvent("databaseUpdated");
+  Ti.App.fireEvent("userlistUpdated");
 };
 
 
@@ -124,6 +120,7 @@ pnwdsdb.sessionslist = function() {
       nid: result.fieldByName('nid'),
       speakers: result.fieldByName('speakers'),
       timeslot: result.fieldByName('timeslot'),
+      timeslotname: result.fieldByName('timeslotname'),
       room: result.fieldByName('room'),
       hasChild:true
     });
@@ -151,6 +148,7 @@ pnwdsdb.sessionsget = function(_nid) {
       body: result.fieldByName('body'),
       speakers: result.fieldByName('speakers'), 
       timeslot: result.fieldByName('timeslot'),
+      timeslotname: result.fieldByName('timeslotname'),      
       room: result.fieldByName('room'),
       hasChild:true
     });
@@ -166,11 +164,11 @@ pnwdsdb.sessionsget = function(_nid) {
  * Add a single session.
  * 
  */
-pnwdsdb.sessionsadd = function(_title,_body,_nid,_speakers,_timeslot,_room,_uid) {
+pnwdsdb.sessionsadd = function(_title,_body,_nid,_speakers,_timeslot,_timeslotname,_room,_uid) {
   var db = Ti.Database.open('pnwds');
   Ti.API.info("Adding: " + _nid + "\n"); 
 
-  db.execute("INSERT INTO sessions(title,body,nid,speakers,timeslot,room,uid) VALUES(?,?,?,?,?,?,?)",_title,_body,_nid,_speakers,_timeslot,_room,_uid);
+  db.execute("INSERT INTO sessions(title,body,nid,speakers,timeslot,timeslotname,room,uid) VALUES(?,?,?,?,?,?,?,?)",_title,_body,_nid,_speakers,_timeslot,_timeslotname,_room,_uid);
   db.close();
   Ti.API.info("Added " + _nid + _speakers + _timeslot+ _room+_uid+ _title + _body );
   Ti.App.fireEvent("databaseUpdated");
@@ -191,9 +189,9 @@ pnwdsdb.sessionsdel = function(_nid) {
  * Update a session.
  * 
  */
-pnwdsdb.sessionsupdate = function(_title,_body,_nid,_speakers,_timeslot,_room) {
+pnwdsdb.sessionsupdate = function(_title,_body,_nid,_speakers,_timeslot,_timeslotname,_room) {
   var db = Ti.Database.open('pnwds');
-  db.execute("UPDATE sessions SET title = ?, body = ?, nid = ?, speakers = ?, timeslot = ?, room = ? WHERE nid = ?",_title,_body,_nid,_speakers,_timeslot,_room);
+  db.execute("UPDATE sessions SET title = ?, body = ?, nid = ?, speakers = ?, timeslot = ?, timeslotname = ?, room = ? WHERE nid = ?",_title,_body,_nid,_speakers,_timeslot, _timeslotname, _room);
   db.close();
 
   //Dispatch a message to let others know the database has been updated
@@ -220,22 +218,33 @@ pnwdsdb.sessionsflag = function(_flag,_nid) {
  */
 pnwdsdb.sessionsclear = function() {
   var db = Ti.Database.open('pnwds');
-  // db.remove();
   db.execute('DELETE FROM sessions;');
-  db.execute('DELETE FROM users');
   // db.execute('DELETE FROM flag');
-  db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, name TEXT, fullname TEXT, photo TEXT, uid INTEGER);');
-  db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, room TEXT, uid TEXT);');
-  // db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
+  db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, timeslotname TEXT, room TEXT, uid TEXT);');
+  //db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
   db.close();
 }
 
-  // //determine if the database needs to be seeded
-  // Ti.App.Properties.removeProperty('seeded');
-  // if (!Ti.App.Properties.hasProperty('seeded')) {
-    // Ti.App.Properties.setString('seeded','yes');
-  // }
-//   
+pnwdsdb.speakersclear = function() {
+  var db = Ti.Database.open('pnwds');
+  db.execute('DELETE FROM users');
+  // db.execute('DELETE FROM flag');
+  db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT);');
+  db.close();
+}
+
+pnwdsdb.flagsclear = function() {
+  var db = Ti.Database.open('pnwds');
+  db.execute('DELETE FROM flag');
+  db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
+  db.close();
+}
+
+pnwdsdb.removedb = function() {
+  var db = Ti.Database.open('pnwds');
+  db.remove();
+  pnwdsdb.bootstrap();
+}
 
 // Export the functions.
 module.exports = pnwdsdb;
