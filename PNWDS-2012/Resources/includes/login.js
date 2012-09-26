@@ -122,7 +122,7 @@ loginButton.addEventListener('click', function() {
 		// Save the status of the connection in a variable
 		// this will be used to see if we have a connection (200) or not
 		var statusCode = xhr.status;
-		
+		Ti.API.info(statusCode);
 		// Check if we have a valid status
 		if(statusCode == 200) {
 			
@@ -140,7 +140,7 @@ loginButton.addEventListener('click', function() {
 			// Create another connection to get the user
 			var xhr2 = Ti.Network.createHTTPClient();
 			
-			var getUser = Ti.App.Properties.getString("restPath") + 'user/' + data.user.uid + '.json';
+			var getUser = pnwdsnet.restPath + 'user/' + data.user.uid + '.json';
 			
 			xhr2.open("GET", getUser);
 			xhr2.send();
