@@ -20,7 +20,7 @@ var view = Ti.UI.createScrollView({
 win.add(view);
 
 // Create the labelfor the username
-var usernameLabel = Titanium.UI.createLabel({
+var usernameLabel = Ti.UI.createLabel({
 	text:'Username',
 	font:{fontSize:14, fontWeight: "bold"},
 	left:10,
@@ -33,7 +33,7 @@ var usernameLabel = Titanium.UI.createLabel({
 view.add(usernameLabel);
 
 // Create the username textfield
-var usernameTextfield = Titanium.UI.createTextField({
+var usernameTextfield = Ti.UI.createTextField({
 	height:35,
 	top:30,
 	left:10,
@@ -42,14 +42,14 @@ var usernameTextfield = Titanium.UI.createTextField({
 	borderWidth:2,
 	borderColor:'#bbb',
 	borderRadius:5,
-	autocapitalization:Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
+	autocapitalization:Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
 });
 
 // Add the textfield to the view
 view.add(usernameTextfield);
 
 // Create the label for the password
-var passwordLabel = Titanium.UI.createLabel({
+var passwordLabel = Ti.UI.createLabel({
 	text:'Password',
 	font:{fontSize:14, fontWeight: "bold"},
 	left:10,
@@ -62,7 +62,7 @@ var passwordLabel = Titanium.UI.createLabel({
 view.add(passwordLabel);
 
 // Create the password textfield
-var passwordTextfield = Titanium.UI.createTextField({
+var passwordTextfield = Ti.UI.createTextField({
 	height:35,
 	top:100,
 	left:10,
@@ -72,7 +72,7 @@ var passwordTextfield = Titanium.UI.createTextField({
 	borderColor:'#bbb',
 	borderRadius:5,
 	// This is very important. Don't auto capitalize the first letter of the password
-	autocapitalization:Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
+	autocapitalization:Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
 	// Mask the password so nobody sees it
 	passwordMask:true,
 });
@@ -81,7 +81,7 @@ var passwordTextfield = Titanium.UI.createTextField({
 view.add(passwordTextfield);
 
 // Create the login button
-var loginButton = Titanium.UI.createButton({
+var loginButton = Ti.UI.createButton({
 	title:'Login',
 	height:40,
 	width:200,
@@ -107,7 +107,7 @@ loginButton.addEventListener('click', function() {
 	var url = pnwdsnet.restPath + 'user/login';
   Ti.API.info(url);
 	// Create a connection
-	var xhr = Titanium.Network.createHTTPClient();
+	var xhr = Ti.Network.createHTTPClient();
 		
 	// Open the connection using POST
 	xhr.open("POST",url);
@@ -133,14 +133,14 @@ loginButton.addEventListener('click', function() {
 			var data = JSON.parse(response);
 			
 			// Set a global variable
-			Titanium.App.Properties.setInt("userUid", data.user.uid);
-			Titanium.App.Properties.setInt("userSessionId", data.sessid);
-			Titanium.App.Properties.setInt("userSessionName", data.sesion_name);
+			Ti.App.Properties.setInt("userUid", data.user.uid);
+			Ti.App.Properties.setInt("userSessionId", data.sessid);
+			Ti.App.Properties.setInt("userSessionName", data.sesion_name);
 			
 			// Create another connection to get the user
-			var xhr2 = Titanium.Network.createHTTPClient();
+			var xhr2 = Ti.Network.createHTTPClient();
 			
-			var getUser = Titanium.App.Properties.getString("restPath") + 'user/' + data.user.uid + '.json';
+			var getUser = Ti.App.Properties.getString("restPath") + 'user/' + data.user.uid + '.json';
 			
 			xhr2.open("GET", getUser);
 			xhr2.send();
@@ -154,7 +154,7 @@ loginButton.addEventListener('click', function() {
 					
 					alert("Welcome " + user.name);
 					// Set the user.userName to the logged in user name
-					Titanium.App.Properties.setString("userName", user.name);
+					Ti.App.Properties.setString("userName", user.name);
 					
 					// Close the window
 					win.close();
