@@ -78,6 +78,73 @@ _formatSessionRows = function(rowData) {
 
   
   return row;
+}/**
+ * Format the rows, all speaker rows should be similar.
+ */
+_formatSpeakerRows = function(rowData) {
+  Ti.API.info(rowData);
+  var pictureLabel = Ti.UI.createLabel({
+    backgroundImage:rowData['photo'],
+    color: '#333',
+    font:{fontSize: 9, fontWeight:'bold'},
+    width: 100,
+    height: 100,
+    top: 0,
+    left: 0
+  });
+  
+  var fullNameLabel = Ti.UI.createLabel({
+    text: rowData['firstname'] + " " + rowData['lastname'],
+    color: '#0062A0',
+    font:{fontSize: 18, fontWeight:'bold'},
+    width: 'auto',
+    top: 0,
+    left: 10,
+    right: 0
+  });
+  
+  var userNameLabel = Ti.UI.createLabel({
+    text: rowData['name'],
+    color: '#999',
+    font:{fontSize: 14, fontWeight:'normal'},
+    width: 100,
+    top: 0,
+    left: 10,
+    height: 20
+  });
+  
+  var row = Ti.UI.createTableViewRow({
+    hasChild:true,
+    textAlign: 'left',
+    layout: 'vertical',
+    height: Ti.UI.SIZE,
+    nid: rowData['nid'], 
+    backgroundColor: '#fff'
+  });
+  
+  row.add(pictureLabel);
+  row.add(fullNameLabel);
+  row.add(userNameLabel);
+  
+  return row;
+}
+
+/**
+ * Build the full schedule data from the db.
+ *
+ */
+pnwdstables.fullSpeakerData = function(navController) {
+  // Get the sessions data from the db.
+  var speakerData = pnwdsdb.userslist();
+  var results = new Array();
+
+  // Loop through and create table rows.
+  for(var loopKey in speakerData) {
+    var data = speakerData[loopKey];
+    results.push(_formatSpeakerRows(data));
+  }
+
+  return results;
 }
 
 /**
@@ -200,6 +267,32 @@ pnwdstables.upcomingScheduleData = function(navController) {
   }
 
   return results;
+}
+
+
+/**
+ * Create a table from the fullScheduleData.
+ * 
+ */
+pnwdstables.fullSpeakerTable = function(navController) {
+  // Get the full schedule data from above.
+  var results = pnwdstables.fullSpeakerData(navController);
+  
+  // Create the table with the results from above.
+  var table = Titanium.UI.createTableView({
+    data: results
+  });
+  
+  // add a listener for click to the table
+  // so every row is clickable 
+  table.addEventListener('click',function(e) {
+    if (e.rowData.nid){ 
+      newWin = require('/includes/get-user-by-nid').newWin;
+      navController.open(new newWin(navController,e.rowData.nid));
+    }
+  });
+
+  return table;
 }
 
 

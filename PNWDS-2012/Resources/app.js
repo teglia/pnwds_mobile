@@ -6,10 +6,10 @@ var pnwdsnet = require( '/includes/network' );
 pnwdsdb.bootstrap();
 
 // For testing.
-// pnwdsdb.removedb();
+//pnwdsdb.removedb();
 // pnwdsdb.sessionsclear();
-// pnwdsnet.seedsessions();
-// pnwdsnet.seedspeakers();
+//pnwdsnet.seedsessions();
+//pnwdsnet.seedspeakers();
 
 /**
  * Below is the navigation controller that actually works with both iOS and Android.

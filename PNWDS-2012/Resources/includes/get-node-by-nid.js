@@ -66,8 +66,8 @@ exports.newWin = function(navController, nid) {
   
   // Create the scrollview
   var view = Titanium.UI.createScrollView({
-  	contentWidth:'auto',
-  	contentHeight:'auto',
+  	contentWidth:Ti.UI.FILL,
+  	contentHeight:Ti.UI.SIZE,
   	showVerticalScrollIndicator:true,
   	showHorizontalScrollIndicator:false,
   	layout: 'vertical',
@@ -103,26 +103,53 @@ exports.newWin = function(navController, nid) {
   var times = time.split(" to ");
   var startTime = _timeConverter(times[0], true);
   var endTime = _timeConverter(times[1], false);
+  
+  var roomTime = Ti.UI.createView({
+    layout: 'horizontal',
+    top:0,
+    left: 0,
+    right: 0,
+    width: Ti.UI.FILL,
+    height: Ti.UI.SIZE
+  })
     
   // Create a label for the node title
-  var roomTitle = Ti.UI.createLabel({
+  var roomLabel = Ti.UI.createLabel({
     // The text of the label will be the node title (data.title)
-    text: data.room + " (" + startTime + " to " + endTime + ")",
+    text: data.room,
     color:'#333',
-    textAlign:'left',
-    font:{fontSize:12, fontWeight:'normal'},
-    top: 2,
-    left: 10,
-    right: 10,
-    bottom: 6,
-    height: Ti.UI.SIZE,
-    width: Ti.UI.FILL
+    textAlign:'center',
+    font:{fontSize:12, fontWeight:'bold'},
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#999',
+    height: 44,
+    width: '50%'
   });
   
-	
+  // Create a label for the node title
+  var timeLabel = Ti.UI.createLabel({
+    // The text of the label will be the node title (data.title)
+    text: startTime + " to " + endTime,
+    color:'#333',
+    textAlign:'center',
+    font:{fontSize:12, fontWeight:'normal'},
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#bbb',
+    height: 44,
+    width: '50%'
+  });
+  
+	roomTime.add(roomLabel);
+	roomTime.add(timeLabel);
 	titleLabelView.add(nodeTitle);
 	titleLabelView.add(hr);
-	titleLabelView.add(roomTitle);
+	titleLabelView.add(roomTime);
   titleLabelView.add(hr);
 	
   var speakers = data.speakers;
@@ -149,7 +176,10 @@ exports.newWin = function(navController, nid) {
 	html += '  <head>';
 	html += '    <title>' + data.title + '</title>';
 	html += '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
-	html += '  </head>';
+	html += '    <style>';
+	html += '      a:link { text-decoration: none; color: #000; }';
+	html += '    </style>';
+  html += '  </head>';
 	html += '  <body>';
 	html += '    <div style="font: normal normal normal 14px/1.25 arial;">' + data.body + '</div>';
 	html += '  </body>';
@@ -160,15 +190,14 @@ exports.newWin = function(navController, nid) {
 		// Because D7 uses an object for the body itself including the language
 		html: html,
 		width: Ti.UI.FILL,
-		height: Ti.UI.FILL
+		height: Ti.UI.SIZE,
+		top: 0,
+		touchEnabled: false
 	});
-	
-	
 
 	// Add both nodeTitle and nodeBody labels to our view
 	view.add(titleLabelView);
 	view.add(hr);
-	
 	view.add(nodeBody);
 	
 

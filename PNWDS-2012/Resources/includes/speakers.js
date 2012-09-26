@@ -1,15 +1,16 @@
 /**
- * Create the presenters page, currently just pulling the speakers all view.
+ * Create the schedule page, currently just pulling the schedule all view from the web.
  */
 exports.newWin = function(navController) {
+  var pnwdstables = require( '/includes/tables' );
   
   // Define the variable win to contain the current window
   var win = Ti.UI.createWindow();
   
-  newView = require('/includes/getView').newView;
-  speakersView = new newView(navController, 'speakers', '');
+  var fullSpeakerTable = pnwdstables.fullSpeakerTable(navController);
+
   
   // Add our scrollview to the window
-  win.add(speakersView);
+  win.add(fullSpeakerTable);
   return win;
 }
