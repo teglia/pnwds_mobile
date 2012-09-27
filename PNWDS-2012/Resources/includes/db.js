@@ -133,6 +133,35 @@ pnwdsdb.sessionslist = function() {
 };
 
 /**
+ * List all sessions.
+ * returns full session details in array.
+ * 
+ */
+pnwdsdb.mysessionslist = function() {
+  var sessionList = [];
+  var db = Ti.Database.open('pnwds');
+  var result = db.execute('SELECT * FROM sessions where flagged = 1;');
+  while (result.isValidRow()) {
+    sessionList.push({
+      //add these attributes for the benefit of a table view
+      title: result.fieldByName('title'),
+      nid: result.fieldByName('nid'),
+      speakers: result.fieldByName('speakers'),
+      timeslot: result.fieldByName('timeslot'),
+      timeslotname: result.fieldByName('timeslotname'),
+      room: result.fieldByName('room'),
+      hasChild:true
+    });
+    result.next();
+  }
+  result.close(); //make sure to close the result set
+  db.close();
+
+  return sessionList;
+};
+
+
+/**
  * Get single session via nid.
  * 
  */
@@ -146,6 +175,7 @@ pnwdsdb.sessionsget = function(_nid) {
       title: result.fieldByName('title'),
       nid: result.fieldByName('nid'),
       body: result.fieldByName('body'),
+      flagged: result.fieldByName('flagged'),
       speakers: result.fieldByName('speakers'), 
       timeslot: result.fieldByName('timeslot'),
       timeslotname: result.fieldByName('timeslotname'),      
@@ -205,7 +235,7 @@ pnwdsdb.sessionsupdate = function(_title,_body,_nid,_speakers,_timeslot,_timeslo
  */
 pnwdsdb.sessionsflag = function(_flag,_nid) {
   var db = Ti.Database.open('pnwds');
-  db.execute("UPDATE sessions SET flag = ? WHERE nid = ?",_flag,_nid);
+  db.execute("UPDATE sessions SET flagged = ? WHERE nid = ?",_flag,_nid);
   db.close();
 
   //Dispatch a message to let others know the database has been updated

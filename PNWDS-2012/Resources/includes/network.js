@@ -19,6 +19,9 @@ var alertDialog = Titanium.UI.createAlertDialog({
  * 
  */
 pnwdsnet.isUpToDate = function(navController) {
+  // TODO: Would be a great idea to write a view that exports the last updated date of every session, so that if 
+  //       this function returns true, then we could look more deeply to see which items were needing update, and
+  //       only update those individual items.
   var siteDate = Ti.App.Properties.getString('pnwdsSiteLastUpdated');  
   var appDate = Ti.App.Properties.getString('pnwdsAppLastUpdated');
   Ti.API.info("siteDate: " + siteDate + ". appDate: " + appDate);

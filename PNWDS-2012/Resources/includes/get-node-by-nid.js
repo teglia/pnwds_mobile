@@ -43,7 +43,7 @@ exports.newWin = function(navController, nid) {
       height: Ti.UI.SIZE,
       width: Ti.UI.FILL
     });
-    
+
     // TODO: Add event listener to pull up user data screen. 
     speakerView.add(userPic);
     speakerView.add(userButton);
@@ -145,8 +145,43 @@ exports.newWin = function(navController, nid) {
     width: '50%'
   });
   
+  var flagged = data.flagged;
+  if (!flagged) {
+    flagged = false;
+  }
+  
+  var flagLabel = Ti.UI.createLabel({
+    text: "Add to my Sessions:",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 44,
+    textAlign: 'center',
+    width: '50%'
+  });
+  
+  var flag = Ti.UI.createSwitch({
+    top: 10,
+    left: '10%',
+    right: 0,
+    bottom: 0,
+    height: 44,
+    width: '40%',
+    textAlign: 'center',
+    value: flagged
+  })
+  
+  flag.addEventListener('change',function(e){
+    pnwdsdb.sessionsflag(flag.value, data.nid);
+    Ti.API.info('Switch value: ' + flag.value);
+  });
+  
+  
 	roomTime.add(roomLabel);
 	roomTime.add(timeLabel);
+	roomTime.add(flagLabel);
+	roomTime.add(flag);
 	titleLabelView.add(nodeTitle);
 	titleLabelView.add(hr);
 	titleLabelView.add(roomTime);

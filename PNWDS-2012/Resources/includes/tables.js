@@ -193,7 +193,7 @@ pnwdstables.fullScheduleData = function(navController) {
  */
 pnwdstables.myScheduleData = function(navController) {
   // Get the sessions data from the db.
-  var scheduleData = pnwdsdb.sessionslist();
+  var scheduleData = pnwdsdb.mysessionslist();
   var results = new Array();
   var timeSlot = '';
   var oldTimeSlot = '';
