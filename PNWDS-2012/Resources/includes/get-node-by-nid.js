@@ -44,7 +44,15 @@ exports.newWin = function(navController, nid) {
       width: Ti.UI.FILL
     });
 
+    /******** Event listeners with calls to Speaker Info window. **********/
     // TODO: Add event listener to pull up user data screen. 
+    userPic.addEventListener('click', function(e){
+      // TODO: Add call to speaker page.
+    })
+    userButton.addEventListener('click',function(e){
+      // TODO: Add call to speaker page.
+    });
+    
     speakerView.add(userPic);
     speakerView.add(userButton);
     return speakerView;
@@ -151,7 +159,7 @@ exports.newWin = function(navController, nid) {
   }
   
   var flagLabel = Ti.UI.createLabel({
-    text: "Add to my Sessions:",
+    text: "In My Sessions:",
     top: 0,
     left: 0,
     right: 0,
