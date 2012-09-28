@@ -3,10 +3,8 @@ var update = {};
 update.updateWin = function(navController) {
   var pnwdsdb = require( '/includes/db' );
   var pnwdsnet = require( '/includes/network' );
-  navController.windowStack[0].updateLabel.text = "Changing some text";
-  Ti.API.info(typeof controller);
   var seeded = pnwdsnet.seedsessions(navController);
-  navController.windowStack[0].updateLabel.text = "updating ...";
+  navController.windowStack[0].updateLabel.text = "status: updating ...";
   navController.windowStack[0].updateLabel.color = "#ff0000";
   
   // Define the variable win to contain the current window
@@ -16,12 +14,11 @@ update.updateWin = function(navController) {
   });
   
   var label = Ti.UI.createLabel({
-    text: "Updating the tables."
+    text: "Updating the App."
   })
   
   // Add the view to the window
   win.add(label);
-    navController.windowStack[0].updateLabel.text = "Changed some text";
 
   return win;
 }

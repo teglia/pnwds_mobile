@@ -57,8 +57,8 @@ exports.homeWindow = function(navController) {
   var itemData = [
     { name: 'sessions' },
     { name: 'login' },
+    { name: 'maps' },
     { name: 'about' },
-    { name: 'update' },
     { name: 'speakers' },
     { name: 'sponsors' }
   ];
@@ -73,24 +73,13 @@ exports.homeWindow = function(navController) {
       label: itemData[i].name,
       name: itemData[i].name
     });
-    if (i == 3) {
-      var updateLabel = Ti.UI.createLabel({
-        text: itemData[i].name,
-        label: itemData[i].name,
-        name: itemData[i].name,
-        color: "#fff"
-      });
-      // Set this as a variable on the win so we can update it later.
-      win.updateLabel = updateLabel;
-      newView.add(updateLabel);
-    }
-    else {
-      newView.add(Ti.UI.createLabel({
-        text: itemData[i].name,
-        label: itemData[i].name,
-        color: "#fff"
-      }));  
-    }
+    
+    newView.add(Ti.UI.createLabel({
+      text: itemData[i].name,
+      label: itemData[i].name,
+      color: "#fff"
+    }));  
+    
 
     newView.addEventListener('click', function(e) {
       switch(e.source.label) {
@@ -131,8 +120,33 @@ exports.homeWindow = function(navController) {
   // });
   
   win.gridView = gridView;
+  
   win.add(gridView);
-    
+  
+  var updateOuterLabel = Ti.UI.createLabel({
+    width: Ti.UI.FILL,
+    height: 20,
+    top:144,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#0062A0"
+  });
+  
+  var updateLabel = Ti.UI.createLabel({
+    text: '  update',
+    label: 'update',
+    name: 'update',
+    textAlign: 'center',
+    color: "#fff"
+  });
+  
+  updateOuterLabel.add(updateLabel);
+  
+  // Set this as a variable on the win so we can update it later.
+  win.updateLabel = updateLabel;
+  win.add(updateOuterLabel);
+  
   var myScheduleView = Titanium.UI.createScrollView({
     contentWidth:'auto',
     contentHeight:'auto',
