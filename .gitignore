@@ -1,7 +1,44 @@
-# We need to keep the build directories themselves, but ignore
-# Any compiled files inside them. Everyone builds their own.
-#DrupalCon/build/iphone/*
-#DrupalCon/build/android/*
+# Ignore paths that contain user-generated content.
 
-# Compiled files. We're copying this line from KitchenSink's repository.
-*.pyc
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.bz2
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.tgz
+
+# Logs and databases #
+######################
+*.log
+*.sql
+
+# OS generated files #
+######################
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+._*
+
+# Vim generated files #
+######################
+*.un~
+
+# SASS #
+##########
+.sass-cache
+
+.settings
+.metadata
+
+.settings/*
+.metadata/*
+
+build/
+
