@@ -171,7 +171,7 @@ pnwdsnet.seedsessions = function(navController) {
 }
 
 pnwdsnet.seedspeakers = function(navController) {
-  var url = pnwdsnet.restPath + 'views/mobile_speakers_seed.json';
+  var url = pnwdsnet.restPath + 'views/mobile_speaker_list_approved_sessions.json';
   var xhr = Titanium.Network.createHTTPClient();
   pnwdsdb.speakersclear();
   
