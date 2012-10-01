@@ -89,17 +89,17 @@ _formatSessionRows = function(rowData) {
  * Format the rows, all speaker rows should be similar.
  */
 _formatSpeakerRows = function(rowData) {
-
-	Ti.API.info(rowData);
 	//strip the src out of the img tag
-	var imageSrc = rowData['photo'].match('<img[^>]+src=\"([^\"]+)\"')[1];
+	var imageUrl = rowData['photo'].match('<img[^>]+src=\"([^\"]+)\"')[1];
+
 	//get the name of the image to check if it saved locally
-	var imageName = imageSrc.split('/');
+	var imageName = imageUrl.split('/');
 	imageName = imageName[imageName.length-1];
+
 	//get either the local path or the remote path and load the image for next time
-	var getRemoteFile = require('/lib/imagecache').getRemoteFile;
-	imageSrc = getRemoteFile(imageName, imageSrc);
-	Ti.API.info(imageSrc);
+	var getRemoteFile = require('/lib/imagecache').imageCache;
+	var imageSrc = getRemoteFile(imageName, imageUrl);
+
 	var picture = Ti.UI.createImageView({
 		image : imageSrc,
 		preventDefaultImage:true,
