@@ -92,15 +92,23 @@ _formatSpeakerRows = function(rowData) {
 
 	Ti.API.info(rowData);
 	//strip the src out of the img tag
-
 	var imageSrc = rowData['photo'].match('<img[^>]+src=\"([^\"]+)\"')[1];
-
+	//get the name of the image to check if it saved locally
+	var imageName = imageSrc.split('/');
+	imageName = imageName[imageName.length-1];
+	//get either the local path or the remote path and load the image for next time
+	var getRemoteFile = require('/lib/imagecache').getRemoteFile;
+	imageSrc = getRemoteFile(imageName, imageSrc);
+	Ti.API.info(imageSrc);
 	var picture = Ti.UI.createImageView({
 		image : imageSrc,
+		preventDefaultImage:true,
 		height : Ti.UI.SIZE,
 		width : Ti.UI.SIZE,
 		left : 0,
 	})
+	
+
 
 	var fullNameLabel = Ti.UI.createLabel({
 		text : rowData['firstname'] + " " + rowData['lastname'],
