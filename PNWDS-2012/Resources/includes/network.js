@@ -130,7 +130,7 @@ pnwdsnet.seedsessions = function(navController) {
     if(statusCode == 200) {
       actInd.message = 'Please wait...';//message will only shows in android. 
       
-      Ti.UI.currentWindow.add(actInd);
+      //Ti.UI.currentWindow.add(actInd);
       Ti.API.info("Added indicator");
       //To show it
       actInd.show();

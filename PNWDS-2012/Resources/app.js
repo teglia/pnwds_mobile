@@ -6,9 +6,9 @@ var pnwdsnet = require( '/includes/network' );
 pnwdsdb.bootstrap();
 
 // For testing.
-pnwdsdb.removedb();
-pnwdsdb.sessionsclear();
-pnwdsnet.seedsessions();
+//pnwdsdb.removedb();
+// pnwdsdb.sessionsclear();
+//pnwdsnet.seedsessions();
 pnwdsnet.seedspeakers();
 
 /**
