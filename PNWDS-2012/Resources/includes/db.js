@@ -6,7 +6,7 @@ var pnwdsdb = {};
  */
 pnwdsdb.bootstrap = function() {
   var db = Ti.Database.open('pnwds');
-  db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT);');
+  db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT, bio TEXT);');
   db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, timeslotname TEXT, room TEXT, uid TEXT);');
   db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
   db.close();
@@ -34,7 +34,8 @@ pnwdsdb.userslist = function() {
       lastname: result.fieldByName('lastname'),
       uid: result.fieldByName('uid'),
       photo: result.fieldByName('photo'),
-      company: result.fieldByName('company')
+      company: result.fieldByName('company'),
+      bio : result.fieldByName('bio'),
     });
     result.next();
   }
@@ -77,6 +78,7 @@ pnwdsdb.usersget = function(_username) {
       lastname: result.fieldByName('lastname'),
       uid: result.fieldByName('uid'),
       company: result.fieldByName('company'),
+      company: result.fieldByName('bio'),
       photo: photo
     });
     result.next();
@@ -91,10 +93,10 @@ pnwdsdb.usersget = function(_username) {
  * Add single user record.
  * 
  */
-pnwdsdb.usersadd = function(_uid,_username,_firstname,_lastname,_photo,_company) {
+pnwdsdb.usersadd = function(_uid,_username,_firstname,_lastname,_photo,_company, _bio) {
   var db = Ti.Database.open('pnwds');
   //Ti.API.info("Adding: " + _uid + ", " + _username + ".");
-  db.execute("INSERT INTO users(uid,username,firstname,lastname,photo,company) VALUES(?,?,?,?,?,?)",_uid,_username,_firstname,_lastname,_photo,_company);
+  db.execute("INSERT INTO users(uid,username,firstname,lastname,photo,company,bio) VALUES(?,?,?,?,?,?,?)",_uid,_username,_firstname,_lastname,_photo,_company,_bio);
   db.close();
 
   //Dispatch a message to let others know the database has been updated
