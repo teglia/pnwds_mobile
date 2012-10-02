@@ -7,10 +7,12 @@ exports.newView = function(navController, viewType, viewTitle) {
   var pnwdsnet = require( '/includes/network' );
   // Create the scrollview
   var view = Titanium.UI.createScrollView({
-    contentWidth:'auto',
-    contentHeight:'auto',
+    contentWidth:Ti.UI.FILL,
+    contentHeight:Ti.UI.SIZE,
+    layout: 'vertical',
     showVerticalScrollIndicator:true,
     showHorizontalScrollIndicator:true,
+    backgroundColor: '#fff',
     top: 0,
   });
   
@@ -48,21 +50,64 @@ exports.newView = function(navController, viewType, viewTitle) {
         // Create the data variable and hold every result
         var data = result[loopKey];
         var title = '';
-        Ti.API.info(JSON.stringify(data));
-        
-        if (data['title'].length > 0) {
+
+        if (data['title']) {
           title = data['title'];
         }
-        else if (data['session details'].length > 0) {
+        else if (data['session details']) {
           title = data['session details'];
         }
-        else if (data['node_title'].length > 0) {
+        else if (data['node_title']) {
           title = data['node_title'];
         }
-        
+        else {
+          title = '';
+        }
         title = title.substr(title.indexOf('>', 0) + 1, title.length);
         title = title.substr(0, title.length - 4);
-        results[loopKey] = {title: title, hasChild:true, nid:data["nid"]};
+        
+        if (viewType == 'sponsors') { 
+          var urlIndex = data['nid'].indexOf('src="') + 5;
+          var urllength = data['nid'].indexOf('" width=');
+          var url = data['nid'].substring(urlIndex, urllength);
+          
+          //get the name of the image to check if it saved locally
+          var imageName = url.split('/');
+          imageName = imageName[imageName.length-1];
+        
+          //get either the local path or the remote path and load the image for next time
+          var getRemoteFile = require('/lib/imagecache').imageCache;
+          var imageSrc = getRemoteFile(imageName, url);
+        
+          var picture = Ti.UI.createImageView({
+            image : imageSrc,
+            preventDefaultImage:true,
+            height : Ti.UI.SIZE,
+            width : Ti.UI.FILL,
+            left : 0
+          })
+          var spacerLabel = Ti.UI.createLabel({
+            text: '',
+            height : 20,
+            width : Ti.UI.FILL,
+            left : 0
+          });
+          var label = Ti.UI.createLabel({
+            text: '',
+            backgroundColor:'#ddd',
+            height : 1,
+            width : Ti.UI.FILL,
+            left : 0
+          });
+          view.add(spacerLabel);
+          view.add(picture);
+          view.add(spacerLabel);
+          view.add(label);
+          results = '';
+        }
+        else {
+          results[loopKey] = {title: title, hasChild:true, nid:data["nid"]};
+        }
       }
 
       if (viewTitle.length > 0) {
@@ -76,6 +121,7 @@ exports.newView = function(navController, viewType, viewTitle) {
           hasChild:false,
           textAlign: 'left'
         });
+        
         custom_row.add(label);
         results.unshift(custom_row);
       }

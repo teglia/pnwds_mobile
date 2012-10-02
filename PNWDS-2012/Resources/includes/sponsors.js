@@ -7,7 +7,7 @@ exports.newWin = function(navController) {
   var win = Ti.UI.createWindow();
   
   newView = require('/includes/getView').newView;
-  sponsorsView = new newView(navController, 'sponsors', '');
+  sponsorsView = new newView(navController, 'sponsors', 'all');
   
   // Add our scrollview to the window
   win.add(sponsorsView);

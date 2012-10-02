@@ -2,6 +2,7 @@ var pnwdsnet = {};
 
 // This is the setting that is used for all network access to the Drupal site.    
 pnwdsnet.restPath = 'http://2012.pnwdrupalsummit.org/rest/';
+pnwdsnet.sitePath = 'http://2012.pnwdrupalsummit.org';
 
 // Will require some db work, pull that in here.
 var pnwdsdb = require( '/includes/db' );
