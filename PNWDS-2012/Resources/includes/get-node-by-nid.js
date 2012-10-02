@@ -64,7 +64,7 @@ exports.newWin = function(navController, nid) {
 
   var data = pnwdsdb.sessionsget(nid);
   data = data[0];
-  Ti.API.info(data);
+  //Ti.API.info(data);
 
   var hr = Ti.UI.createLabel({
     height: 1,

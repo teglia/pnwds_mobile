@@ -88,8 +88,27 @@ var loginButton = Ti.UI.createButton({
 	top:170
 });
 
+// Create the update button
+var updateButton = Ti.UI.createButton({
+  title:'Manually Update',
+  height:40,
+  width:200,
+  top:220
+});
+
+// Create the reset button
+var resetButton = Ti.UI.createButton({
+  title:'Reset the App',
+  height:40,
+  width:200,
+  top:270
+});
+
 // Add the button to the view
 view.add(loginButton);
+view.add(updateButton);
+view.add(resetButton);
+
 
 // Add the event listener for when the button is created
 loginButton.addEventListener('click', function() {
@@ -167,7 +186,17 @@ loginButton.addEventListener('click', function() {
 	}
 });
 
+updateButton.addEventListener('click', function(e){
+  pnwdsnet.checkUpdates(navController);
+});
 
+resetButton.addEventListener('click', function(e){
+  Ti.App.Properties.removeProperty('pnwdsSiteLastUpdated');  
+  Ti.App.Properties.removeProperty('pnwdsAppLastUpdated');
+  pnwdsdb.removedb();
+  pnwdsnet.checkUpdates(navController);
+  pnwdsnet.seedspeakers();
+});
 
 return win;
 }

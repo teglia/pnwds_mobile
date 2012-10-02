@@ -54,7 +54,7 @@ pnwdsdb.usersget = function(_username) {
   var result = db.execute('SELECT * FROM users WHERE username = ?;',_username);
   while (result.isValidRow()) {
     var photoTag = result.fieldByName('photo');
-    Ti.API.info(photoTag);
+    // Ti.API.info(photoTag);
     var photo = '';
     
     // Return either the local file for display or the url on the site.
@@ -93,7 +93,7 @@ pnwdsdb.usersget = function(_username) {
  */
 pnwdsdb.usersadd = function(_uid,_username,_firstname,_lastname,_photo,_company) {
   var db = Ti.Database.open('pnwds');
-  Ti.API.info("Adding: " + _uid + ", " + _username + ".");
+  //Ti.API.info("Adding: " + _uid + ", " + _username + ".");
   db.execute("INSERT INTO users(uid,username,firstname,lastname,photo,company) VALUES(?,?,?,?,?,?)",_uid,_username,_firstname,_lastname,_photo,_company);
   db.close();
 
@@ -196,11 +196,9 @@ pnwdsdb.sessionsget = function(_nid) {
  */
 pnwdsdb.sessionsadd = function(_title,_body,_nid,_speakers,_timeslot,_timeslotname,_room,_uid) {
   var db = Ti.Database.open('pnwds');
-  Ti.API.info("Adding: " + _nid + "\n"); 
 
   db.execute("INSERT INTO sessions(title,body,nid,speakers,timeslot,timeslotname,room,uid) VALUES(?,?,?,?,?,?,?,?)",_title,_body,_nid,_speakers,_timeslot,_timeslotname,_room,_uid);
   db.close();
-  Ti.API.info("Added " + _nid + _speakers + _timeslot+ _room+_uid+ _title + _body );
   Ti.App.fireEvent("databaseUpdated");
 };
 

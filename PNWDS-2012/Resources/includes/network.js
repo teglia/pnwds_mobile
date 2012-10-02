@@ -124,9 +124,16 @@ pnwdsnet.seedsessions = function(navController) {
 
   // When the xhr loads we do:
   xhr.onload = function() {
+    var actInd = Ti.UI.createActivityIndicator();
     var statusCode = xhr.status;
     // Check if we have a xhr
     if(statusCode == 200) {
+      actInd.message = 'Please wait...';//message will only shows in android. 
+      
+      Ti.UI.currentWindow.add(actInd);
+      Ti.API.info("Added indicator");
+      //To show it
+      actInd.show();
       var siteDate = Ti.App.Properties.getString('pnwdsSiteLastUpdated');  
       var response = xhr.responseText;
       var result = JSON.parse(response);
@@ -155,6 +162,7 @@ pnwdsnet.seedsessions = function(navController) {
       pnwdstables.updateTables(navController);
       Ti.App.Properties.setString('pnwdsAppLastUpdated', siteDate);
       Ti.API.info("Updating finished.");
+      actInd.hide();
     }
     else {
       alertDialog.show();
@@ -162,6 +170,7 @@ pnwdsnet.seedsessions = function(navController) {
   }
 
   if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){
+    
     // Open the xhr
     xhr.open("GET",url);   
 
@@ -188,14 +197,10 @@ pnwdsnet.seedspeakers = function(navController) {
       // something to replace it with.
       pnwdsdb.speakersclear();
       // Start loop
-            Ti.API.info(result.length);
-Ti.API.info(typeof result);
-Ti.API.info(result);
       for(var loopKey in result) {
 
         // Create the data variable and hold every result
         var data = result[loopKey];
-        Ti.API.info(data);
         pnwdsdb.usersadd(
           data['uid'],
           data['username'],
@@ -206,10 +211,6 @@ Ti.API.info(result);
         );
       }
 
-      // Update the label on the button on the home window to indicate update is needed.
-      //pnwdstables.updateTables(navController);
-      //Ti.App.Properties.setString('pnwdsAppLastUpdated', siteDate);
-      //Ti.API.info("Updating finished.");
     }
     else {
       alertDialog.show();

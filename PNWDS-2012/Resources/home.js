@@ -97,7 +97,6 @@ exports.homeWindow = function(navController) {
 
       Ti.API.info(e.source.label);
     });
-    Ti.API.info(i);
     if(i<3) {
       firstRow.add(newView);
     }
@@ -111,14 +110,6 @@ exports.homeWindow = function(navController) {
   gridView.add(firstRow);
   gridView.add(secondRow);
 
-
-  // // Create our scrollable grid view.
-  // var gridView = createScrollableGridView({
-    // height: 'auto',
-    // backgroundColor: '#666',
-    // data: dashboardData
-  // });
-  
   win.gridView = gridView;
   
   win.add(gridView);
@@ -178,7 +169,7 @@ exports.homeWindow = function(navController) {
   var scrollerizer = Ti.UI.createScrollableView({
     height: 'auto',
     top: 170,
-    views:[myScheduleView,upcomingScheduleView],
+    views:[upcomingScheduleView,myScheduleView],
     showPagingControl:true
   });
 
