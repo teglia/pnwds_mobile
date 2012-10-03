@@ -50,7 +50,7 @@ exports.homeWindow = function(navController) {
     left: 0,
     right: 0,
     layout: 'horizontal',
-    backgroundColor: "#0062A0",
+    backgroundColor: "#fff",
   });
   var secondRow = Ti.UI.createView({
     width: Ti.UI.FILL,
@@ -60,7 +60,7 @@ exports.homeWindow = function(navController) {
     left: 0,
     right: 0,
     layout: 'horizontal',
-    backgroundColor: "#0062A0",
+    backgroundColor: "#fff",
   });
 
   // The button and file names for the front window.
@@ -81,15 +81,23 @@ exports.homeWindow = function(navController) {
       width:'32%',
       height:44,
       left: '1%',
-      backgroundColor: "#fff",
+      backgroundColor: "#0062A0",
       label: itemData[i].name,
-      name: itemData[i].name
+      name: itemData[i].name,
+      layout: 'horizontal'
     });
+    
+    newView.add(Ti.UI.createImageView({
+      width: 34,
+      height: 34,
+      image: '/images/dashboard/icon-' + itemData[i].name + '.png'
+    }))
     
     newView.add(Ti.UI.createLabel({
       text: itemData[i].name,
       label: itemData[i].name,
-      color: "#0062A0"
+      color: "#fff",
+      font:{fontSize:12, fontWeight:'normal'},
     }));  
     
 
