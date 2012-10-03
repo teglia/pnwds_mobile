@@ -29,11 +29,11 @@ exports.homeWindow = function(navController) {
     top: 0,
     left: 0,
     right: 0,
-    bottom: 2,
+    bottom: 0,
     layout: 'vertical',
     height: 92,
     width: 'auto',
-    backgroundColor: "#0062A0",
+    backgroundColor: "#fff",
   });
   
   // if (Titanium.Platform.name == 'android') {
@@ -81,7 +81,7 @@ exports.homeWindow = function(navController) {
       width:'32%',
       height:44,
       left: '1%',
-      backgroundColor: "#0062A0",
+      backgroundColor: "#005198",
       label: itemData[i].name,
       name: itemData[i].name,
       layout: 'horizontal'
@@ -90,7 +90,12 @@ exports.homeWindow = function(navController) {
     newView.add(Ti.UI.createImageView({
       width: 34,
       height: 34,
-      image: '/images/dashboard/icon-' + itemData[i].name + '.png'
+      backgroundColor: "#005198",
+      top: 5,
+      left: 4,
+      right: 5,
+      bottom: 5,
+      backgroundImage: '/images/dashboard/icon-' + itemData[i].name + '.png'
     }))
     
     newView.add(Ti.UI.createLabel({
@@ -137,12 +142,12 @@ exports.homeWindow = function(navController) {
   var updateOuterLabel = Ti.UI.createLabel({
     width: Ti.UI.FILL,
     height: 24,
-    top:92,
+    top:94,
     bottom: 0,
     left: 0,
     right: 0,
     font:{fontSize:12, fontWeight:'normal'},
-    backgroundColor: "#0062A0"
+    backgroundColor: "#005198"
   });
   
   var updateLabel = Ti.UI.createLabel({
