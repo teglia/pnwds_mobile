@@ -7,7 +7,7 @@ pnwdsdb.bootstrap();
 
 // For testing.
 //pnwdsdb.removedb();
-// pnwdsdb.sessionsclear();
+//pnwdsdb.sessionsclear();
 //pnwdsnet.seedsessions();
 //pnwdsnet.seedspeakers();
 

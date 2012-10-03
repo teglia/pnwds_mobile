@@ -15,12 +15,12 @@ exports.homeWindow = function(navController) {
   
   Ti.App.addEventListener('databaseUpdated', function(e) {
     Ti.API.info("databaseUpdated event fired");
-      pnwdstables.updateTables(navController);
+    pnwdstables.updateTables(navController);
   });
 
   Ti.App.addEventListener('syncFlags', function(e) {
     Ti.API.info("syncing flags");
-      
+    
       pnwdstables.updateTables(navController);
   });
 

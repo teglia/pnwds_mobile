@@ -46,7 +46,7 @@ pnwdsdb.userslist = function() {
 };
 
 /**
- * Get individual user record via uid.
+ * Get individual user record via username.
  * 
  */
 pnwdsdb.usersget = function(_username) {
@@ -88,7 +88,45 @@ pnwdsdb.usersget = function(_username) {
 
   return user;
 };
+/**
+ * Get individual user record via uid.
+ * 
+ */
+pnwdsdb.usersgetbyuid = function(_uid) {
+  var user = [];
+  var db = Ti.Database.open('pnwds');
+  var result = db.execute('SELECT * FROM users WHERE uid = ?;',_uid);
+  while (result.isValidRow()) {
+    var photoTag = result.fieldByName('photo');
+    var imageUrl = photoTag.match('<img[^>]+src=\"([^\"]+)\"')[1];
 
+	//get the name of the image to check if it saved locally
+	var imageName = imageUrl.split('/');
+	imageName = imageName[imageName.length-1];
+    
+
+    user.push({
+      //add these attributes for the benefit of a table view
+      title: result.fieldByName('firstname') + ' ' + result.fieldByName('lastname'),
+      uid: result.fieldByName('uid'), //custom data attribute to pass to detail page
+      hasChild:true,
+      //add actual db fields
+      username: result.fieldByName('username'),
+      firstname: result.fieldByName('firstname'),
+      lastname: result.fieldByName('lastname'),
+      uid: result.fieldByName('uid'),
+      company: result.fieldByName('company'),
+      bio: result.fieldByName('bio'),
+      imageUrl: imageUrl,
+      imageName:imageName,
+    });
+    result.next();
+  }
+  result.close(); //make sure to close the result set
+  db.close();
+
+  return user;
+};
 /**
  * Add single user record.
  * 
@@ -259,7 +297,7 @@ pnwdsdb.speakersclear = function() {
   var db = Ti.Database.open('pnwds');
   db.execute('DELETE FROM users');
   // db.execute('DELETE FROM flag');
-  db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT);');
+  db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT, bio TEXT);');
   db.close();
 }
 
