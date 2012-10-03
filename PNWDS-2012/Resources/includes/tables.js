@@ -85,7 +85,9 @@ _formatSessionRows = function(rowData) {
 	row.add(speakersLabel);
 
 	return row;
-}/**
+}
+
+/**
  * Format the rows, all speaker rows should be similar.
  */
 _formatSpeakerRows = function(rowData) {

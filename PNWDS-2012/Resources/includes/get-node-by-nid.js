@@ -46,11 +46,15 @@ exports.newWin = function(navController, nid) {
 
     /******** Event listeners with calls to Speaker Info window. **********/
     // TODO: Add event listener to pull up user data screen. 
-    userPic.addEventListener('click', function(e){
+    userPic.addEventListener('click', function(){
+      newWin = require('/includes/get-speaker-by-uid').newWin;
+      navController.open(new newWin(navController, user.uid));
       // TODO: Add call to speaker page.
     })
-    userButton.addEventListener('click',function(e){
+    userButton.addEventListener('click',function(){
       // TODO: Add call to speaker page.
+      newWin = require('/includes/get-speaker-by-uid').newWin;
+      navController.open(new newWin(navController, user.uid));
     });
     
     speakerView.add(userPic);
