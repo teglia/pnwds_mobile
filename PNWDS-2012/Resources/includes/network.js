@@ -208,7 +208,8 @@ pnwdsnet.seedspeakers = function(navController) {
           data['firstname'],
           data['lastname'],
           data['picture'],
-          data['company']
+          data['company'],
+          data['bio']
         );
       }
 

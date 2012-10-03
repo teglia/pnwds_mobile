@@ -7,9 +7,9 @@ pnwdsdb.bootstrap();
 
 // For testing.
 //pnwdsdb.removedb();
-// pnwdsdb.sessionsclear();
+//pnwdsdb.sessionsclear();
 //pnwdsnet.seedsessions();
-pnwdsnet.seedspeakers();
+//pnwdsnet.seedspeakers();
 
 /**
  * Below is the navigation controller that actually works with both iOS and Android.

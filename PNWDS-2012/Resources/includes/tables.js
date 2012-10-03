@@ -117,7 +117,7 @@ _formatSpeakerRows = function(rowData) {
 			fontSize : 18,
 			fontWeight : 'bold'
 		},
-		width : 'auto',
+		width : Ti.UI.SIZE,
 		top : 0,
 		left : 10,
 		right : 0
@@ -144,7 +144,7 @@ _formatSpeakerRows = function(rowData) {
 	})
 	var row = Ti.UI.createTableViewRow({
 		hasChild : true,
-		nid : rowData['nid'],
+		uid : rowData['uid'],
 		backgroundColor : '#fff'
 	});
 
@@ -342,9 +342,9 @@ pnwdstables.fullSpeakerTable = function(navController) {
 	// add a listener for click to the table
 	// so every row is clickable
 	table.addEventListener('click', function(e) {
-		if (e.rowData.nid) {
-			newWin = require('/includes/get-user-by-nid').newWin;
-			navController.open(new newWin(navController, e.rowData.nid));
+		if (e.rowData.uid) {
+			newWin = require('/includes/get-speaker-by-uid').newWin;
+			navController.open(new newWin(navController, e.rowData.uid));
 		}
 	});
 
