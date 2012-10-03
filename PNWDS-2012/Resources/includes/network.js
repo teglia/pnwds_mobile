@@ -119,6 +119,39 @@ pnwdsnet.getNodeByNid = function(navController,nid) {
   }
 }
 
+pnwdsnet.syncFlags = function(navController) {
+  var url = pnwdsnet.restPath + 'views/schedule.json?display_id=page_1';
+  var xhr = Titanium.Network.createHTTPClient();
+
+  // When the xhr loads we do:
+  xhr.onload = function() {
+  var statusCode = xhr.status;
+    // Check if we have a xhr
+    if(statusCode == 200) {
+      var response = xhr.responseText;
+      var result = JSON.parse(response);
+      
+      for(var loopKey in result) {
+        // Create the data variable and hold every result
+        var data = result[loopKey];
+        
+      }
+    }
+    else {
+      alertDialog.show();
+    }
+  }
+  
+  if(Titanium.Network.networkType != Titanium.Network.NETWORK_NONE){
+    
+    // Open the xhr
+    xhr.open("GET",url);   
+
+    // Send the xhr
+    xhr.send();
+  }
+}
+
 pnwdsnet.seedsessions = function(navController) {
   var url = pnwdsnet.restPath + 'views/schedule_mobile.json';
   var xhr = Titanium.Network.createHTTPClient();

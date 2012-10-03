@@ -92,6 +92,12 @@ exports.newView = function(navController, viewType, viewTitle) {
             width : Ti.UI.FILL,
             left : 0
           });
+          var spacerLabelTwo = Ti.UI.createLabel({
+            text: '',
+            height : 20,
+            width : Ti.UI.FILL,
+            left : 0
+          });
           var label = Ti.UI.createLabel({
             text: '',
             backgroundColor:'#ddd',
@@ -101,7 +107,7 @@ exports.newView = function(navController, viewType, viewTitle) {
           });
           view.add(spacerLabel);
           view.add(picture);
-          view.add(spacerLabel);
+          view.add(spacerLabelTwo);
           view.add(label);
           results = '';
         }
@@ -122,8 +128,13 @@ exports.newView = function(navController, viewType, viewTitle) {
           textAlign: 'left'
         });
         
-        custom_row.add(label);
-        results.unshift(custom_row);
+        if (viewType == "sponsors") {
+          
+        }
+        else {
+          custom_row.add(label);
+          results.unshift(custom_row);
+        }
       }
 
       var table = Titanium.UI.createTableView({data:results});

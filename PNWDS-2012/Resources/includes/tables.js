@@ -194,26 +194,7 @@ pnwdstables.fullScheduleData = function(navController) {
 					fontWeight : 'bold'
 				},
 				color : '#fff',
-				backgroundColor : '#0062A0',
-				backgroundGradient : {
-					type : 'linear',
-					colors : [{
-						color : '#1a8851',
-						position : 0.0
-					}, {
-						color : '#053d11',
-						position : 1.0
-					}],
-					startPoint : {
-						x : 0,
-						y : 0
-					},
-					endPoint : {
-						x : 0,
-						y : 60
-					},
-					backFillStart : false
-				}
+				backgroundColor : '#0062A0'
 			}));
 		}
 		timeSlot = data['timeslotname'];
@@ -246,26 +227,7 @@ pnwdstables.myScheduleData = function(navController) {
 				},
 				color : '#fff',
 				height : 22,
-				backgroundColor : '#0062A0',
-				backgroundGradient : {
-					type : 'linear',
-					colors : [{
-						color : '#1a8851',
-						position : 0.0
-					}, {
-						color : '#053d11',
-						position : 1.0
-					}],
-					startPoint : {
-						x : 0,
-						y : 0
-					},
-					endPoint : {
-						x : 0,
-						y : 60
-					},
-					backFillStart : false
-				}
+				backgroundColor : '#0062A0'
 			}));
 		}
 		timeSlot = data['timeslotname'];
@@ -298,26 +260,7 @@ pnwdstables.upcomingScheduleData = function(navController) {
 				},
 				color : '#fff',
 				height : 22,
-				backgroundColor : '#0062A0',
-				backgroundGradient : {
-					type : 'linear',
-					colors : [{
-						color : '#1a8851',
-						position : 0.0
-					}, {
-						color : '#053d11',
-						position : 1.0
-					}],
-					startPoint : {
-						x : 0,
-						y : 0
-					},
-					endPoint : {
-						x : 0,
-						y : 60
-					},
-					backFillStart : false
-				}
+				backgroundColor : '#0062A0'
 			}));
 		}
 		timeSlot = data['timeslotname'];

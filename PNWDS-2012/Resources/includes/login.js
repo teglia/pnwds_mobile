@@ -174,6 +174,7 @@ loginButton.addEventListener('click', function() {
 					alert("Welcome " + user.name);
 					// Set the user.userName to the logged in user name
 					Ti.App.Properties.setString("userName", user.name);
+					Ti.API.fireEvent('syncFlags');
 					
 					// Close the window
 					win.close();
@@ -197,6 +198,62 @@ resetButton.addEventListener('click', function(e){
   pnwdsnet.checkUpdates(navController);
   pnwdsnet.seedspeakers();
 });
+
+// Add the logout button
+var logoutButton = Titanium.UI.createButton({
+  title:'Logout',
+  height:40,
+  width:200,
+  top:320
+});
+
+// Add the button to the window
+win.add(logoutButton);
+
+// Add the event listener for when the button is created
+logoutButton.addEventListener('click', function() {
+  
+  // Define the url which contains the full url
+  // in this case, we'll connecting to http://example.com/api/rest/user/logout
+  var logoutUrl = Titanium.App.Properties.getString("restPath") + 'user/logout';
+
+  // Create a connection
+  var xhr3 = Titanium.Network.createHTTPClient();
+  
+  xhr3.setRequestHeader('Content-Type','application/json; charset=utf-8');
+  
+  // Open the connection
+  xhr3.open("POST",logoutUrl);
+
+  // Send the connection
+  xhr3.send();
+  
+  // When the connection loads we do:
+  xhr3.onload = function() {
+    // Save the status of the connection in a variable
+    // this will be used to see if we have a connection (200) or not
+    var statusCodeLogout = xhr3.status;
+    // Check if we have a connection
+    if(statusCodeLogout == 200) {
+      Titanium.App.Properties.removeProperty("userUid");
+      Titanium.App.Properties.removeProperty("userSessionId");
+      Titanium.App.Properties.removeProperty("userSessionName");
+      Titanium.App.Properties.removeProperty("userName");
+            
+      alert("Goodbye");
+    }
+    else {
+      alert("You're not currently logged in");
+      // We remvoe all the properties since the user is requesting to logout
+      // is probably not logged in but the properties are set
+      Titanium.App.Properties.removeProperty("userUid");
+      Titanium.App.Properties.removeProperty("userSessionId");
+      Titanium.App.Properties.removeProperty("userSessionName");
+      Titanium.App.Properties.removeProperty("userName");
+    }
+  }
+});
+
 
 return win;
 }

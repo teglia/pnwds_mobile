@@ -18,6 +18,12 @@ exports.homeWindow = function(navController) {
       pnwdstables.updateTables(navController);
   });
 
+  Ti.App.addEventListener('syncFlags', function(e) {
+    Ti.API.info("syncing flags");
+      
+      pnwdstables.updateTables(navController);
+  });
+
 
   var gridView = Ti.UI.createView({
     top: 3,
