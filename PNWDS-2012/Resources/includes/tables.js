@@ -22,7 +22,7 @@ _formatSessionRows = function(rowData) {
 		text : rowData['room'],
 		color : '#333',
 		font : {
-			fontSize : 9,
+			fontSize : 12,
 			fontWeight : 'bold'
 		},
 		width : 100,
@@ -34,24 +34,25 @@ _formatSessionRows = function(rowData) {
 		text : rowData['title'],
 		color : '#0062A0',
 		font : {
-			fontSize : 18,
+			fontSize : 16,
 			fontWeight : 'bold'
 		},
 		width : 'auto',
-		top : 0,
+		top : 4,
 		left : 10,
 		right : 0
 	});
 
 	var speakersLabel = Ti.UI.createLabel({
 		text : rowData['speakers'],
-		color : '#999',
+		color : '#333',
 		font : {
-			fontSize : 14,
+			fontSize : 12,
 			fontWeight : 'normal'
 		},
 		width : 100,
 		top : 0,
+		bottom: 4,
 		left : 10,
 		height : 20
 	});
@@ -102,14 +103,6 @@ _formatSpeakerRows = function(rowData) {
 	var getRemoteFile = require('/lib/imagecache').imageCache;
 	var imageSrc = getRemoteFile(imageName, imageUrl);
 
-	var picture = Ti.UI.createImageView({
-		image : imageSrc,
-		preventDefaultImage:true,
-		height : Ti.UI.SIZE,
-		width : Ti.UI.SIZE,
-		left : 0,
-	});
-
 	var fullNameLabel = Ti.UI.createLabel({
 		text : rowData['firstname'] + " " + rowData['lastname'],
 		color : '#0062A0',
@@ -140,18 +133,38 @@ _formatSpeakerRows = function(rowData) {
 		layout : 'vertical',
 		textAlign : 'left',
 		height : Ti.UI.SIZE,
-		left: 140,
-	})
+		left: 80,
+	});
+	
+	var picWrapView = Ti.UI.createView({
+	  height: 70,
+	  width: 70,
+	  top: 0,
+	  left: 0,
+	  borderRadius: 0
+	});
+	
+  var picture = Ti.UI.createImageView({
+    backgroundImage: imageSrc,
+    width : 70,
+    height: 70,
+    backgroundColor: '#ddd',
+    preventDefaultImage:true
+  });
+  
+  picWrapView.add(picture);
+  
 	var row = Ti.UI.createTableViewRow({
 		hasChild : true,
 		uid : rowData['uid'],
-		backgroundColor : '#fff'
+		backgroundColor : '#fff',
+		height: 70
 	});
 
-	row.add(picture)
+	row.add(picWrapView);
 	TextWrapper.add(fullNameLabel);
 	TextWrapper.add(userNameLabel);
-	row.add(TextWrapper)
+	row.add(TextWrapper);
 	return row;
 }
 /**

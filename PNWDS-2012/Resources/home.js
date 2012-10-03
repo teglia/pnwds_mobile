@@ -18,43 +18,49 @@ exports.homeWindow = function(navController) {
     pnwdstables.updateTables(navController);
   });
 
+  // TODO: Need to finish the flag sync function.
   Ti.App.addEventListener('syncFlags', function(e) {
     Ti.API.info("syncing flags");
-    
-      pnwdstables.updateTables(navController);
+    pnwdstables.updateTables(navController);
   });
 
 
   var gridView = Ti.UI.createView({
-    top: 3,
+    top: 0,
     left: 0,
     right: 0,
+    bottom: 2,
     layout: 'vertical',
-    height: 130,
+    height: 92,
     width: 'auto',
-    backgroundColor: '#fff'
+    backgroundColor: "#0062A0",
   });
   
-  if (Titanium.Platform.name == 'android') {
-    gridView.height = 140;
-  }
-  else {
-    gridView.height = 140;
-  }
+  // if (Titanium.Platform.name == 'android') {
+    // gridView.height = 140;
+  // }
+  // else {
+    // gridView.height = 140;
+  // }
   
   var firstRow = Ti.UI.createView({
     width: Ti.UI.FILL,
-    height: '49%',
-    top: '1%',
+    height: 44,
+    top: 2,
+    left: 0,
+    right: 0,
     layout: 'horizontal',
-    backgroundColor: '#fff'
+    backgroundColor: "#0062A0",
   });
   var secondRow = Ti.UI.createView({
     width: Ti.UI.FILL,
-    height: '49%',
-    top: '1%',
+    height: 44,
+    top: 2,
+    bottom: 2,
+    left: 0,
+    right: 0,
     layout: 'horizontal',
-    backgroundColor: '#fff'
+    backgroundColor: "#0062A0",
   });
 
   // The button and file names for the front window.
@@ -73,9 +79,9 @@ exports.homeWindow = function(navController) {
   for (var i=0, ilen=itemData.length; i<ilen; i++){
     var newView = Ti.UI.createView({
       width:'32%',
-      height:Ti.UI.FILL,
+      height:44,
       left: '1%',
-      backgroundColor: "#0062A0",
+      backgroundColor: "#fff",
       label: itemData[i].name,
       name: itemData[i].name
     });
@@ -83,7 +89,7 @@ exports.homeWindow = function(navController) {
     newView.add(Ti.UI.createLabel({
       text: itemData[i].name,
       label: itemData[i].name,
-      color: "#fff"
+      color: "#0062A0"
     }));  
     
 
@@ -122,11 +128,12 @@ exports.homeWindow = function(navController) {
   
   var updateOuterLabel = Ti.UI.createLabel({
     width: Ti.UI.FILL,
-    height: 20,
-    top:144,
+    height: 24,
+    top:92,
     bottom: 0,
     left: 0,
     right: 0,
+    font:{fontSize:12, fontWeight:'normal'},
     backgroundColor: "#0062A0"
   });
   
@@ -135,6 +142,7 @@ exports.homeWindow = function(navController) {
     label: 'update',
     name: 'update',
     textAlign: 'center',
+    font:{fontSize:12, fontWeight:'normal'},
     color: "#fff"
   });
   
@@ -174,7 +182,7 @@ exports.homeWindow = function(navController) {
   
   var scrollerizer = Ti.UI.createScrollableView({
     height: 'auto',
-    top: 170,
+    top: 120,
     views:[upcomingScheduleView,myScheduleView],
     showPagingControl:true
   });

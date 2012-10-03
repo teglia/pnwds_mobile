@@ -39,7 +39,7 @@ exports.newWin = function(navController, nid) {
     var imageSrc = getRemoteFile(imageName, imageUrl);
     Ti.API.info("ImageName: " + imageName + " and imageUrl: " + imageUrl);
     var userPic = Ti.UI.createImageView({
-      image : imageSrc,
+      backgroundImage : imageSrc,
       preventDefaultImage:true,
       backgroundColor: '#ddd',
       height : 44,
@@ -176,21 +176,21 @@ exports.newWin = function(navController, nid) {
   
   var flagLabel = Ti.UI.createLabel({
     text: "In My Sessions:",
-    top: 0,
+    top: 5,
     left: 0,
     right: 0,
     bottom: 0,
-    height: 44,
+    height: 40,
     textAlign: 'center',
     width: '50%'
   });
   
   var flag = Ti.UI.createSwitch({
-    top: 10,
+    top: 15,
     left: '10%',
     right: 0,
     bottom: 0,
-    height: 44,
+    height: 40,
     width: '40%',
     textAlign: 'center',
     value: flagged
@@ -207,8 +207,8 @@ exports.newWin = function(navController, nid) {
 	roomTime.add(flagLabel);
 	roomTime.add(flag);
 	titleLabelView.add(nodeTitle);
-	titleLabelView.add(hr);
-	titleLabelView.add(roomTime);
+  titleLabelView.add(hr);
+  titleLabelView.add(roomTime);
   titleLabelView.add(hr);
 	
   var speakers = data.speakers;
