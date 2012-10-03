@@ -4,7 +4,7 @@
  */
 exports.homeWindow = function(navController) {
   var win = Ti.UI.createWindow({
-      backgroundColor: '#fff',
+      backgroundColor: '#c5a571',
       barImage: '/images/navbar.png',
       title: '2012 PNWDS'
   });
@@ -27,14 +27,14 @@ exports.homeWindow = function(navController) {
 
 
   var gridView = Ti.UI.createView({
-    top: 0,
+    top: 2,
     left: 0,
     right: 0,
     bottom: 0,
     layout: 'vertical',
     height: 92,
     width: 'auto',
-    backgroundColor: "#fff"
+    backgroundColor: "#c5a571"
   });
   
   // if (Titanium.Platform.name == 'android') {
@@ -51,17 +51,15 @@ exports.homeWindow = function(navController) {
     left: 0,
     right: 0,
     layout: 'horizontal',
-    backgroundColor: "#fff",
   });
   var secondRow = Ti.UI.createView({
     width: Ti.UI.FILL,
     height: 44,
-    top: 2,
+    top: 3,
     bottom: 2,
     left: 0,
     right: 0,
     layout: 'horizontal',
-    backgroundColor: "#fff",
   });
 
   // The button and file names for the front window.
@@ -82,10 +80,19 @@ exports.homeWindow = function(navController) {
       width:'32%',
       height:44,
       left: '1%',
+      borderRadius: 3,
       backgroundColor: "#005198",
       label: itemData[i].name,
       name: itemData[i].name,
       layout: 'horizontal'
+    });
+    
+    newView.setBackgroundGradient({ 
+      type: 'linear', 
+      colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
+      startPoint: { x: 0, y: 0 },
+      endPoint: { x: 0, y: 23 },
+      backFillStart: false
     });
     
     newView.add(Ti.UI.createImageView({
@@ -144,10 +151,10 @@ exports.homeWindow = function(navController) {
   var updateOuterLabel = Ti.UI.createLabel({
     width: Ti.UI.FILL,
     height: 24,
-    top:94,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    top:98,
+    bottom: 4,
+    left: '1%',
+    right: '1%',
     layout: 'horizontal',
     backgroundColor: "#005198"
   });
@@ -208,7 +215,7 @@ exports.homeWindow = function(navController) {
   
   var scrollerizer = Ti.UI.createScrollableView({
     height: 'auto',
-    top: 120,
+    top: 126,
     views:[upcomingScheduleView,myScheduleView],
     showPagingControl:true
   });

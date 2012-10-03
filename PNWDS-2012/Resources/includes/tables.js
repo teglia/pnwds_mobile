@@ -77,7 +77,9 @@ _formatSessionRows = function(rowData) {
 		layout : 'vertical',
 		height : Ti.UI.SIZE,
 		nid : rowData['nid'],
-		backgroundColor : '#fff'
+		backgroundColor : '#c5a571',
+		backgroundImage: '/images/textured_stripes.png',
+    backgroundRepeat: true,
 	});
 
 	row.add(titleLabel);
@@ -357,15 +359,18 @@ pnwdstables.myScheduleTable = function(navController) {
 	var bottomTitleLabel = Ti.UI.createLabel({
 		text : 'My Schedule',
 		color : '#0062A0',
+		width: Ti.UI.FILL,
+		left: 10,
 		textAlign : 'left',
 		font : {
-			fontSize : 24,
+			fontSize : 18,
 			fontWeight : 'bold'
 		},
 	});
 	var custom_row = Ti.UI.createTableViewRow({
 		hasChild : false,
-		textAlign : 'left'
+		textAlign : 'left',
+		layout: 'horizontal'
 	});
 	custom_row.add(bottomTitleLabel);
 	results.unshift(custom_row);
@@ -398,17 +403,30 @@ pnwdstables.upcomingScheduleTable = function(navController) {
 		text : 'Upcoming Sessions',
 		color : '#0062A0',
 		textAlign : 'left',
-		font : {
-			fontSize : 18,
-			fontWeight : 'bold'
+    width: Ti.UI.FILL,
+    top: 0,
+    left: 10,
+		font : { fontSize : 18, fontWeight : 'bold'
 		},
 	});
+	var bottomTitleLabelHelp = Ti.UI.createLabel({
+    text : '(swipe left for My Sessions)',
+    color : '#666',
+    textAlign : 'left',
+    width: Ti.UI.FILL,
+    left: 10,
+    bottom: 4,
+    font : { fontSize : 12, fontWeight : 'normal' }
+  });
+  
 	var custom_row = Ti.UI.createTableViewRow({
 		hasChild : false,
 		textAlign : 'left',
-		touchEnabled : false
+		touchEnabled : false,
+		height: 44
 	});
 	custom_row.add(bottomTitleLabel);
+	custom_row.add(bottomTitleLabelHelp);
 	results.unshift(custom_row);
 
 	// Create the table with the results from above.
