@@ -108,9 +108,7 @@ _formatSpeakerRows = function(rowData) {
 		height : Ti.UI.SIZE,
 		width : Ti.UI.SIZE,
 		left : 0,
-	})
-	
-
+	});
 
 	var fullNameLabel = Ti.UI.createLabel({
 		text : rowData['firstname'] + " " + rowData['lastname'],

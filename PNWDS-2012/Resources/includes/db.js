@@ -63,8 +63,10 @@ pnwdsdb.usersget = function(_username) {
       photo = photoTag;
     }
     else {
-      photo = photoTag.substr(photoTag.indexOf('src=\"', 0) + 1, photoTag.length);
-      photo = photo.substr(0, photo.length - 10);
+      var photoTag = result.fieldByName('photo');
+      var imageUrl = photoTag.match('<img[^>]+src=\"([^\"]+)\"')[1];
+    
+      photo = imageUrl;
     }
 
     user.push({
@@ -97,8 +99,8 @@ pnwdsdb.usersgetbyuid = function(_uid) {
   var db = Ti.Database.open('pnwds');
   var result = db.execute('SELECT * FROM users WHERE uid = ?;',_uid);
   while (result.isValidRow()) {
-    var photoTag = result.fieldByName('photo');
-    var imageUrl = photoTag.match('<img[^>]+src=\"([^\"]+)\"')[1];
+  var photoTag = result.fieldByName('photo');
+  var imageUrl = photoTag.match('<img[^>]+src=\"([^\"]+)\"')[1];
 
 	//get the name of the image to check if it saved locally
 	var imageName = imageUrl.split('/');

@@ -27,13 +27,25 @@ exports.newWin = function(navController, nid) {
       height: 44,
       backgroundColor: '#eee'
     });
-    // TODO: Load images.
-    var userPic = Ti.UI.createLabel({
-      width: 44,
-      height: 44,
-      top: 0,
-      left: 0,
-      backgroundColor: "#ccc"
+    
+    var imageUrl = user.photo;
+
+    //get the name of the image to check if it saved locally
+    var imageName = imageUrl.split('/');
+    imageName = imageName[imageName.length-1];
+
+    //get either the local path or the remote path and load the image for next time
+    var getRemoteFile = require('/lib/imagecache').imageCache;
+    var imageSrc = getRemoteFile(imageName, imageUrl);
+    Ti.API.info("ImageName: " + imageName + " and imageUrl: " + imageUrl);
+    var userPic = Ti.UI.createImageView({
+      image : imageSrc,
+      preventDefaultImage:true,
+      backgroundColor: '#ddd',
+      height : 44,
+      width : 44,
+      borderRadius: 0,
+      left : 0,
     });
    
     var userButton = Ti.UI.createLabel({
