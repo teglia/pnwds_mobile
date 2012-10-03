@@ -399,7 +399,7 @@ pnwdstables.upcomingScheduleTable = function(navController) {
 		color : '#0062A0',
 		textAlign : 'left',
 		font : {
-			fontSize : 24,
+			fontSize : 18,
 			fontWeight : 'bold'
 		},
 	});

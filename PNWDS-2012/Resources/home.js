@@ -5,7 +5,8 @@
 exports.homeWindow = function(navController) {
   var win = Ti.UI.createWindow({
       backgroundColor: '#fff',
-      title: '2012 PNWDS Home'
+      barImage: '/images/navbar.png',
+      title: '2012 PNWDS'
   });
   Ti.API.info("In home");
   
@@ -33,7 +34,7 @@ exports.homeWindow = function(navController) {
     layout: 'vertical',
     height: 92,
     width: 'auto',
-    backgroundColor: "#fff",
+    backgroundColor: "#fff"
   });
   
   // if (Titanium.Platform.name == 'android') {
@@ -88,21 +89,22 @@ exports.homeWindow = function(navController) {
     });
     
     newView.add(Ti.UI.createImageView({
-      width: 34,
-      height: 34,
+      width: Ti.UI.SIZE,
+      height: Ti.UI.SIZE,
       backgroundColor: "#005198",
-      top: 5,
-      left: 4,
-      right: 5,
-      bottom: 5,
-      backgroundImage: '/images/dashboard/icon-' + itemData[i].name + '.png'
-    }))
+      label: itemData[i].name,
+      top: 10,
+      left: 10,
+      right: 10,
+      image: '/images/dashboard/icon-' + itemData[i].name + '.png'
+    }));
     
     newView.add(Ti.UI.createLabel({
       text: itemData[i].name,
       label: itemData[i].name,
       color: "#fff",
-      font:{fontSize:12, fontWeight:'normal'},
+      top: 12,
+      font:{fontSize:13, fontWeight:'normal'},
     }));  
     
 
@@ -146,19 +148,30 @@ exports.homeWindow = function(navController) {
     bottom: 0,
     left: 0,
     right: 0,
-    font:{fontSize:12, fontWeight:'normal'},
+    layout: 'horizontal',
     backgroundColor: "#005198"
   });
   
+  var updateLabelPre = Ti.UI.createLabel({
+    text: 'Update status:',
+    textAlign: 'left',
+    left: 10,
+    top: 3,
+    font:{fontSize:12, fontWeight:'bold'},
+    color: "#fff"
+  })
   var updateLabel = Ti.UI.createLabel({
-    text: '  update',
+    text: 'update',
     label: 'update',
     name: 'update',
-    textAlign: 'center',
+    textAlign: 'left',
+    left: 10,
+    top: 3,
     font:{fontSize:12, fontWeight:'normal'},
     color: "#fff"
   });
   
+  updateOuterLabel.add(updateLabelPre);
   updateOuterLabel.add(updateLabel);
   
   // Set this as a variable on the win so we can update it later.
