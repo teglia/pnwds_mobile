@@ -242,7 +242,10 @@ pnwdsnet.seedspeakers = function(navController) {
           data['lastname'],
           data['picture'],
           data['company'],
-          data['bio']
+          data['bio'],
+          data['twitter'],
+          data['linkedin'],
+          data['website']
         );
       }
 
