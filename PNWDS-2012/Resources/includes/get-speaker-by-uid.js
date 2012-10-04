@@ -32,14 +32,14 @@ exports.newWin = function(navController, uid) {
 
 	var picture = Ti.UI.createImageView({
 		image : imageSrc,
-		preventDefaultImage:true,
+		preventDefaultImage : true,
 		height : Ti.UI.SIZE,
 		width : Ti.UI.SIZE,
 		left : 0,
 	})
 
 	//speakerView.add(userButton);
-var fullNameLabel = Ti.UI.createLabel({
+	var fullNameLabel = Ti.UI.createLabel({
 		text : data['firstname'] + " " + data['lastname'],
 		color : '#0062A0',
 		font : {
@@ -62,9 +62,9 @@ var fullNameLabel = Ti.UI.createLabel({
 		top : 0,
 		left : 0,
 	});
-	
+
 	var companyNameLabel = Ti.UI.createLabel({
-		text : 'Company: '+data['company'],
+		text : 'Company: ' + data['company'],
 		color : '#999',
 		font : {
 			fontSize : 14,
@@ -74,15 +74,14 @@ var fullNameLabel = Ti.UI.createLabel({
 		top : 5,
 		left : 0,
 	});
-	
+
 	var TextWrapper = Ti.UI.createView({
 		layout : 'vertical',
 		textAlign : 'left',
 		height : Ti.UI.SIZE,
-		left: 140,
+		left : 140,
 	})
-	
-	
+
 	var speakerView = Ti.UI.createView({
 		top : 1,
 		left : 0,
@@ -90,16 +89,16 @@ var fullNameLabel = Ti.UI.createLabel({
 		height : Ti.UI.SIZE,
 		backgroundColor : '#eee'
 	});
-	
-	
+
 	speakerView.add(picture);
 	TextWrapper.add(fullNameLabel);
 	TextWrapper.add(userNameLabel);
-	if(data['company']){
-			TextWrapper.add(companyNameLabel);
-		}
+	if (data['company']) {
+		TextWrapper.add(companyNameLabel);
+	}
+
 	speakerView.add(TextWrapper)
-	
+
 	var hr = Ti.UI.createLabel({
 		height : 1,
 		width : Ti.UI.FILL,
@@ -110,7 +109,7 @@ var fullNameLabel = Ti.UI.createLabel({
 	var view = Titanium.UI.createView({
 		layout : 'vertical',
 		top : 0,
-		left: 0,
+		left : 0,
 		width : Ti.UI.SIZE,
 	});
 
@@ -119,11 +118,20 @@ var fullNameLabel = Ti.UI.createLabel({
 	html += '    <title>Bio</title>';
 	html += '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 	html += '    <style>';
-	html += '      a:link { text-decoration: none; color: #000; }';
+	html += '      a:link { text-decoration: none; color: #0062A0; font-family: Helvetica, sans-serif; font-weight: bold; }';
 	html += '    </style>';
 	html += '  </head>';
 	html += '  <body>';
 	html += '    <div style="font: normal normal normal 14px/1.25 Helvetica;">' + data['bio'] + '</div>';
+	if (data['twitter']) {
+		html += '    <div">' + data['twitter'] + '</div>';
+	}
+	if (data['linkedin']) {
+		html += '    <div>' + data['linkedin'] + '</div>';
+	}
+	if (data['website']) {
+		html += '    <div>' + data['website'] + '</div>';
+	}
 	html += '  </body>';
 	html += '</html>';
 
@@ -132,10 +140,7 @@ var fullNameLabel = Ti.UI.createLabel({
 		// Because D7 uses an object for the body itself including the language
 		html : html,
 		width : Ti.UI.FILL,
-		height : Ti.UI.SIZE,
-		top : 0,
-		right: 40,
-		touchEnabled : false
+		height : Ti.UI.FILL,
 	});
 
 	// Add both nodeTitle and nodeBody labels to our view
