@@ -77,8 +77,8 @@ _formatSessionRows = function(rowData) {
 		layout : 'vertical',
 		height : Ti.UI.SIZE,
 		nid : rowData['nid'],
-		backgroundColor : '#c5a571',
-		backgroundImage: '/images/textured_stripes.png',
+		backgroundColor : '#fff',
+		backgroundImage: '/images/low_contrast_linen-light.png',
     backgroundRepeat: true,
 	});
 

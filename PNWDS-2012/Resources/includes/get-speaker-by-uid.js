@@ -195,7 +195,9 @@ exports.newWin = function(navController, uid) {
 		left : 0,
 		width : Ti.UI.SIZE,
 		height : Ti.UI.SIZE,
-		backgroundColor : '#eee'
+		backgroundColor : '#eee',
+		backgroundImage: '/images/tasky_pattern.png',
+		backgroundRepeat: true
 	});
 
 	speakerView.add(picture);
