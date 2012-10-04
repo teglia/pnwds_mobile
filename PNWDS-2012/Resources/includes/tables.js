@@ -73,20 +73,25 @@ _formatSessionRows = function(rowData) {
 
 	var row = Ti.UI.createTableViewRow({
 		hasChild : true,
-		textAlign : 'left',
-		layout : 'vertical',
-		height : Ti.UI.SIZE,
 		nid : rowData['nid'],
-		backgroundColor : '#fff',
-		backgroundImage: '/images/low_contrast_linen-light.png',
-    backgroundRepeat: true,
+
 	});
+	var rowView = Ti.UI.createView({
+    backgroundColor : '#fff',
+    backgroundRepeat: true,
+    backgroundImage: '/images/subtle_dots.png',
+    top: 0,
+    left: 0,
+    textAlign : 'left',
+    layout : 'vertical',
+    height : Ti.UI.SIZE,
+	})
 
-	row.add(titleLabel);
+	rowView.add(titleLabel);
 	// row.add(flagSwitch);
-	row.add(roomLabel);
-	row.add(speakersLabel);
-
+	rowView.add(roomLabel);
+	rowView.add(speakersLabel);
+  row.add(rowView);
 	return row;
 }
 
@@ -209,7 +214,13 @@ pnwdstables.fullScheduleData = function(navController) {
 					fontWeight : 'bold'
 				},
 				color : '#fff',
-				backgroundColor : '#0062A0'
+				backgroundGradient:{
+          type:'linear',
+          colors:['#333','#666'],
+          startPoint:{x:0,y:0},
+          endPoint:{x:0,y:45},
+          backFillStart:false
+        } 
 			}));
 		}
 		timeSlot = data['timeslotname'];
