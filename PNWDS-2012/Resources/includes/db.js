@@ -243,6 +243,44 @@ pnwdsdb.sessionsget = function(_nid) {
 };
 
 /**
+ * Get single session via nid.
+ *
+ */
+pnwdsdb.sessionsgetbyuser = function(_uid) {
+	var sessions = [];
+	var db = Ti.Database.open('pnwds');
+	var userResult = db.execute('SELECT * FROM users WHERE uid = ?;', _uid);
+
+	while (userResult.isValidRow()) {
+		var user = userResult.fieldByName('username')
+		userResult.next();
+	}
+	userResult.close();
+	var query = "SELECT * FROM sessions WHERE ? sessions.speakers LIKE '%"+user+"%' ORDER BY room ASC;"
+	var result = db.execute(query);
+	while (result.isValidRow()) {
+		sessions.push({
+			//add these attributes for the benefit of a table view
+			title : result.fieldByName('title'),
+			nid : result.fieldByName('nid'),
+			body : result.fieldByName('body'),
+			flagged : result.fieldByName('flagged'),
+			speakers : result.fieldByName('speakers'),
+			timeslot : result.fieldByName('timeslot'),
+			timeslotname : result.fieldByName('timeslotname'),
+			room : result.fieldByName('room'),
+			hasChild : true
+		});
+		result.next();
+	}
+	result.close();
+	//make sure to close the result set
+	db.close();
+
+	return sessions;
+};
+
+/**
  * Add a single session.
  *
  */
@@ -326,4 +364,4 @@ pnwdsdb.removedb = function() {
 	pnwdsdb.bootstrap();
 }
 // Export the functions.
-module.exports = pnwdsdb; 
+module.exports = pnwdsdb;

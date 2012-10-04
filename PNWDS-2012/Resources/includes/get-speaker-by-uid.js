@@ -143,6 +143,8 @@ exports.newWin = function(navController, uid) {
 		height : Ti.UI.FILL,
 	});
 
+	//var sessions = pnwdsdb.sessionsgetbyuser(data['uid']);
+	//Ti.API.info(sessions);
 	// Add both nodeTitle and nodeBody labels to our view
 	//view.add(titleLabelView);
 
