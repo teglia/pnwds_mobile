@@ -256,7 +256,7 @@ pnwdsdb.sessionsgetbyuser = function(_uid) {
 		userResult.next();
 	}
 	userResult.close();
-	var query = "SELECT * FROM sessions WHERE ? sessions.speakers LIKE '%"+user+"%' ORDER BY room ASC;"
+	var query = "SELECT * FROM sessions WHERE sessions.speakers LIKE \'%"+user+"%\' ORDER BY room ASC;"
 	var result = db.execute(query);
 	while (result.isValidRow()) {
 		sessions.push({
