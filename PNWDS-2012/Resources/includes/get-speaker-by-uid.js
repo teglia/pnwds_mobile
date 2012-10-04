@@ -188,7 +188,7 @@ var view = Titanium.UI.createView({
 		layout : 'vertical',
 		textAlign : 'left',
 		height : Ti.UI.SIZE,
-		left : 140,
+		left : 110,
 	})
 
 	var speakerView = Ti.UI.createView({
@@ -196,7 +196,9 @@ var view = Titanium.UI.createView({
 		left : 0,
 		width : Ti.UI.FILL,
 		height : Ti.UI.SIZE,
-		backgroundColor : '#eee'
+		backgroundColor : '#eee',
+		backgroundImage: '/images/tasky_pattern.png',
+		backgroundRepeat: true
 	});
 
 	speakerView.add(picture);
