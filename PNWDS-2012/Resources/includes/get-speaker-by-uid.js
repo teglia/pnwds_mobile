@@ -18,7 +18,6 @@ exports.newWin = function(navController, uid) {
 		var time = day + localDate;
 		return time;
 	}
-	
 	function formatSessionRow(_session) {
 		var titleLabelView = Ti.UI.createView({
 			top : 0,
@@ -103,28 +102,27 @@ exports.newWin = function(navController, uid) {
 		titleLabelView.add(nodeTitle);
 		titleLabelView.add(roomTime);
 		titleLabelView.add(makeHR());
-		titleLabelView.addEventListener('click', function(){
-      newWin = require('/includes/get-node-by-nid').newWin;
-      navController.open(new newWin(navController, _session.nid));
-      // TODO: Add call to speaker page.
-    })
+		titleLabelView.addEventListener('click', function() {
+			newWin = require('/includes/get-node-by-nid').newWin;
+			navController.open(new newWin(navController, _session.nid));
+		})
 		return titleLabelView;
 	}
-	
-	function makeHR(){
-			var hr = Ti.UI.createLabel({
-		height : 1,
-		width : Ti.UI.FILL,
-		backgroundColor : '#0062A0'
-	});
-	return hr
+
+	function makeHR() {
+		var hr = Ti.UI.createLabel({
+			height : 1,
+			width : Ti.UI.FILL,
+			backgroundColor : '#0062A0'
+		});
+		return hr
 	}
-	
+
 	var win = Ti.UI.createWindow({
-		backgroundColor : '#fff'
+		backgroundColor : '#eee'
 	});
 
-var view = Titanium.UI.createView({
+	var view = Titanium.UI.createView({
 		layout : 'vertical',
 		top : 0,
 		left : 0,
@@ -188,13 +186,14 @@ var view = Titanium.UI.createView({
 		layout : 'vertical',
 		textAlign : 'left',
 		height : Ti.UI.SIZE,
-		left : 140,
+		left : 10,
 	})
 
 	var speakerView = Ti.UI.createView({
+		layout :'horizontal',
 		top : 1,
 		left : 0,
-		width : Ti.UI.FILL,
+		width : Ti.UI.SIZE,
 		height : Ti.UI.SIZE,
 		backgroundColor : '#eee'
 	});
@@ -208,6 +207,74 @@ var view = Titanium.UI.createView({
 
 	speakerView.add(TextWrapper)
 
+	var linkView = Ti.UI.createView({
+		layout : 'horizontal',
+		width : Ti.UI.SIZE,
+		height : Ti.UI.SIZE,
+		backgroundColor : '#eee',
+		right:0,
+		bottom: 5,
+	})
+
+	if (data['twitter']) {
+		var twitterButton = Ti.UI.createButton({
+			title : 'Twitter',
+			color : '#0062A0',
+			font : {
+				fontSize : 12,
+				fontWeight : 'bold'
+			},
+			width : 60,
+			height : 25,
+			top : 5,
+			right : 8,
+
+		});
+		twitterButton.addEventListener('click', function() {
+			newWin = require('/includes/get-webview').newWin;
+			navController.open(new newWin(navController, data['twitter']));
+		})
+		linkView.add(twitterButton);
+	}
+	if (data['linkedin']) {
+		var linkedinButton = Ti.UI.createButton({
+			title : 'Linkedin',
+			color : '#0062A0',
+			font : {
+				fontSize : 12,
+				fontWeight : 'bold'
+			},
+			width : 60,
+			height : 25,
+			top : 5,
+			right : 8,
+		});
+		linkedinButton.addEventListener('click', function() {
+			newWin = require('/includes/get-webview').newWin;
+			navController.open(new newWin(navController, data['linkedin']));
+		})
+		linkView.add(linkedinButton);
+	}
+	if (data['website']) {
+		var websiteButton = Ti.UI.createButton({
+			title : 'website',
+			color : '#0062A0',
+			font : {
+				fontSize : 12,
+				fontWeight : 'bold'
+			},
+			width : 60,
+			height : 25,
+			top : 5,
+			right : 8,
+		});
+		websiteButton.addEventListener('click', function() {
+			newWin = require('/includes/get-webview').newWin;
+			navController.open(new newWin(navController, data['website']));
+		})
+		linkView.add(websiteButton);
+	}
+
 	var html = '<html>';
 	html += '  <head>';
 	html += '    <title>Bio</title>';
@@ -218,15 +285,6 @@ var view = Titanium.UI.createView({
 	html += '  </head>';
 	html += '  <body>';
 	html += '    <div style="font: normal normal normal 14px/1.25 Helvetica;">' + data['bio'] + '</div>';
-	if (data['twitter']) {
-		html += '    <div">' + data['twitter'] + '</div>';
-	}
-	if (data['linkedin']) {
-		html += '    <div>' + data['linkedin'] + '</div>';
-	}
-	if (data['website']) {
-		html += '    <div>' + data['website'] + '</div>';
-	}
 	html += '  </body>';
 	html += '</html>';
 
@@ -241,9 +299,11 @@ var view = Titanium.UI.createView({
 	// Add both nodeTitle and nodeBody labels to our view
 	//view.add(titleLabelView);
 
-	
-
 	view.add(speakerView);
+	
+	if (data['twitter'] || data['linkedin'] || data['website']) {
+		view.add(linkView);
+	}
 	view.add(makeHR());
 	var sessions = pnwdsdb.sessionsgetbyuser(data['uid']);
 	Ti.API.info(sessions);
