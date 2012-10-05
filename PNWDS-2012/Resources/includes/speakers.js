@@ -5,7 +5,10 @@ exports.newWin = function(navController) {
   var pnwdstables = require( '/includes/tables' );
   
   // Define the variable win to contain the current window
-  var win = Ti.UI.createWindow();
+  var win = Ti.UI.createWindow({
+    barImage: '/images/iphone-nav.png',
+    title: 'Speakers'
+  });
   
   var fullSpeakerTable = pnwdstables.fullSpeakerTable(navController);
 

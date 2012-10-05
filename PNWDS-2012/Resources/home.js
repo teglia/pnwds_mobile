@@ -7,7 +7,7 @@ exports.homeWindow = function(navController) {
     backgroundColor: '#333',
     backgroundRepeat: true,
     backgroundImage: '/images/low_contrast_linen.png',
-    barImage: '/images/navbar.png',
+    barImage: '/images/iphone-nav.png',
     title: '2012 PNWDS'
   });
   

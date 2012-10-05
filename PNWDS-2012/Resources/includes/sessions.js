@@ -6,7 +6,7 @@ exports.newWin = function(navController) {
   
   // Define the variable win to contain the current window
   var win = Ti.UI.createWindow({
-    barImage: '/images/speaker.jpg',
+    barImage: '/images/iphone-nav.png',
     title: 'Sessions'
   });
   

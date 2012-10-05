@@ -174,7 +174,7 @@ loginButton.addEventListener('click', function() {
 					alert("Welcome " + user.name);
 					// Set the user.userName to the logged in user name
 					Ti.App.Properties.setString("userName", user.name);
-					Ti.API.fireEvent('syncFlags');
+					//Ti.API.fireEvent('syncFlags');
 					
 					// Close the window
 					win.close();
