@@ -1,7 +1,30 @@
 exports.newWin = function(navController, nid) {
   
   var pnwdsdb = require('/includes/db');
+  
+  var data = pnwdsdb.sessionsget(nid);
+  data = data[0];
+  
+  var win = Ti.UI.createWindow({
+    backgroundColor: '#fff'
+  });
 
+  var hr = Ti.UI.createLabel({
+    height: 1,
+    width: Ti.UI.FILL,
+    backgroundColor: '#0062A0'
+  });
+  
+  // Create the scrollview
+  var view = Titanium.UI.createScrollView({
+    contentWidth:Ti.UI.FILL,
+    contentHeight:Ti.UI.SIZE,
+    showVerticalScrollIndicator:true,
+    showHorizontalScrollIndicator:false,
+    layout: 'vertical',
+    top: 0,
+  });
+  
   var _timeConverter = function (UNIX_timestamp, day1){
     var a = new Date(UNIX_timestamp*1000);
     var localDate = a.toLocaleTimeString();
@@ -73,30 +96,6 @@ exports.newWin = function(navController, nid) {
     speakerView.add(userButton);
     return speakerView;
   }
-  
-  var win = Ti.UI.createWindow({
-    backgroundColor: '#fff'
-  });
-
-  var data = pnwdsdb.sessionsget(nid);
-  data = data[0];
-  //Ti.API.info(data);
-
-  var hr = Ti.UI.createLabel({
-    height: 1,
-    width: Ti.UI.FILL,
-    backgroundColor: '#0062A0'
-  });
-  
-  // Create the scrollview
-  var view = Titanium.UI.createScrollView({
-  	contentWidth:Ti.UI.FILL,
-  	contentHeight:Ti.UI.SIZE,
-  	showVerticalScrollIndicator:true,
-  	showHorizontalScrollIndicator:false,
-  	layout: 'vertical',
-  	top: 0,
-  });
 
 	var titleLabelView = Ti.UI.createView({
 	  top:0,
@@ -104,7 +103,10 @@ exports.newWin = function(navController, nid) {
     right: 0,
     layout: 'vertical',
     width: Ti.UI.FILL,
-    height: Ti.UI.SIZE
+    height: Ti.UI.SIZE,
+    backgroundColor : '#eee',
+    backgroundImage: '/images/tasky_pattern.png',
+    backgroundRepeat: true
 	});
 	
   // Create a label for the node title
@@ -129,10 +131,8 @@ exports.newWin = function(navController, nid) {
   var endTime = _timeConverter(times[1], false);
   
   var roomTime = Ti.UI.createView({
-    layout: 'horizontal',
-    top:0,
+    layout: 'vertical',
     left: 0,
-    right: 0,
     width: Ti.UI.FILL,
     height: Ti.UI.SIZE
   })
@@ -141,32 +141,23 @@ exports.newWin = function(navController, nid) {
   var roomLabel = Ti.UI.createLabel({
     // The text of the label will be the node title (data.title)
     text: data.room,
-    color:'#333',
-    textAlign:'center',
+    color:'#bbb',
+    textAlign:'left',
+    left: 10,
+    width: Ti.UI.FILL,
     font:{fontSize:12, fontWeight:'bold'},
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#999',
-    height: 44,
-    width: '50%'
   });
   
   // Create a label for the node title
   var timeLabel = Ti.UI.createLabel({
     // The text of the label will be the node title (data.title)
     text: startTime + " to " + endTime,
-    color:'#333',
-    textAlign:'center',
-    font:{fontSize:12, fontWeight:'normal'},
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#bbb',
-    height: 44,
-    width: '50%'
+    color:'#aaa',
+    textAlign:'left',
+    width: Ti.UI.FILL,
+    left: 10,
+    bottom: 10,
+    font:{fontSize:12, fontWeight:'normal'}
   });
   
   var flagged = data.flagged;
@@ -174,43 +165,45 @@ exports.newWin = function(navController, nid) {
     flagged = false;
   }
   
+  var flagView = Ti.UI.createView({
+    layout : 'horizontal',
+    width : Ti.UI.FILL,
+    height : 44,
+    top: 0,
+    left: 0,
+    backgroundColor : '#eee',
+    backgroundImage: '/images/subtle_dots.png',
+    backgroundRepeat: true
+  });
+    
   var flagLabel = Ti.UI.createLabel({
     text: "In My Sessions:",
-    top: 5,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 40,
+    height: 44,
     textAlign: 'center',
     width: '50%'
   });
   
   var flag = Ti.UI.createSwitch({
-    top: 15,
-    left: '10%',
-    right: 0,
-    bottom: 0,
-    height: 40,
-    width: '40%',
+    height: 44,
+    width: '50%',
     textAlign: 'center',
     value: flagged
-  })
+  });
+  
+  flagView.add(flagLabel);
+  flagView.add(flag);
   
   flag.addEventListener('change',function(e){
     pnwdsdb.sessionsflag(flag.value, data.nid);
     Ti.API.info('Switch value: ' + flag.value);
   });
   
-  
-	roomTime.add(roomLabel);
-	roomTime.add(timeLabel);
-	roomTime.add(flagLabel);
-	roomTime.add(flag);
 	titleLabelView.add(nodeTitle);
   titleLabelView.add(hr);
-  titleLabelView.add(roomTime);
-  titleLabelView.add(hr);
-	
+	  
+  titleLabelView.add(roomLabel);
+  titleLabelView.add(timeLabel);
+  
   var speakers = data.speakers;
   if (speakers) {
     titleLabelView.add(hr);
@@ -230,6 +223,9 @@ exports.newWin = function(navController, nid) {
       titleLabelView.add(speakerView);
     }
   }    
+  titleLabelView.add(hr);
+  titleLabelView.add(flagView);
+  titleLabelView.add(hr);
   
 	var html = '<html>'; 
 	html += '  <head>';

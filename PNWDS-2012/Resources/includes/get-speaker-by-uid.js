@@ -2,6 +2,27 @@ exports.newWin = function(navController, uid) {
 
 	var pnwdsdb = require('/includes/db');
 
+  var data = pnwdsdb.usersgetbyuid(uid);
+  data = data[0];
+  Ti.API.info(data);
+
+  var win = Ti.UI.createWindow({
+    backgroundColor : '#eee',
+    title: data['username']
+  });
+
+  var view = Titanium.UI.createView({
+    layout : 'vertical',
+    top : 0,
+    left : 0,
+    width : Ti.UI.FILL,
+    contentWidth:Ti.UI.FILL,
+    contentHeight:Ti.UI.SIZE,
+    showVerticalScrollIndicator:true,
+    showHorizontalScrollIndicator:false,
+    layout: 'vertical'
+  });
+
 	var _timeConverter = function(UNIX_timestamp, day1) {
 		var a = new Date(UNIX_timestamp * 1000);
 		var localDate = a.toLocaleTimeString();
@@ -18,16 +39,59 @@ exports.newWin = function(navController, uid) {
 		var time = day + localDate;
 		return time;
 	}
+	
+  function makeHR() {
+    var hr = Ti.UI.createLabel({
+      height : 1,
+      width : Ti.UI.FILL,
+      backgroundColor : '#0062A0'
+    });
+    return hr
+  }
+	
 	function formatSessionRow(_session) {
+	  var spacerView = Ti.UI.createView({
+	    top: 8,
+	    bottom: 8,
+	    left: 8,
+	    right: 8,
+	    layout: 'horizontal',
+      height: Ti.UI.SIZE,
+      width: Ti.UI.FILL,
+	  });
+		
 		var titleLabelView = Ti.UI.createView({
-			top : 0,
 			left : 0,
 			right : 0,
-			layout : 'vertical',
+			layout : 'horizontal',
 			width : Ti.UI.FILL,
 			height : Ti.UI.SIZE
 		});
 
+    var iconView = Ti.UI.createView({
+      backgroundColor: "#005198",
+      height: 35,
+      width: 37,
+      left: 0,
+      borderRadius: 3
+    });
+    
+    iconView.setBackgroundGradient({ 
+      type: 'linear', 
+      colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
+      startPoint: { x: 0, y: 0 },
+      endPoint: { x: 0, y: 23 },
+      backFillStart: false
+    });
+    
+    var icon = Ti.UI.createImageView({
+      left: 8,
+      top: 6,
+      image: '/images/dashboard/icon-sessions.png'
+    });
+    
+    iconView.add(icon);
+    
 		// Create a label for the node title
 		var nodeTitle = Ti.UI.createLabel({
 			// The text of the label will be the node title (data.title)
@@ -38,69 +102,15 @@ exports.newWin = function(navController, uid) {
 				fontSize : 16,
 				fontWeight : 'bold'
 			},
-			top : 6,
 			left : 10,
-			right : 10,
-			bottom : 6,
 			height : Ti.UI.SIZE,
 			width : Ti.UI.FILL
 		});
 
-		var time = _session.timeslot;
-		var times = time.split(" to ");
-		var startTime = _timeConverter(times[0], true);
-		var endTime = _timeConverter(times[1], false);
-
-		var roomTime = Ti.UI.createView({
-			layout : 'horizontal',
-			top : 0,
-			left : 0,
-			right : 0,
-			width : Ti.UI.FILL,
-			height : Ti.UI.SIZE
-		})
-
-		// Create a label for the node title
-		var roomLabel = Ti.UI.createLabel({
-			// The text of the label will be the node title (data.title)
-			text : _session.room,
-			color : '#333',
-			textAlign : 'center',
-			font : {
-				fontSize : 12,
-				fontWeight : 'bold'
-			},
-			top : 0,
-			left : 0,
-			right : 0,
-			bottom : 0,
-			backgroundColor : '#999',
-			height : 44,
-			width : '50%'
-		});
-
-		// Create a label for the node title
-		var timeLabel = Ti.UI.createLabel({
-			// The text of the label will be the node title (data.title)
-			text : startTime + " to " + endTime,
-			color : '#333',
-			textAlign : 'center',
-			font : {
-				fontSize : 12,
-				fontWeight : 'normal'
-			},
-			top : 0,
-			left : 0,
-			right : 0,
-			bottom : 0,
-			backgroundColor : '#bbb',
-			height : 44,
-			width : '50%'
-		});
-		roomTime.add(roomLabel);
-		roomTime.add(timeLabel);
-		titleLabelView.add(nodeTitle);
-		titleLabelView.add(roomTime);
+		spacerView.add(iconView);
+		spacerView.add(nodeTitle);
+		titleLabelView.add(spacerView);
+		//titleLabelView.add(roomTime);
 		titleLabelView.add(makeHR());
 		titleLabelView.addEventListener('click', function() {
 			newWin = require('/includes/get-node-by-nid').newWin;
@@ -109,30 +119,6 @@ exports.newWin = function(navController, uid) {
 		return titleLabelView;
 	}
 
-	function makeHR() {
-		var hr = Ti.UI.createLabel({
-			height : 1,
-			width : Ti.UI.FILL,
-			backgroundColor : '#0062A0'
-		});
-		return hr
-	}
-
-	var win = Ti.UI.createWindow({
-		backgroundColor : '#eee'
-	});
-
-	var view = Titanium.UI.createView({
-		layout : 'vertical',
-		top : 0,
-		left : 0,
-		width : Ti.UI.SIZE,
-	});
-
-	var data = pnwdsdb.usersgetbyuid(uid);
-	data = data[0];
-	Ti.API.info(data);
-
 	//get either the local path or the remote path and load the image for next time
 	var getRemoteFile = require('/lib/imagecache').imageCache;
 	var imageSrc = getRemoteFile(data.imageName, data.imageUrl);
@@ -140,9 +126,11 @@ exports.newWin = function(navController, uid) {
 	var picture = Ti.UI.createImageView({
 		image : imageSrc,
 		preventDefaultImage : true,
-		height : Ti.UI.SIZE,
-		width : Ti.UI.SIZE,
+		height : 88,
+		width : 88,
 		left : 0,
+		top: 0,
+		bottom: 0
 	})
 
 	//speakerView.add(userButton);
@@ -153,8 +141,8 @@ exports.newWin = function(navController, uid) {
 			fontSize : 18,
 			fontWeight : 'bold'
 		},
-		width : Ti.UI.SIZE,
-		top : 0,
+		width : Ti.UI.FILL,
+		height: Ti.UI.SIZE,
 		left : 0,
 	});
 
@@ -165,8 +153,8 @@ exports.newWin = function(navController, uid) {
 			fontSize : 14,
 			fontWeight : 'normal'
 		},
-		width : Ti.UI.SIZE,
-		top : 0,
+		width : Ti.UI.FILL,
+		height: Ti.UI.SIZE,
 		left : 0,
 	});
 
@@ -177,8 +165,9 @@ exports.newWin = function(navController, uid) {
 			fontSize : 14,
 			fontWeight : 'normal'
 		},
-		width : Ti.UI.SIZE,
-		top : 5,
+		width : Ti.UI.FILL,
+		height: Ti.UI.SIZE,
+		top : 8,
 		left : 0,
 	});
 
@@ -186,14 +175,15 @@ exports.newWin = function(navController, uid) {
 		layout : 'vertical',
 		textAlign : 'left',
 		height : Ti.UI.SIZE,
+		width: Ti.UI.FILL,
 		left : 10,
 	})
 
 	var speakerView = Ti.UI.createView({
 		layout :'horizontal',
-		top : 1,
+		top : 0,
 		left : 0,
-		width : Ti.UI.SIZE,
+		width : Ti.UI.FILL,
 		height : Ti.UI.SIZE,
 		backgroundColor : '#eee',
 		backgroundImage: '/images/tasky_pattern.png',
@@ -293,13 +283,13 @@ exports.newWin = function(navController, uid) {
 	// Create a label for the node body
 	var nodeBody = Titanium.UI.createWebView({
 		// Because D7 uses an object for the body itself including the language
-		html : html,
-		width : Ti.UI.FILL,
-		height : Ti.UI.FILL,
+    html: html,
+    width: Ti.UI.FILL,
+    height: Ti.UI.SIZE,
+    top: 0,
+    touchEnabled: false
 	});
 
-	// Add both nodeTitle and nodeBody labels to our view
-	//view.add(titleLabelView);
 
 	view.add(speakerView);
 	
@@ -308,8 +298,6 @@ exports.newWin = function(navController, uid) {
 	}
 	view.add(makeHR());
 	var sessions = pnwdsdb.sessionsgetbyuser(data['uid']);
-	Ti.API.info(sessions);
-	// Create the scrollview
 	for (var i = sessions.length - 1; i >= 0; i--) {
 		view.add(formatSessionRow(sessions[i]));
 	};

@@ -25,7 +25,7 @@ _formatSessionRows = function(rowData) {
 			fontSize : 12,
 			fontWeight : 'bold'
 		},
-		width : 100,
+		width : Ti.UI.SIZE,
 		top : 0,
 		left : 10
 	});
@@ -50,26 +50,12 @@ _formatSessionRows = function(rowData) {
 			fontSize : 12,
 			fontWeight : 'normal'
 		},
-		width : 100,
+		width : Ti.UI.SIZE,
 		top : 0,
 		bottom: 4,
 		left : 10,
 		height : 20
 	});
-
-	var flagSwitch = Ti.UI.createSwitch({
-		value : false,
-		right : 10,
-		top : 5,
-		height : 0,
-		width : 10
-	});
-
-	if (Ti.Platform.osname == 'android') {
-		flagSwitch.style = Ti.UI.Android.SWITCH_STYLE_CHECKBOX;
-	}
-
-	// TODO: Add a flag check or button to this maybe?
 
 	var row = Ti.UI.createTableViewRow({
 		hasChild : true,
@@ -85,10 +71,10 @@ _formatSessionRows = function(rowData) {
     textAlign : 'left',
     layout : 'vertical',
     height : Ti.UI.SIZE,
+    width: Ti.UI.FILL
 	})
 
 	rowView.add(titleLabel);
-	// row.add(flagSwitch);
 	rowView.add(roomLabel);
 	rowView.add(speakersLabel);
   row.add(rowView);
@@ -117,10 +103,11 @@ _formatSpeakerRows = function(rowData) {
 			fontSize : 18,
 			fontWeight : 'bold'
 		},
-		width : Ti.UI.SIZE,
-		top : 0,
+		width : Ti.UI.FILL,
+		height: Ti.UI.SIZE,
 		left : 10,
-		right : 0
+		right : 0,
+		top: 15
 	});
 
 	var userNameLabel = Ti.UI.createLabel({
@@ -130,17 +117,20 @@ _formatSpeakerRows = function(rowData) {
 			fontSize : 14,
 			fontWeight : 'normal'
 		},
-		width : 100,
-		top : 0,
-		left : 10,
-		height : 20
+    width : Ti.UI.FILL,
+    height: Ti.UI.SIZE,
+		left : 10
 	});
 
 	var TextWrapper = Ti.UI.createView({
 		layout : 'vertical',
 		textAlign : 'left',
-		height : Ti.UI.SIZE,
+		height : Ti.UI.FILL,
+		width: Ti.UI.FILL,
 		left: 80,
+		backgroundColor : '#fff',
+    backgroundRepeat: true,
+    backgroundImage: '/images/subtle_dots.png',
 	});
 	
 	var picWrapView = Ti.UI.createView({
@@ -253,7 +243,14 @@ pnwdstables.myScheduleData = function(navController) {
 				},
 				color : '#fff',
 				height : 22,
-				backgroundColor : '#0062A0'
+				backgroundColor : '#0062A0',
+				backgroundGradient:{
+          type:'linear',
+          colors:['#333','#666'],
+          startPoint:{x:0,y:0},
+          endPoint:{x:0,y:22},
+          backFillStart:false
+        }
 			}));
 		}
 		timeSlot = data['timeslotname'];
@@ -286,7 +283,14 @@ pnwdstables.upcomingScheduleData = function(navController) {
 				},
 				color : '#fff',
 				height : 22,
-				backgroundColor : '#0062A0'
+				backgroundColor : '#0062A0',
+        backgroundGradient:{
+          type:'linear',
+          colors:['#333','#666'],
+          startPoint:{x:0,y:0},
+          endPoint:{x:0,y:22},
+          backFillStart:false
+        } 
 			}));
 		}
 		timeSlot = data['timeslotname'];
@@ -326,23 +330,7 @@ pnwdstables.fullSpeakerTable = function(navController) {
 pnwdstables.fullScheduleTable = function(navController) {
 	// Get the full schedule data from above.
 	var results = pnwdstables.fullScheduleData(navController);
-
-	var bottomTitleLabel = Ti.UI.createLabel({
-		text : 'Full Schedule',
-		color : '#0062A0',
-		textAlign : 'left',
-		font : {
-			fontSize : 24,
-			fontWeight : 'bold'
-		},
-	});
-	var custom_row = Ti.UI.createTableViewRow({
-		hasChild : false,
-		textAlign : 'left'
-	});
-	custom_row.add(bottomTitleLabel);
-	results.unshift(custom_row);
-
+	
 	// Create the table with the results from above.
 	var table = Titanium.UI.createTableView({
 		data : results
@@ -367,27 +355,9 @@ pnwdstables.myScheduleTable = function(navController) {
 	// Get the full schedule data from above.
 	var results = pnwdstables.myScheduleData(navController);
 
-	var bottomTitleLabel = Ti.UI.createLabel({
-		text : 'My Schedule',
-		color : '#0062A0',
-		width: Ti.UI.FILL,
-		left: 10,
-		textAlign : 'left',
-		font : {
-			fontSize : 18,
-			fontWeight : 'bold'
-		},
-	});
-	var custom_row = Ti.UI.createTableViewRow({
-		hasChild : false,
-		textAlign : 'left',
-		layout: 'horizontal'
-	});
-	custom_row.add(bottomTitleLabel);
-	results.unshift(custom_row);
-
 	// Create the table with the results from above.
 	var table = Titanium.UI.createTableView({
+	  top: 28,
 		data : results
 	});
 
@@ -410,38 +380,9 @@ pnwdstables.upcomingScheduleTable = function(navController) {
 	// Get the full schedule data from above.
 	var results = pnwdstables.upcomingScheduleData(navController);
 
-	var bottomTitleLabel = Ti.UI.createLabel({
-		text : 'Upcoming Sessions',
-		color : '#0062A0',
-		textAlign : 'left',
-    width: Ti.UI.FILL,
-    top: 0,
-    left: 10,
-		font : { fontSize : 18, fontWeight : 'bold'
-		},
-	});
-	var bottomTitleLabelHelp = Ti.UI.createLabel({
-    text : '(swipe left for My Sessions)',
-    color : '#666',
-    textAlign : 'left',
-    width: Ti.UI.FILL,
-    left: 10,
-    bottom: 4,
-    font : { fontSize : 12, fontWeight : 'normal' }
-  });
-  
-	var custom_row = Ti.UI.createTableViewRow({
-		hasChild : false,
-		textAlign : 'left',
-		touchEnabled : false,
-		height: 44
-	});
-	custom_row.add(bottomTitleLabel);
-	custom_row.add(bottomTitleLabelHelp);
-	results.unshift(custom_row);
-
 	// Create the table with the results from above.
 	var table = Titanium.UI.createTableView({
+	  top: 28,
 		data : results
 	});
 

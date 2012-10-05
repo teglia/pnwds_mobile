@@ -4,11 +4,12 @@
  */
 exports.homeWindow = function(navController) {
   var win = Ti.UI.createWindow({
-      backgroundColor: '#c5a571',
-      barImage: '/images/navbar.png',
-      title: '2012 PNWDS'
+    backgroundColor: '#333',
+    backgroundRepeat: true,
+    backgroundImage: '/images/low_contrast_linen.png',
+    barImage: '/images/navbar.png',
+    title: '2012 PNWDS'
   });
-  Ti.API.info("In home");
   
   var pnwdsnet = require( '/includes/network' );
   var pnwdsdb = require( '/includes/db' );
@@ -25,7 +26,6 @@ exports.homeWindow = function(navController) {
     pnwdstables.updateTables(navController);
   });
 
-
   var gridView = Ti.UI.createView({
     top: 2,
     left: 0,
@@ -34,16 +34,13 @@ exports.homeWindow = function(navController) {
     layout: 'vertical',
     height: 92,
     width: 'auto',
-    backgroundColor: "#c5a571"
+    backgroundColor: "#333",
+    backgroundRepeat: true,
+    backgroundImage: '/images/low_contrast_linen.png',
   });
   
   // if (Titanium.Platform.name == 'android') {
-    // gridView.height = 140;
-  // }
-  // else {
-    // gridView.height = 140;
-  // }
-  
+
   var firstRow = Ti.UI.createView({
     width: Ti.UI.FILL,
     height: 44,
@@ -52,6 +49,7 @@ exports.homeWindow = function(navController) {
     right: 0,
     layout: 'horizontal',
   });
+  
   var secondRow = Ti.UI.createView({
     width: Ti.UI.FILL,
     height: 44,
@@ -113,7 +111,6 @@ exports.homeWindow = function(navController) {
       top: 12,
       font:{fontSize:13, fontWeight:'normal'},
     }));  
-    
 
     newView.addEventListener('click', function(e) {
       switch(e.source.label) {
@@ -137,15 +134,11 @@ exports.homeWindow = function(navController) {
     else {
       secondRow.add(newView);
     }
-    //gridView.add(newView);
-    // dashboardData.push(newView);
   }
 
   gridView.add(firstRow);
   gridView.add(secondRow);
-
   win.gridView = gridView;
-  
   win.add(gridView);
   
   var updateOuterLabel = Ti.UI.createLabel({
@@ -166,7 +159,8 @@ exports.homeWindow = function(navController) {
     top: 3,
     font:{fontSize:12, fontWeight:'bold'},
     color: "#fff"
-  })
+  });
+  
   var updateLabel = Ti.UI.createLabel({
     text: 'update',
     label: 'update',
@@ -202,17 +196,85 @@ exports.homeWindow = function(navController) {
     top: 0,
     scrollType: 'vertical'
   });
+  
+  // Title for My Schedule section, added to the view so it doesn't disappear
+  var bottomTitleLabel = Ti.UI.createLabel({
+    text : 'My Schedule',
+    color : '#bbb',
+    textAlign : 'left',
+    width: Ti.UI.SIZE,
+    top: 4,
+    left: 0,
+    font : { fontSize : 16, fontWeight : 'bold'}
+  });
+  
+  var bottomTitleLabelHelp = Ti.UI.createLabel({
+    text : '(swipe right for Upcoming)',
+    color : '#bbb',
+    textAlign : 'left',
+    width: Ti.UI.SIZE,
+    left: 10,
+    top: 6,
+    font : { fontSize : 10, fontWeight : 'normal' }
+  });
+  
+  var myTitleView = Ti.UI.createView({
+    backgroundRepeat: true,
+    backgroundImage: '/images/low_contrast_linen.png',
+    width: Ti.UI.FILL,
+    height: Ti.UI.SIZE,
+    top: 0,
+    left: 10,
+    layout: 'horizontal'
+  });
+  
+  myTitleView.add(bottomTitleLabel);
+  myTitleView.add(bottomTitleLabelHelp);
+  
+
+  // Title for Upcoming Sessions section, added to the view so it doesn't disappear
+  var bottomTitleLabel = Ti.UI.createLabel({
+    text : 'Upcoming Sessions',
+    color : '#bbb',
+    textAlign : 'left',
+    width: Ti.UI.SIZE,
+    top: 4,
+    left: 0,
+    font : { fontSize : 16, fontWeight : 'bold'},
+  });
+  
+  var bottomTitleLabelHelp = Ti.UI.createLabel({
+    text : '(swipe left for My Sessions)',
+    color : '#bbb',
+    textAlign : 'left',
+    width: Ti.UI.SIZE,
+    left: 10,
+    top: 6,
+    font : { fontSize : 10, fontWeight : 'normal' }
+  });
+  
+  var upcomingTitleView = Ti.UI.createView({
+    backgroundRepeat: true,
+    backgroundImage: '/images/low_contrast_linen.png',
+    width: Ti.UI.FILL,
+    height: Ti.UI.SIZE,
+    top: 0,
+    left: 10,
+    layout: 'horizontal'
+  });
+  
+  upcomingTitleView.add(bottomTitleLabel);
+  upcomingTitleView.add(bottomTitleLabelHelp);
     
   var myScheduleTable = pnwdstables.myScheduleTable(navController);
   var upcomingScheduleTable = pnwdstables.upcomingScheduleTable(navController);
   var fullScheduleTable = pnwdstables.fullScheduleTable(navController);
   
+  myScheduleView.add(myTitleView);
+  upcomingScheduleView.add(upcomingTitleView);
   myScheduleView.add(myScheduleTable);
   upcomingScheduleView.add(upcomingScheduleTable);
-  Ti.API.info("Got the table");
-  
-  // scheduleViewTwo.add(fullScheduleTable);
-  
+
   var scrollerizer = Ti.UI.createScrollableView({
     height: 'auto',
     top: 126,

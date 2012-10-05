@@ -134,7 +134,7 @@ pnwdsnet.syncFlags = function(navController) {
       for(var loopKey in result) {
         // Create the data variable and hold every result
         var data = result[loopKey];
-        
+        Ti.API.info(data);
       }
     }
     else {
