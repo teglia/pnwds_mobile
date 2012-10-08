@@ -19,8 +19,7 @@ exports.newWin = function(navController, uid) {
     contentWidth:Ti.UI.FILL,
     contentHeight:Ti.UI.SIZE,
     showVerticalScrollIndicator:true,
-    showHorizontalScrollIndicator:false,
-    layout: 'vertical'
+    showHorizontalScrollIndicator:false
   });
 
 	var _timeConverter = function(UNIX_timestamp, day1) {
@@ -284,10 +283,15 @@ exports.newWin = function(navController, uid) {
 	var nodeBody = Titanium.UI.createWebView({
 		// Because D7 uses an object for the body itself including the language
     html: html,
-    width: Ti.UI.FILL,
-    height: Ti.UI.SIZE,
-    top: 0,
-    touchEnabled: false
+    layout : 'vertical',
+    top : 0,
+    left : 0,
+    width : Ti.UI.FILL,
+    contentWidth:Ti.UI.FILL,
+    contentHeight:Ti.UI.SIZE,
+    showVerticalScrollIndicator:true,
+    showHorizontalScrollIndicator:false,
+    touchEnabled: true
 	});
 
 
