@@ -1,8 +1,3 @@
-/**
- * Remember that in the debug process we can always use:
- * Ti.API.info(foo);
- * to log something to the console
- */
 exports.newView = function(navController, viewType, viewTitle) {
   var pnwdsnet = require( '/includes/network' );
   // Create the scrollview

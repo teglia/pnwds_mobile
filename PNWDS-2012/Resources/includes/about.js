@@ -3,13 +3,14 @@ exports.newWin = function(navController) {
   var win = Ti.UI.createWindow({
     child: true,
     backgroundColor: '#fff',
-    title: "About PNWDS 2012"
+    barImage: '/images/iphone-nav.png',
+    title: "About PNWDS"
   });
 
   var nodeBody = Titanium.UI.createWebView({
     url: '/includes/about.html',
     height: "auto",
-    top: 30,
+    top: 10,
     left: 10,
     right: 10,
   });

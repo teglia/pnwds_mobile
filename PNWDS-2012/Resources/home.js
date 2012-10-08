@@ -65,11 +65,11 @@ exports.homeWindow = function(navController) {
   // listener below knows the right name to look for!
   var itemData = [
     { name: 'sessions' },
-    { name: 'login' },
+    { name: 'speakers' },
+    { name: 'sponsors' },
     { name: 'maps' },
     { name: 'about' },
-    { name: 'speakers' },
-    { name: 'sponsors' }
+    { name: 'utility' },
   ];
     
   // Creating the array of "buttons". Buttons don't work well here, but views do!

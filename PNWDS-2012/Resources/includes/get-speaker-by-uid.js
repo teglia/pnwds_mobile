@@ -4,11 +4,11 @@ exports.newWin = function(navController, uid) {
 
   var data = pnwdsdb.usersgetbyuid(uid);
   data = data[0];
-  Ti.API.info(data);
 
   var win = Ti.UI.createWindow({
     backgroundColor : '#eee',
-    title: data['username']
+    title: data['username'],
+    barImage: '/images/iphone-nav.png',
   });
 
   var view = Titanium.UI.createView({

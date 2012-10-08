@@ -10,7 +10,9 @@ update.updateWin = function(navController) {
   // Define the variable win to contain the current window
   var win = Ti.UI.createWindow({
     child: true,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    barImage: '/images/iphone-nav.png',
+    title: 'Updating'
   });
   
   var label = Ti.UI.createLabel({

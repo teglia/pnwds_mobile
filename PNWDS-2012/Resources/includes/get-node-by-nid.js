@@ -6,7 +6,8 @@ exports.newWin = function(navController, nid) {
   data = data[0];
   
   var win = Ti.UI.createWindow({
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    barImage: '/images/iphone-nav.png',
   });
 
   var hr = Ti.UI.createLabel({
@@ -60,7 +61,7 @@ exports.newWin = function(navController, nid) {
     //get either the local path or the remote path and load the image for next time
     var getRemoteFile = require('/lib/imagecache').imageCache;
     var imageSrc = getRemoteFile(imageName, imageUrl);
-    Ti.API.info("ImageName: " + imageName + " and imageUrl: " + imageUrl);
+
     var userPic = Ti.UI.createImageView({
       backgroundImage : imageSrc,
       preventDefaultImage:true,
@@ -195,7 +196,6 @@ exports.newWin = function(navController, nid) {
   
   flag.addEventListener('change',function(e){
     pnwdsdb.sessionsflag(flag.value, data.nid);
-    Ti.API.info('Switch value: ' + flag.value);
   });
   
 	titleLabelView.add(nodeTitle);

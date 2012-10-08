@@ -24,7 +24,9 @@ exports.NavigationController.prototype.open = function(/*Ti.UI.Window*/windowToO
       this.navGroup = Ti.UI.iPhone.createNavigationGroup({
         window : windowToOpen
       });
-      var containerWindow = Ti.UI.createWindow();
+      var containerWindow = Ti.UI.createWindow({
+        barImage: '/images/iphone-nav.png'
+      });
       containerWindow.add(this.navGroup);
       containerWindow.open();
     }

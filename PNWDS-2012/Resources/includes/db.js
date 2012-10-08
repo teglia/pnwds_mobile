@@ -58,7 +58,6 @@ pnwdsdb.usersget = function(_username) {
 	var result = db.execute('SELECT * FROM users WHERE username = ?;', _username);
 	while (result.isValidRow()) {
 		var photoTag = result.fieldByName('photo');
-		// Ti.API.info(photoTag);
 		var photo = '';
 
 		// Return either the local file for display or the url on the site.
@@ -144,7 +143,6 @@ pnwdsdb.usersgetbyuid = function(_uid) {
  */
 pnwdsdb.usersadd = function(_uid, _username, _firstname, _lastname, _photo, _company, _bio, _twitter, _linkedin, _website) {
 	var db = Ti.Database.open('pnwds');
-	//Ti.API.info("Adding: " + _uid + ", " + _username + ".");
 	db.execute("INSERT INTO users(uid,username,firstname,lastname,photo,company,bio,twitter,linkedin,website) VALUES(?,?,?,?,?,?,?,?,?,?)", _uid, _username, _firstname, _lastname, _photo, _company, _bio, _twitter, _linkedin, _website);
 	db.close();
 
@@ -162,7 +160,7 @@ pnwdsdb.usersadd = function(_uid, _username, _firstname, _lastname, _photo, _com
 pnwdsdb.sessionslist = function() {
 	var sessionList = [];
 	var db = Ti.Database.open('pnwds');
-	var result = db.execute('SELECT * FROM sessions;');
+	var result = db.execute('SELECT * FROM sessions ORDER by timeslot;');
 	while (result.isValidRow()) {
 		sessionList.push({
 			//add these attributes for the benefit of a table view
@@ -191,7 +189,7 @@ pnwdsdb.sessionslist = function() {
 pnwdsdb.mysessionslist = function() {
 	var sessionList = [];
 	var db = Ti.Database.open('pnwds');
-	var result = db.execute('SELECT * FROM sessions where flagged = 1;');
+	var result = db.execute('SELECT * FROM sessions where flagged = 1 ORDER by timeslot;');
 	while (result.isValidRow()) {
 		sessionList.push({
 			//add these attributes for the benefit of a table view

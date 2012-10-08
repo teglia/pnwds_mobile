@@ -22,8 +22,10 @@ var NavigationController = require('NavigationController').NavigationController,
 var controller = new NavigationController();
 controller.open(new homeWindow(controller));
 
+// Setting this as a variable so I can add it to the utility window as an option if I get the time.
+// TODO: Setup spot on Utility window to enter custom interval
 if (!Ti.App.Properties.getInt('updateInterval')) {
-  Ti.App.Properties.setInt('updateInterval', 25000);
+  Ti.App.Properties.setInt('updateInterval', 250000);
 }
 
 // Check for updates.
@@ -42,5 +44,5 @@ var updated = setInterval(function() {
   else {
     Ti.API.info("No net, not checking.");
   }
-}, Ti.App.Properties.getInt('updateInterval'));
+}, 300000); //Ti.App.Properties.getInt('updateInterval'));
 

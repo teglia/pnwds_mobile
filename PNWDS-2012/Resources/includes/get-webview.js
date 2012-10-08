@@ -1,6 +1,7 @@
 exports.newWin = function(navController, _url) {
 var win = Ti.UI.createWindow({
-		backgroundColor : '#fff'
+		backgroundColor : '#fff',
+    barImage: '/images/iphone-nav.png',
 	});
 	var view = Titanium.UI.createWebView({
 		// Because D7 uses an object for the body itself including the language

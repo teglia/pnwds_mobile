@@ -4,7 +4,9 @@
 exports.newWin = function(navController) {
   
   // Define the variable win to contain the current window
-  var win = Ti.UI.createWindow();
+  var win = Ti.UI.createWindow({
+    barImage: '/images/iphone-nav.png',
+  });
   // If we want a webview using U of W's excellent mobile map, we do this:
   // var webview = Titanium.UI.createWebView({url:'http://uw.edu/maps/?mgh'});
   

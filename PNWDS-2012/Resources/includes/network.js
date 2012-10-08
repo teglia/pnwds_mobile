@@ -25,7 +25,6 @@ pnwdsnet.isUpToDate = function(navController) {
   //       only update those individual items.
   var siteDate = Ti.App.Properties.getString('pnwdsSiteLastUpdated');  
   var appDate = Ti.App.Properties.getString('pnwdsAppLastUpdated');
-  Ti.API.info("siteDate: " + siteDate + ". appDate: " + appDate);
   if (siteDate == appDate) { 
     // Update the label on the button on the home window to indicate update is needed.
     Ti.API.info("Up to date.");
@@ -97,7 +96,6 @@ pnwdsnet.checkUpdates = function(navController) {
 pnwdsnet.getNodeByNid = function(navController,nid) {
   var url = pnwdsnet.restPath + 'node/' + nid + '.json';
   var xhr = Titanium.Network.createHTTPClient();
-  Ti.API.info(url);
   // What to do with the response from the xhr request
   xhr.onload = function() {
     var statusCode = this.status;
@@ -134,7 +132,6 @@ pnwdsnet.syncFlags = function(navController) {
       for(var loopKey in result) {
         // Create the data variable and hold every result
         var data = result[loopKey];
-        Ti.API.info(data);
       }
     }
     else {

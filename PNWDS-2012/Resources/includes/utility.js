@@ -4,7 +4,8 @@ var pnwdsnet = require( '/includes/network' );
 // Define the variable win to contain the current window
 var win = Ti.UI.createWindow({
   child: true,
-  backgroundColor: '#fff'
+  backgroundColor: '#fff',
+  barImage: '/images/iphone-nav.png',
 });
 
 // Create a new scroll view
@@ -29,8 +30,18 @@ var usernameLabel = Ti.UI.createLabel({
 	height:'auto'
 });
 
+var comingsoonLabel = Ti.UI.createLabel({
+  text:'Coming Soon: Soon, there will be a sync function to syncronize your flags here with those on the site. Stay tuned for updates!',
+  font:{fontSize:14, fontWeight: "bold"},
+  left:10,
+  top:10,
+  width:300,
+  height:'auto'
+});
+view.add(comingsoonLabel);
+
 // Add the label to the view
-view.add(usernameLabel);
+//view.add(usernameLabel);
 
 // Create the username textfield
 var usernameTextfield = Ti.UI.createTextField({
@@ -46,7 +57,7 @@ var usernameTextfield = Ti.UI.createTextField({
 });
 
 // Add the textfield to the view
-view.add(usernameTextfield);
+//view.add(usernameTextfield);
 
 // Create the label for the password
 var passwordLabel = Ti.UI.createLabel({
@@ -59,7 +70,7 @@ var passwordLabel = Ti.UI.createLabel({
 });
 
 // Add the label to the view
-view.add(passwordLabel);
+//view.add(passwordLabel);
 
 // Create the password textfield
 var passwordTextfield = Ti.UI.createTextField({
@@ -78,7 +89,7 @@ var passwordTextfield = Ti.UI.createTextField({
 });
 
 // Add the textarea to the view
-view.add(passwordTextfield);
+//view.add(passwordTextfield);
 
 // Create the login button
 var loginButton = Ti.UI.createButton({
@@ -105,7 +116,7 @@ var resetButton = Ti.UI.createButton({
 });
 
 // Add the button to the view
-view.add(loginButton);
+//view.add(loginButton);
 view.add(updateButton);
 view.add(resetButton);
 
@@ -124,7 +135,7 @@ loginButton.addEventListener('click', function() {
 	// Define the url which contains the full url
 	// in this case, we'll connecting to http://example.com/api/rest/user/login
 	var url = pnwdsnet.restPath + 'user/login';
-  Ti.API.info(url);
+
 	// Create a connection
 	var xhr = Ti.Network.createHTTPClient();
 		
@@ -141,7 +152,7 @@ loginButton.addEventListener('click', function() {
 		// Save the status of the connection in a variable
 		// this will be used to see if we have a connection (200) or not
 		var statusCode = xhr.status;
-		Ti.API.info(statusCode);
+
 		// Check if we have a valid status
 		if(statusCode == 200) {
 			
@@ -208,7 +219,7 @@ var logoutButton = Titanium.UI.createButton({
 });
 
 // Add the button to the window
-win.add(logoutButton);
+//win.add(logoutButton);
 
 // Add the event listener for when the button is created
 logoutButton.addEventListener('click', function() {
