@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <sdk-version>2.1.2.GA</sdk-version>
+    <sdk-version>2.1.3.GA</sdk-version>
     <deployment-targets>
         <target device="mobileweb">false</target>
         <target device="iphone">true</target>
@@ -8,13 +8,13 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <id>com.patrickteglia.pnwds2012</id>
+    <id>com.forumone.pnwds2012</id>
     <name>PNWDS-mobile-2012</name>
     <version>2.0</version>
-    <publisher>pteglia</publisher>
-    <url>http://patrickteglia.com</url>
+    <publisher>Forum One Communications</publisher>
+    <url>http://forumone.com</url>
     <description>not specified</description>
-    <copyright>2011 by pteglia</copyright>
+    <copyright>2012 by Pat Teglia at ForumOne</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
