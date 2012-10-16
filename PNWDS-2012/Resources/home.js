@@ -85,13 +85,13 @@ exports.homeWindow = function(navController) {
       layout: 'horizontal'
     });
     
-    newView.setBackgroundGradient({ 
-      type: 'linear', 
-      colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
-      startPoint: { x: 0, y: 0 },
-      endPoint: { x: 0, y: 23 },
-      backFillStart: false
-    });
+    // newView.setBackgroundGradient({ 
+      // type: 'linear', 
+      // colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
+      // startPoint: { x: 0, y: 0 },
+      // endPoint: { x: 0, y: 23 },
+      // backFillStart: false
+    // });
     
     newView.add(Ti.UI.createImageView({
       width: Ti.UI.SIZE,

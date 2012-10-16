@@ -74,14 +74,14 @@ exports.newWin = function(navController, uid) {
       left: 0,
       borderRadius: 3
     });
-    
-    iconView.setBackgroundGradient({ 
-      type: 'linear', 
-      colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
-      startPoint: { x: 0, y: 0 },
-      endPoint: { x: 0, y: 23 },
-      backFillStart: false
-    });
+//     
+    // iconView.setBackgroundGradient({ 
+      // type: 'linear', 
+      // colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
+      // startPoint: { x: 0, y: 0 },
+      // endPoint: { x: 0, y: 23 },
+      // backFillStart: false
+    // });
     
     var icon = Ti.UI.createImageView({
       left: 8,

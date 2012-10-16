@@ -5,7 +5,8 @@ var pnwdsdb = {};
  *
  */
 pnwdsdb.bootstrap = function() {
-	var db = Ti.Database.open('pnwds');
+  var db = Ti.Database.install('/includes/pnwds.sql', 'pnwds');
+	// var db = Ti.Database.open('pnwds');
 	db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT, bio TEXT, twitter TEXT, linkedin TEXT, website TEXT);');
 	db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, timeslotname TEXT, room TEXT, uid TEXT);');
 	db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
