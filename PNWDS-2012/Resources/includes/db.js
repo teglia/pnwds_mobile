@@ -5,10 +5,11 @@ var pnwdsdb = {};
  *
  */
 pnwdsdb.bootstrap = function() {
-	var db = Ti.Database.open('pnwds');
-	db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT, bio TEXT, twitter TEXT, linkedin TEXT, website TEXT);');
-	db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, timeslotname TEXT, room TEXT, uid TEXT);');
-	db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
+	// var db = Ti.Database.open('pnwdsbr');
+  var db = Ti.Database.install('/includes/pnwdsds.sql', 'pnwdsbr');
+	//db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT, bio TEXT, twitter TEXT, linkedin TEXT, website TEXT);');
+	//db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, timeslotname TEXT, room TEXT, uid TEXT);');
+	//db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
 	db.close();
 }
 /*********** Users functions **************/
@@ -19,7 +20,7 @@ pnwdsdb.bootstrap = function() {
  */
 pnwdsdb.userslist = function() {
 	var userList = [];
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	var result = db.execute('SELECT * FROM users;');
 	while (result.isValidRow()) {
 		userList.push({
@@ -54,7 +55,7 @@ pnwdsdb.userslist = function() {
  */
 pnwdsdb.usersget = function(_username) {
 	var user = [];
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	var result = db.execute('SELECT * FROM users WHERE username = ?;', _username);
 	while (result.isValidRow()) {
 		var photoTag = result.fieldByName('photo');
@@ -101,7 +102,7 @@ pnwdsdb.usersget = function(_username) {
  */
 pnwdsdb.usersgetbyuid = function(_uid) {
 	var user = [];
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	var result = db.execute('SELECT * FROM users WHERE uid = ?;', _uid);
 	while (result.isValidRow()) {
 		var photoTag = result.fieldByName('photo');
@@ -142,7 +143,7 @@ pnwdsdb.usersgetbyuid = function(_uid) {
  *
  */
 pnwdsdb.usersadd = function(_uid, _username, _firstname, _lastname, _photo, _company, _bio, _twitter, _linkedin, _website) {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	db.execute("INSERT INTO users(uid,username,firstname,lastname,photo,company,bio,twitter,linkedin,website) VALUES(?,?,?,?,?,?,?,?,?,?)", _uid, _username, _firstname, _lastname, _photo, _company, _bio, _twitter, _linkedin, _website);
 	db.close();
 
@@ -159,7 +160,7 @@ pnwdsdb.usersadd = function(_uid, _username, _firstname, _lastname, _photo, _com
  */
 pnwdsdb.sessionslist = function() {
 	var sessionList = [];
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	var result = db.execute('SELECT * FROM sessions ORDER by timeslot;');
 	while (result.isValidRow()) {
 		sessionList.push({
@@ -188,7 +189,7 @@ pnwdsdb.sessionslist = function() {
  */
 pnwdsdb.mysessionslist = function() {
 	var sessionList = [];
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	var result = db.execute('SELECT * FROM sessions where flagged = 1 ORDER by timeslot;');
 	while (result.isValidRow()) {
 		sessionList.push({
@@ -216,7 +217,7 @@ pnwdsdb.mysessionslist = function() {
  */
 pnwdsdb.sessionsget = function(_nid) {
 	var session = [];
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	var result = db.execute('SELECT * FROM sessions WHERE nid = ? ORDER BY room ASC;', _nid);
 	while (result.isValidRow()) {
 		session.push({
@@ -246,7 +247,7 @@ pnwdsdb.sessionsget = function(_nid) {
  */
 pnwdsdb.sessionsgetbyuser = function(_uid) {
 	var sessions = [];
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	var userResult = db.execute('SELECT * FROM users WHERE uid = ?;', _uid);
 
 	while (userResult.isValidRow()) {
@@ -283,7 +284,7 @@ pnwdsdb.sessionsgetbyuser = function(_uid) {
  *
  */
 pnwdsdb.sessionsadd = function(_title, _body, _nid, _speakers, _timeslot, _timeslotname, _room, _uid) {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 
 	db.execute("INSERT INTO sessions(title,body,nid,speakers,timeslot,timeslotname,room,uid) VALUES(?,?,?,?,?,?,?,?)", _title, _body, _nid, _speakers, _timeslot, _timeslotname, _room, _uid);
 	db.close();
@@ -295,7 +296,7 @@ pnwdsdb.sessionsadd = function(_title, _body, _nid, _speakers, _timeslot, _times
  *
  */
 pnwdsdb.sessionsdel = function(_nid) {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	db.execute("DELETE FROM sessions WHERE nid = ?", _nid);
 	db.close();
 	Ti.App.fireEvent("databaseUpdated");
@@ -306,7 +307,7 @@ pnwdsdb.sessionsdel = function(_nid) {
  *
  */
 pnwdsdb.sessionsupdate = function(_title, _body, _nid, _speakers, _timeslot, _timeslotname, _room) {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	db.execute("UPDATE sessions SET title = ?, body = ?, nid = ?, speakers = ?, timeslot = ?, timeslotname = ?, room = ? WHERE nid = ?", _title, _body, _nid, _speakers, _timeslot, _timeslotname, _room);
 	db.close();
 
@@ -320,7 +321,7 @@ pnwdsdb.sessionsupdate = function(_title, _body, _nid, _speakers, _timeslot, _ti
  *
  */
 pnwdsdb.sessionsflag = function(_flag, _nid) {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	db.execute("UPDATE sessions SET flagged = ? WHERE nid = ?", _flag, _nid);
 	db.close();
 
@@ -333,7 +334,7 @@ pnwdsdb.sessionsflag = function(_flag, _nid) {
  *
  */
 pnwdsdb.sessionsclear = function() {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	db.execute('DELETE FROM sessions;');
 	// db.execute('DELETE FROM flag');
 	db.execute('CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, body TEXT, nid INTEGER, flagged INTEGER, speakers TEXT, timeslot TEXT, timeslotname TEXT, room TEXT, uid TEXT);');
@@ -342,7 +343,7 @@ pnwdsdb.sessionsclear = function() {
 }
 
 pnwdsdb.speakersclear = function() {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	db.execute('DELETE FROM users');
 	// db.execute('DELETE FROM flag');
 	db.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, firstname TEXT, lastname TEXT, photo TEXT, uid INTEGER, company TEXT, bio TEXT, twitter TEXT, linkedin TEXT, website TEXT);');
@@ -350,14 +351,14 @@ pnwdsdb.speakersclear = function() {
 }
 
 pnwdsdb.flagsclear = function() {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	db.execute('DELETE FROM flag');
 	db.execute('CREATE TABLE IF NOT EXISTS flag(id INTEGER PRIMARY KEY, nid INTEGER);');
 	db.close();
 }
 
 pnwdsdb.removedb = function() {
-	var db = Ti.Database.open('pnwds');
+	var db = Ti.Database.open('pnwdsbr');
 	db.remove();
 	pnwdsdb.bootstrap();
 }

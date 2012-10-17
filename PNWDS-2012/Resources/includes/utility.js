@@ -118,7 +118,7 @@ var resetButton = Ti.UI.createButton({
 // Add the button to the view
 //view.add(loginButton);
 view.add(updateButton);
-view.add(resetButton);
+// view.add(resetButton);
 
 
 // Add the event listener for when the button is created

@@ -24,7 +24,8 @@ pnwdsnet.isUpToDate = function(navController) {
   //       this function returns true, then we could look more deeply to see which items were needing update, and
   //       only update those individual items.
   var siteDate = Ti.App.Properties.getString('pnwdsSiteLastUpdated');  
-  var appDate = Ti.App.Properties.getString('pnwdsAppLastUpdated');
+  var appDate = Ti.App.Properties.getString('pnwdsAppLastUpdated');  
+
   if (siteDate == appDate) { 
     // Update the label on the button on the home window to indicate update is needed.
     Ti.API.info("Up to date.");
@@ -65,6 +66,13 @@ pnwdsnet.checkUpdates = function(navController) {
       // but not receiving data.
       if (result[0].lastupdated.length > 10) {
         Ti.API.info("Comparing update dates now.");
+          var siteDate = Ti.App.Properties.getString('pnwdsSiteLastUpdated');  
+          var appDate = Ti.App.Properties.getString('pnwdsAppLastUpdated');
+          Ti.API.info(siteDate);
+          
+          if (!siteDate || !appDate) {
+            Ti.App.Properties.setString('pnwdsAppLastUpdated',result[0].lastupdated);
+          }
         // Set that date from the site as a variable in the app:
         Ti.App.Properties.setString('pnwdsSiteLastUpdated', result[0].lastupdated);
         // Compare:
@@ -213,7 +221,7 @@ pnwdsnet.seedsessions = function(navController) {
 pnwdsnet.seedspeakers = function(navController) {
   var url = pnwdsnet.restPath + 'views/mobile_speaker_list_approved_sessions.json';
   var xhr = Titanium.Network.createHTTPClient();
-  pnwdsdb.speakersclear();
+  // pnwdsdb.speakersclear();
   
   // When the xhr loads we do:
   xhr.onload = function() {
