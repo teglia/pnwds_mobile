@@ -212,6 +212,41 @@ pnwdsdb.mysessionslist = function() {
 };
 
 /**
+ * List all sessions.
+ * returns full session details in array.
+ *
+ */
+pnwdsdb.upcomingsessionslist = function() {
+  var sessionList = [];
+  var currentTime = new Date();
+  var nowTime = currentTime.getTime();
+  var endTime = nowTime + 3600;
+  nowTime = nowTime + ' to ' + endTime;
+  Ti.API.info("Nowtime is: " + nowTime);
+  var db = Ti.Database.open('pnwdsbr');
+  var result = db.execute('SELECT * FROM sessions where timeslot > ? ORDER by timeslot;', nowTime);
+  while (result.isValidRow()) {
+    sessionList.push({
+      //add these attributes for the benefit of a table view
+      title : result.fieldByName('title'),
+      nid : result.fieldByName('nid'),
+      speakers : result.fieldByName('speakers'),
+      timeslot : result.fieldByName('timeslot'),
+      timeslotname : result.fieldByName('timeslotname'),
+      room : result.fieldByName('room'),
+      hasChild : true
+    });
+    result.next();
+  }
+  result.close();
+  //make sure to close the result set
+  db.close();
+
+  return sessionList;
+};
+
+
+/**
  * Get single session via nid.
  *
  */
