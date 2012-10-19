@@ -70,17 +70,9 @@ exports.newWin = function(navController, uid) {
     var iconView = Ti.UI.createView({
       backgroundColor: "#005198",
       height: 35,
-      width: 37,
+      width: '12%',
       left: 0,
       borderRadius: 3
-    });
-    
-    iconView.setBackgroundGradient({ 
-      type: 'linear', 
-      colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
-      startPoint: { x: 0, y: 0 },
-      endPoint: { x: 0, y: 23 },
-      backFillStart: false
     });
     
     var icon = Ti.UI.createImageView({
@@ -103,7 +95,7 @@ exports.newWin = function(navController, uid) {
 			},
 			left : 10,
 			height : Ti.UI.SIZE,
-			width : Ti.UI.FILL
+			width : '80%'
 		});
 
 		spacerView.add(iconView);
@@ -119,17 +111,13 @@ exports.newWin = function(navController, uid) {
 	}
 
 	//get either the local path or the remote path and load the image for next time
-	var getRemoteFile = require('/lib/imagecache').imageCache;
-	var imageSrc = getRemoteFile(data.imageName, data.imageUrl);
-
+	// var getRemoteFile = require('/lib/imagecache').imageCache;
+	// var imageSrc = getRemoteFile(data.imageName, data.imageUrl);
+  var imageSrc = '/images/avatars/' + data.imageName;
 	var picture = Ti.UI.createImageView({
 		image : imageSrc,
 		preventDefaultImage : true,
-		height : 88,
-		width : 88,
-		left : 0,
-		top: 0,
-		bottom: 0
+		width : 90
 	})
 
 	//speakerView.add(userButton);
@@ -140,9 +128,10 @@ exports.newWin = function(navController, uid) {
 			fontSize : 18,
 			fontWeight : 'bold'
 		},
-		width : Ti.UI.FILL,
-		height: Ti.UI.SIZE,
-		left : 0,
+		height: 22,
+		width: Ti.UI.FILL,
+		top: 10,
+		left : 0
 	});
 
 	var userNameLabel = Ti.UI.createLabel({
@@ -152,9 +141,10 @@ exports.newWin = function(navController, uid) {
 			fontSize : 14,
 			fontWeight : 'normal'
 		},
-		width : Ti.UI.FILL,
-		height: Ti.UI.SIZE,
-		left : 0,
+		height: 18,
+    width: Ti.UI.FILL,
+		top: 0,
+		left : 0
 	});
 
 	var companyNameLabel = Ti.UI.createLabel({
@@ -164,39 +154,39 @@ exports.newWin = function(navController, uid) {
 			fontSize : 14,
 			fontWeight : 'normal'
 		},
-		width : Ti.UI.FILL,
-		height: Ti.UI.SIZE,
+		height: 18,
+	  width: Ti.UI.FILL,
 		top : 8,
 		left : 0,
 	});
 
 	var TextWrapper = Ti.UI.createView({
 		layout : 'vertical',
-		textAlign : 'left',
-		height : Ti.UI.SIZE,
-		width: Ti.UI.FILL,
+		height : 90,
+		width: 200,
 		left : 10,
+		top: 0
 	})
+  
+  TextWrapper.add(fullNameLabel);
+  TextWrapper.add(userNameLabel);
+  if (data['company']) {
+    TextWrapper.add(companyNameLabel);
+  }
 
 	var speakerView = Ti.UI.createView({
 		layout :'horizontal',
 		top : 0,
 		left : 0,
 		width : Ti.UI.FILL,
-		height : Ti.UI.SIZE,
+		height : 90,
 		backgroundColor : '#eee',
 		backgroundImage: '/images/tasky_pattern.png',
 		backgroundRepeat: true
 	});
-
+	
 	speakerView.add(picture);
-	TextWrapper.add(fullNameLabel);
-	TextWrapper.add(userNameLabel);
-	if (data['company']) {
-		TextWrapper.add(companyNameLabel);
-	}
-
-	speakerView.add(TextWrapper)
+	speakerView.add(TextWrapper);
 
 	var linkView = Ti.UI.createView({
 		layout : 'horizontal',
@@ -215,9 +205,9 @@ exports.newWin = function(navController, uid) {
 				fontSize : 12,
 				fontWeight : 'bold'
 			},
-			width : 60,
-			height : 25,
-			top : 5,
+			width : 65,
+			height : 30,
+			top : 8,
 			right : 8,
 
 		});
@@ -235,9 +225,9 @@ exports.newWin = function(navController, uid) {
 				fontSize : 12,
 				fontWeight : 'bold'
 			},
-			width : 60,
-			height : 25,
-			top : 5,
+			width : 70,
+			height : 30,
+			top : 8,
 			right : 8,
 		});
 		linkedinButton.addEventListener('click', function() {
@@ -254,9 +244,9 @@ exports.newWin = function(navController, uid) {
 				fontSize : 12,
 				fontWeight : 'bold'
 			},
-			width : 60,
-			height : 25,
-			top : 5,
+			width : 65,
+			height : 30,
+			top : 8,
 			right : 8,
 		});
 		websiteButton.addEventListener('click', function() {

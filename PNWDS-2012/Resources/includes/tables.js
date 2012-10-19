@@ -8,6 +8,7 @@ var pnwdsdb = require('/includes/db');
 pnwdstables.updateTables = function(navController) {
 	// Update all the tables
 	navController.windowStack[0].fullScheduleTable.setData(pnwdstables.fullScheduleData());
+	// controller.windowStack[0].myScheduleTable.setData(pnwdstables.myScheduleData())
 	navController.windowStack[0].myScheduleTable.setData(pnwdstables.myScheduleData());
 	navController.windowStack[0].upcomingScheduleTable.setData(pnwdstables.upcomingScheduleData());
 
@@ -60,7 +61,7 @@ _formatSessionRows = function(rowData) {
 	var row = Ti.UI.createTableViewRow({
 		hasChild : true,
 		nid : rowData['nid'],
-
+    backgroundColor: '#fff'
 	});
 	var rowView = Ti.UI.createView({
     backgroundColor : '#fff',
@@ -91,11 +92,7 @@ _formatSpeakerRows = function(rowData) {
 	//get the name of the image to check if it saved locally
 	var imageName = imageUrl.split('/');
 	imageName = imageName[imageName.length-1];
-
-	//get either the local path or the remote path and load the image for next time
-	var getRemoteFile = require('/lib/imagecache').imageCache;
-	var imageSrc = getRemoteFile(imageName, imageUrl);
-
+  var imageSrc = '/images/avatars/' + imageName;
 	var fullNameLabel = Ti.UI.createLabel({
 		text : rowData['firstname'] + " " + rowData['lastname'],
 		color : '#0062A0',
@@ -203,14 +200,7 @@ pnwdstables.fullScheduleData = function(navController) {
 					fontSize : 12,
 					fontWeight : 'bold'
 				},
-				color : '#fff',
-				backgroundGradient:{
-          type:'linear',
-          colors:['#333','#666'],
-          startPoint:{x:0,y:0},
-          endPoint:{x:0,y:45},
-          backFillStart:false
-        } 
+				color : '#fff'
 			}));
 		}
 		timeSlot = data['timeslotname'];
@@ -243,14 +233,7 @@ pnwdstables.myScheduleData = function(navController) {
 				},
 				color : '#fff',
 				height : 22,
-				backgroundColor : '#0062A0',
-				backgroundGradient:{
-          type:'linear',
-          colors:['#333','#666'],
-          startPoint:{x:0,y:0},
-          endPoint:{x:0,y:22},
-          backFillStart:false
-        }
+				backgroundColor : '#0062A0'
 			}));
 		}
 		timeSlot = data['timeslotname'];
@@ -265,7 +248,7 @@ pnwdstables.myScheduleData = function(navController) {
  */
 pnwdstables.upcomingScheduleData = function(navController) {
 	// Get the sessions data from the db.
-	var scheduleData = pnwdsdb.sessionslist();
+	var scheduleData = pnwdsdb.upcomingsessionslist();
 	var results = new Array();
 	var timeSlot = '';
 	var oldTimeSlot = '';
@@ -283,14 +266,7 @@ pnwdstables.upcomingScheduleData = function(navController) {
 				},
 				color : '#fff',
 				height : 22,
-				backgroundColor : '#0062A0',
-        backgroundGradient:{
-          type:'linear',
-          colors:['#333','#666'],
-          startPoint:{x:0,y:0},
-          endPoint:{x:0,y:22},
-          backFillStart:false
-        } 
+				backgroundColor : '#0062A0'
 			}));
 		}
 		timeSlot = data['timeslotname'];
@@ -354,11 +330,11 @@ pnwdstables.fullScheduleTable = function(navController) {
 pnwdstables.myScheduleTable = function(navController) {
 	// Get the full schedule data from above.
 	var results = pnwdstables.myScheduleData(navController);
-
 	// Create the table with the results from above.
 	var table = Titanium.UI.createTableView({
 	  top: 28,
-		data : results
+		data : results,
+    headerTitle: 'My Sessions (swipe Right for Upcoming Sessions)'
 	});
 
 	// add a listener for click to the table
@@ -383,7 +359,9 @@ pnwdstables.upcomingScheduleTable = function(navController) {
 	// Create the table with the results from above.
 	var table = Titanium.UI.createTableView({
 	  top: 28,
-		data : results
+		data : results,
+		height: Ti.UI.SIZE,
+		headerTitle: 'Upcoming Sessions (swipe Left for My Sessions)'
 	});
 
 	// add a listener for click to the table

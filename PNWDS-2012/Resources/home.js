@@ -85,13 +85,13 @@ exports.homeWindow = function(navController) {
       layout: 'horizontal'
     });
     
-    newView.setBackgroundGradient({ 
-      type: 'linear', 
-      colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
-      startPoint: { x: 0, y: 0 },
-      endPoint: { x: 0, y: 23 },
-      backFillStart: false
-    });
+    // newView.setBackgroundGradient({ 
+      // type: 'linear', 
+      // colors: [{ color: '#006cca', position: 0.0 }, { color: '#005198', position: 1.0 }] ,
+      // startPoint: { x: 0, y: 0 },
+      // endPoint: { x: 0, y: 23 },
+      // backFillStart: false
+    // });
     
     newView.add(Ti.UI.createImageView({
       width: Ti.UI.SIZE,
@@ -265,20 +265,21 @@ exports.homeWindow = function(navController) {
   
   upcomingTitleView.add(bottomTitleLabel);
   upcomingTitleView.add(bottomTitleLabelHelp);
-    
+  
   var myScheduleTable = pnwdstables.myScheduleTable(navController);
   var upcomingScheduleTable = pnwdstables.upcomingScheduleTable(navController);
+  upcomingScheduleTable.height = Ti.UI.SIZE;
   var fullScheduleTable = pnwdstables.fullScheduleTable(navController);
-  
+
   myScheduleView.add(myTitleView);
   upcomingScheduleView.add(upcomingTitleView);
-  myScheduleView.add(myScheduleTable);
+  //myScheduleView.add(myScheduleTable);
   upcomingScheduleView.add(upcomingScheduleTable);
 
   var scrollerizer = Ti.UI.createScrollableView({
     height: 'auto',
     top: 126,
-    views:[upcomingScheduleView,myScheduleView],
+    views:[upcomingScheduleTable,myScheduleTable],
     showPagingControl:true
   });
 

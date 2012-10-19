@@ -7,7 +7,7 @@ exports.newWin = function(navController, nid) {
   
   var win = Ti.UI.createWindow({
     backgroundColor: '#fff',
-    barImage: '/images/iphone-nav.png',
+    // barImage: '/images/iphone-nav.png',
   });
 
   var hr = Ti.UI.createLabel({
@@ -49,7 +49,7 @@ exports.newWin = function(navController, nid) {
       layout: 'horizontal',
       width: Ti.UI.FILL,
       height: 44,
-      backgroundColor: '#eee'
+      backgroundColor: '#666'
     });
     
     var imageUrl = user.photo;
@@ -60,8 +60,8 @@ exports.newWin = function(navController, nid) {
 
     //get either the local path or the remote path and load the image for next time
     var getRemoteFile = require('/lib/imagecache').imageCache;
-    var imageSrc = getRemoteFile(imageName, imageUrl);
-
+    // var imageSrc = getRemoteFile(imageName, imageUrl);
+    var imageSrc = '/images/avatars/' + imageName;
     var userPic = Ti.UI.createImageView({
       backgroundImage : imageSrc,
       preventDefaultImage:true,
@@ -77,7 +77,8 @@ exports.newWin = function(navController, nid) {
       top: 10,
       left: 10,
       height: Ti.UI.SIZE,
-      width: Ti.UI.FILL
+      width: 201,
+      color: '#000',
     });
 
     /******** Event listeners with calls to Speaker Info window. **********/
@@ -105,8 +106,8 @@ exports.newWin = function(navController, nid) {
     layout: 'vertical',
     width: Ti.UI.FILL,
     height: Ti.UI.SIZE,
-    backgroundColor : '#eee',
-    backgroundImage: '/images/tasky_pattern.png',
+    backgroundColor : '#000',
+    // backgroundImage: '/images/tasky_pattern.png',
     backgroundRepeat: true
 	});
 	
@@ -245,7 +246,7 @@ exports.newWin = function(navController, nid) {
 		// Because D7 uses an object for the body itself including the language
 		html: html,
 		width: Ti.UI.FILL,
-		height: Ti.UI.SIZE,
+		height: Ti.UI.FILL,
 		top: 0,
 		touchEnabled: false
 	});

@@ -69,11 +69,12 @@ exports.newView = function(navController, viewType, viewTitle) {
           //get the name of the image to check if it saved locally
           var imageName = url.split('/');
           imageName = imageName[imageName.length-1];
-        
+          // var imageSrc = Ti.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,'/images/avatars/' + imageName);
+          var imageSrc = '/images/avatars/' + imageName;
           //get either the local path or the remote path and load the image for next time
-          var getRemoteFile = require('/lib/imagecache').imageCache;
-          var imageSrc = getRemoteFile(imageName, url);
-        
+          // var getRemoteFile = require('/lib/imagecache').imageCache;
+          // var imageSrc = getRemoteFile(imageName, url);
+//         
           var picture = Ti.UI.createImageView({
             image : imageSrc,
             preventDefaultImage:true,

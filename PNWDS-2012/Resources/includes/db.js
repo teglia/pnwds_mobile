@@ -188,9 +188,9 @@ pnwdsdb.sessionslist = function() {
  *
  */
 pnwdsdb.mysessionslist = function() {
-	var sessionList = [];
+	var sessionList = []; 
 	var db = Ti.Database.open('pnwdsbr');
-	var result = db.execute('SELECT * FROM sessions where flagged = 1 ORDER by timeslot;');
+	var result = db.execute('SELECT * FROM sessions where flagged = "true" ORDER by timeslot;');
 	while (result.isValidRow()) {
 		sessionList.push({
 			//add these attributes for the benefit of a table view
@@ -209,6 +209,40 @@ pnwdsdb.mysessionslist = function() {
 	db.close();
 
 	return sessionList;
+};
+
+/**
+ * List all sessions.
+ * returns full session details in array.
+ *
+ */
+pnwdsdb.upcomingsessionslist = function() {
+  var sessionList = [];
+  var currentTime = new Date();
+  var nowTime = currentTime.getTime();
+  var endTime = nowTime + 3600;
+  nowTime = nowTime + ' to ' + endTime;
+  Ti.API.info("Nowtime is: " + nowTime);
+  var db = Ti.Database.open('pnwdsbr');
+  var result = db.execute('SELECT * FROM sessions where timeslot > ? ORDER by timeslot;', nowTime);
+  while (result.isValidRow()) {
+    sessionList.push({
+      //add these attributes for the benefit of a table view
+      title : result.fieldByName('title'),
+      nid : result.fieldByName('nid'),
+      speakers : result.fieldByName('speakers'),
+      timeslot : result.fieldByName('timeslot'),
+      timeslotname : result.fieldByName('timeslotname'),
+      room : result.fieldByName('room'),
+      hasChild : true
+    });
+    result.next();
+  }
+  result.close();
+  //make sure to close the result set
+  db.close();
+
+  return sessionList;
 };
 
 /**
